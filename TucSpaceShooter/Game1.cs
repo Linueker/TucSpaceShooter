@@ -23,12 +23,15 @@ namespace TucSpaceShooter
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
+            _graphics.PreferredBackBufferHeight = 720;
+            _graphics.PreferredBackBufferWidth = 540;
+            _graphics.ApplyChanges();
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             playerShip = Content.Load<Texture2D>("TUCship");
             player = new Player(playerPosition, _graphics);
