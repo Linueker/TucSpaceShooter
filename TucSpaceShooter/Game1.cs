@@ -9,6 +9,10 @@ namespace TucSpaceShooter
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
+        private Player player;
+        private Texture2D playerShip;
+        private Vector2 playerPosition;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -26,6 +30,10 @@ namespace TucSpaceShooter
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+            playerShip = Content.Load<Texture2D>("TUCship");
+            player = new Player(playerPosition, _graphics);
+            playerPosition = player.Position;
+            
 
             // TODO: use this.Content to load your game content here
         }
@@ -35,7 +43,7 @@ namespace TucSpaceShooter
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
+            Player.PlayerMovement(player, _graphics);
 
             base.Update(gameTime);
         }
@@ -43,7 +51,9 @@ namespace TucSpaceShooter
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
+            _spriteBatch.Begin();
+            _spriteBatch.Draw(playerShip, player.Position, Color.White);
+            _spriteBatch.End();
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);
