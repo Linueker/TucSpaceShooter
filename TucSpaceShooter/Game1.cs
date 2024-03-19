@@ -33,7 +33,6 @@ namespace TucSpaceShooter
             playerShip = Content.Load<Texture2D>("TUCship");
             player = new Player(playerPosition, _graphics);
             playerPosition = player.Position;
-            
 
             // TODO: use this.Content to load your game content here
         }

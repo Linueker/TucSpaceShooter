@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace TucSpaceShooter
 {
-    public class Player : Entity
+    public class Player : Creature
     {
         public Player(Vector2 position, GraphicsDeviceManager graphics) : base(position)
         {
