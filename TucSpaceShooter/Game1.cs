@@ -131,17 +131,11 @@ namespace TucSpaceShooter
                     player.HandlePowerupCollision(powerups);
                     powerup.SpawnPowerup(random, _graphics, powerupWidth, jetpack, shield, repair, doublePoints, triplePoints, powerups);
                     powerup.UpdatePowerups(gameTime, powerups, _graphics);
+                    Bullet.UpdateAll(gameTime, player, shoot);
                     break;
                 case GameStates.Highscore:
                     //kod för highscore
                     break;
-            }
-            {
-                if (currentState == GameStates.Play)
-                {
-                    player.PlayerMovement(player, _graphics);
-                    Bullet.UpdateAll(gameTime, player);
-                }
             }
             
             base.Update(gameTime);
@@ -169,13 +163,9 @@ namespace TucSpaceShooter
                     {
                         _spriteBatch.Draw(powerup.Texture, powerup.Position, Color.White);
                     }
-
-                    if (currentState == GameStates.Play)
-                    {
-                        player.DrawGame(_spriteBatch, playerShip, playerShipAcc, stageOneBgr, player, bgrCounter);
-                        player.PlayerHealth(player, healthBar, healthPoint, healthEmpty, _spriteBatch);
-                        Bullet.DrawAll(_spriteBatch);
-                    }
+                    player.PlayerHealth(player, healthBar, healthPoint, healthEmpty, _spriteBatch);
+                    Bullet.DrawAll(_spriteBatch);
+                    
                     _spriteBatch.End();
 
                     bgrCounter++;
