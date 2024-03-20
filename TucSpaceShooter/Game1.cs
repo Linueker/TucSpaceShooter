@@ -194,8 +194,6 @@ namespace TucSpaceShooter
                     {
                         _spriteBatch.Draw(powerup.Texture, powerup.Position, Color.White);
                     }
-                    _spriteBatch.End();
-
 
                     player.PlayerHealth(player, healthBar, healthPoint, healthEmpty, _spriteBatch);
                    
