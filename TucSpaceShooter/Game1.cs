@@ -5,6 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using static TucSpaceShooter.Powerup;
+
 
 namespace TucSpaceShooter
 {
@@ -16,10 +19,13 @@ namespace TucSpaceShooter
     }
     public class Game1 : Game
     {
+        private Random random;
+
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private static GameStates currentState;
 
+        // Play
+        private static GameStates currentState;
         private Player player;
         private Texture2D playerShip;
         private Texture2D playerShipAcc;
@@ -29,19 +35,38 @@ namespace TucSpaceShooter
         private Texture2D healthPoint;
         private Texture2D healthEmpty;
         private int bgrCounter;
+
+        //Bullet
         private Texture2D bulletTexture;
         private List<Bullet> bullets = new List<Bullet>();
         private TimeSpan lastBulletTime;
         private TimeSpan bulletCooldown;
         private bool spaceWasPressed = false;
 
+        // Powerups
+        private Powerup powerup;
+        private Texture2D jetpack;
+        private Texture2D shield;
+        private Texture2D repair;
+        private Texture2D doublePoints;
+        private Texture2D triplePoints;
+
+        private List<Powerup> powerups;
+
+        private int powerupWidth;
+        private int powerupHeight;
+
         public static GameStates CurrentState { get => currentState; set => currentState = value; }
+
 
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+
+            powerups = new List<Powerup>();
+            random = new Random();
         }
 
         protected override void Initialize()
@@ -64,9 +89,21 @@ namespace TucSpaceShooter
             stageOneBgr = Content.Load<Texture2D>("Background_2");
             player = new Player(playerPosition, _graphics, 5);
             playerPosition = player.Position;
+
+            powerup = new Powerup(playerPosition);
+            jetpack = Content.Load<Texture2D>("JetpackShip");
+            shield = Content.Load<Texture2D>("ShieldShip");
+            repair = Content.Load<Texture2D>("RepairShip");
+            doublePoints = Content.Load<Texture2D>("2xPoints");
+            triplePoints = Content.Load<Texture2D>("3xPoints");
+
+            powerupWidth = 15;
+            powerupHeight = 15;
+
             healthBar = Content.Load<Texture2D>("HealthContainer");
             healthPoint = Content.Load<Texture2D>("FullHeart");
             healthEmpty = Content.Load<Texture2D>("EmptyHeart");
+
             bulletTexture = Content.Load<Texture2D>("PlayerBullets");
         }
 
@@ -84,7 +121,9 @@ namespace TucSpaceShooter
                 case GameStates.Play:
                     //kod för Play
                     player.PlayerMovement(player, _graphics);
-
+                    player.HandlePowerupCollision(powerups);
+                    powerup.SpawnPowerup(random, _graphics, powerupWidth, jetpack, shield, repair, doublePoints, triplePoints, powerups);
+                    powerup.UpdatePowerups(gameTime, powerups, _graphics);
                     break;
                 case GameStates.Highscore:
                     //kod för highscore
@@ -116,9 +155,8 @@ namespace TucSpaceShooter
                         bullets.Remove(bullet);
                     }
                 }
-
-                base.Update(gameTime);
             }
+            base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
@@ -128,6 +166,7 @@ namespace TucSpaceShooter
             switch (currentState)
             {
                 case GameStates.Menu:
+
                     //kod för meny
                     _spriteBatch.Begin();
                     
@@ -137,29 +176,35 @@ namespace TucSpaceShooter
                 case GameStates.Play:
                     //kod för Play
                     _spriteBatch.Begin();
+
                     player.DrawGame(_spriteBatch, playerShip, playerShipAcc, stageOneBgr, player, bgrCounter);
+
+                    foreach (Powerup powerup in powerups)
+                    {
+                        _spriteBatch.Draw(powerup.Texture, powerup.Position, Color.White);
+                    }
+
                     player.PlayerHealth(player, healthBar, healthPoint, healthEmpty, _spriteBatch);
                    
                     foreach (var bullet in bullets)
                     {
                         bullet.Draw(_spriteBatch, bulletTexture);
                     }
-                    
 
                     _spriteBatch.End();
                     bgrCounter++;
-                    if (bgrCounter == 720)
+                    if (bgrCounter == 2160)
                     {
                         bgrCounter = 0;
                     }
+
                     break;
                 case GameStates.Highscore:
                     //kod för highscore
-                    
+
                     break;
             }
             base.Draw(gameTime);
         }
-        
     }
 }

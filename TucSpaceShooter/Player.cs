@@ -17,7 +17,9 @@ namespace TucSpaceShooter
 {
     public class Player : Creature
     {
+
         private int health;
+        private int speed = 2;
 
         public int Health { get => health; set => health = value; }
 
@@ -26,16 +28,78 @@ namespace TucSpaceShooter
             this.position.X = graphics.PreferredBackBufferWidth / 2 - 30;
             this.position.Y = graphics.PreferredBackBufferHeight - 70;
             this.health = health;
+
         }
+
+        public void ActivateJetpack()
+        {
+            // Logik för Jetpack Powerup
+        }
+
+        public void ActivateShield()
+        {
+            // Logik för Shield Powerup
+        }
+
+        public void ActivateRepair()
+        {
+            // Logik för Repair Powerup.
+        }
+
+        public void ActivateDoublePoints()
+        {
+            // Logik för Double Points Powerup.
+        }
+
+        public void ActivateTriplePoints()
+        {
+            // Logik för Triple Points Powerup. 
+        }
+
+        public void HandlePowerupCollision(List<Powerup> powerups)
+        {
+            foreach (Powerup powerup in powerups)
+            {
+                if (Intersects(powerup))
+                {
+                    powerup.ApplyPowerup(this);
+                    powerups.Remove(powerup);
+                    break;
+                }
+            }
+        }
+
+        public bool Intersects(Powerup powerup)
+        {
+            int playerHeight = 38;
+            int playerWidth = 40;
+            int powerupHeight = 16;
+            int powerupWidth = 16;
+
+            Rectangle playerBounds = new Rectangle((int)Position.X, (int)Position.Y, playerWidth, playerHeight); 
+            Rectangle powerupBounds = new Rectangle((int)powerup.Position.X, (int)powerup.Position.Y, powerupWidth, powerupHeight); 
+
+            return playerBounds.Intersects(powerupBounds);
+        }
+
+        public void DrawPowerups(SpriteBatch spriteBatch, List<Powerup> powerups)
+        {
+            foreach (Powerup powerup in powerups)
+            {
+                powerup.Draw(spriteBatch);
+            }
+        }
+
 
         public void DrawGame(SpriteBatch spriteBatch, Texture2D pShip, Texture2D pShipFire, Texture2D bgr, Player player, int counter)
         {
+            
             if (counter == 0)
             {
-                spriteBatch.Draw(bgr, new Vector2(0, (-720 + counter)), Color.White);
+                spriteBatch.Draw(bgr, new Vector2(0, (-720 + counter/3)), Color.White);
             }
-            spriteBatch.Draw(bgr, new Vector2(0, counter), Color.White);
-            spriteBatch.Draw(bgr, new Vector2(0, (-720 + counter)), Color.White);
+            spriteBatch.Draw(bgr, new Vector2(0, counter/3), Color.White);
+            spriteBatch.Draw(bgr, new Vector2(0, (-720 + counter/3)), Color.White);
             if (Keyboard.GetState().IsKeyDown(Keys.Down)
                 || Keyboard.GetState().IsKeyDown(Keys.Up)
                 || Keyboard.GetState().IsKeyDown(Keys.Left)
@@ -108,26 +172,26 @@ namespace TucSpaceShooter
         {
             if (player.position.Y != 20)
             {
-                player.position.Y -= 2;
+                player.position.Y -= speed;
             }
         }
         public void MoveDown(Player player, GraphicsDeviceManager graphics)
         {
             if(player.position.Y != graphics.PreferredBackBufferHeight - 30)
-            player.position.Y += 2;
+            player.position.Y += speed;
         }
         public void MoveLeft(Player player, GraphicsDeviceManager graphics)
         {
             if (player.position.X != 10)
             {
-                player.position.X -= 2;
+                player.position.X -= speed;
             }
         }
         public void MoveRight(Player player, GraphicsDeviceManager graphics)
         {
             if (player.position.X != graphics.PreferredBackBufferWidth - 30)
             {
-                player.position.X += 2;
+                player.position.X += speed;
             }
         }
         public void PlayerMovement(Player player, GraphicsDeviceManager graphics)
