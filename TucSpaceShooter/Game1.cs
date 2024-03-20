@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.ComponentModel.Design;
 
 namespace TucSpaceShooter
@@ -26,6 +27,8 @@ namespace TucSpaceShooter
         private Texture2D healthPoint;
         private Texture2D healthEmpty;
         private int bgrCounter;
+
+        
 
         public static GameStates CurrentState { get => currentState; set => currentState = value; }
 
@@ -96,7 +99,6 @@ namespace TucSpaceShooter
                     _spriteBatch.Begin();
                     
                     _spriteBatch.End();
-
                     break;
                 case GameStates.Play:
                     //kod för Play
@@ -105,7 +107,7 @@ namespace TucSpaceShooter
                     player.PlayerHealth(player, healthBar, healthPoint, healthEmpty, _spriteBatch);
                     _spriteBatch.End();
                     bgrCounter++;
-                    if (bgrCounter == 720)
+                    if (bgrCounter == 2160)
                     {
                         bgrCounter = 0;
                     }
