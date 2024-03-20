@@ -19,6 +19,7 @@ namespace TucSpaceShooter
     {
 
         private int health;
+        private int speed = 2;
 
         public int Health { get => health; set => health = value; }
 
@@ -92,12 +93,13 @@ namespace TucSpaceShooter
 
         public void DrawGame(SpriteBatch spriteBatch, Texture2D pShip, Texture2D pShipFire, Texture2D bgr, Player player, int counter)
         {
+            
             if (counter == 0)
             {
-                spriteBatch.Draw(bgr, new Vector2(0, (-720 + counter)), Color.White);
+                spriteBatch.Draw(bgr, new Vector2(0, (-720 + counter/3)), Color.White);
             }
-            spriteBatch.Draw(bgr, new Vector2(0, counter), Color.White);
-            spriteBatch.Draw(bgr, new Vector2(0, (-720 + counter)), Color.White);
+            spriteBatch.Draw(bgr, new Vector2(0, counter/3), Color.White);
+            spriteBatch.Draw(bgr, new Vector2(0, (-720 + counter/3)), Color.White);
             if (Keyboard.GetState().IsKeyDown(Keys.Down)
                 || Keyboard.GetState().IsKeyDown(Keys.Up)
                 || Keyboard.GetState().IsKeyDown(Keys.Left)
@@ -170,26 +172,26 @@ namespace TucSpaceShooter
         {
             if (player.position.Y != 20)
             {
-                player.position.Y -= 2;
+                player.position.Y -= speed;
             }
         }
         public void MoveDown(Player player, GraphicsDeviceManager graphics)
         {
             if(player.position.Y != graphics.PreferredBackBufferHeight - 30)
-            player.position.Y += 2;
+            player.position.Y += speed;
         }
         public void MoveLeft(Player player, GraphicsDeviceManager graphics)
         {
             if (player.position.X != 10)
             {
-                player.position.X -= 2;
+                player.position.X -= speed;
             }
         }
         public void MoveRight(Player player, GraphicsDeviceManager graphics)
         {
             if (player.position.X != graphics.PreferredBackBufferWidth - 30)
             {
-                player.position.X += 2;
+                player.position.X += speed;
             }
         }
         public void PlayerMovement(Player player, GraphicsDeviceManager graphics)
