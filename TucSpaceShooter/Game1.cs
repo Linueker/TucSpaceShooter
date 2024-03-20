@@ -15,14 +15,19 @@ namespace TucSpaceShooter
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private GameStates currentState;
+        private static GameStates currentState;
+
         private Player player;
         private Texture2D playerShip;
         private Texture2D playerShipAcc;
         private Texture2D stageOneBgr;
         private Vector2 playerPosition;
+        private Texture2D healthBar;
+        private Texture2D healthPoint;
+        private Texture2D healthEmpty;
         private int bgrCounter;
 
+        public static GameStates CurrentState { get => currentState; set => currentState = value; }
 
         public Game1()
         {
@@ -34,7 +39,7 @@ namespace TucSpaceShooter
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            currentState = GameStates.Menu;//Ska göra så att man startar i menyn, byt ut Menu för att starta i annan state
+            currentState = GameStates.Play;//Ska göra så att man startar i menyn, byt ut Menu för att starta i annan state
             base.Initialize();
         }
 
@@ -45,11 +50,15 @@ namespace TucSpaceShooter
             _graphics.PreferredBackBufferWidth = 540;
             _graphics.ApplyChanges();
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+
             playerShip = Content.Load<Texture2D>("TUCShip");
             playerShipAcc = Content.Load<Texture2D>("TUCShipFire");
             stageOneBgr = Content.Load<Texture2D>("Background_2");
-            player = new Player(playerPosition, _graphics);
+            player = new Player(playerPosition, _graphics, 5);
             playerPosition = player.Position;
+            healthBar = Content.Load<Texture2D>("HealthContainer");
+            healthPoint = Content.Load<Texture2D>("FullHeart");
+            healthEmpty = Content.Load<Texture2D>("EmptyHeart");
         }
 
         protected override void Update(GameTime gameTime)
@@ -66,6 +75,7 @@ namespace TucSpaceShooter
                 case GameStates.Play:
                     //kod för Play
                     player.PlayerMovement(player, _graphics);
+                    
                     break;
                 case GameStates.Highscore:
                     //kod för highscore
@@ -82,30 +92,30 @@ namespace TucSpaceShooter
             switch (currentState)
             {
                 case GameStates.Menu:
-                    //Kod för meny
+                    //kod för meny
+                    _spriteBatch.Begin();
                     
+                    _spriteBatch.End();
+
                     break;
                 case GameStates.Play:
                     //kod för Play
                     _spriteBatch.Begin();
-            
                     player.DrawGame(_spriteBatch, playerShip, playerShipAcc, stageOneBgr, player, bgrCounter);
-            
+                    player.PlayerHealth(player, healthBar, healthPoint, healthEmpty, _spriteBatch);
                     _spriteBatch.End();
-                    
+                    bgrCounter++;
+                    if (bgrCounter == 720)
+                    {
+                        bgrCounter = 0;
+                    }
                     break;
                 case GameStates.Highscore:
                     //kod för highscore
                     
                     break;
             }
-
             base.Draw(gameTime);
-            bgrCounter++;
-            if (bgrCounter == 720)
-            {
-                bgrCounter = 0;
-            }
         }
     }
 }
