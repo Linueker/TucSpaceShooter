@@ -107,8 +107,11 @@ namespace TucSpaceShooter
             healthPoint = Content.Load<Texture2D>("FullHeart");
             healthEmpty = Content.Load<Texture2D>("EmptyHeart");
 
+
             bulletTexture = Content.Load<Texture2D>("PlayerBullets");
             shoot = Content.Load<SoundEffect>("laser-gun-shot-sound-future-sci-fi-lazer-wobble-chakongaudio-174883");
+            Bullet.LoadContent(bulletTexture);
+
         }
 
         protected override void Update(GameTime gameTime)
@@ -134,32 +137,13 @@ namespace TucSpaceShooter
                     break;
             }
             {
-                bool spaceIsPressed = Keyboard.GetState().IsKeyDown(Keys.Space);
-                if (spaceIsPressed && !spaceWasPressed && gameTime.TotalGameTime - lastBulletTime > bulletCooldown)
+                if (currentState == GameStates.Play)
                 {
-                    Vector2 leftGunPosition = new Vector2(player.Position.X + 26 - bulletTexture.Width / 2, player.Position.Y);
-                    Vector2 rightGunPosition = new Vector2(player.Position.X + -4 - bulletTexture.Width / 2, player.Position.Y);
-                    
-                    bullets.Add(new Bullet(leftGunPosition));
-                    bullets.Add(new Bullet(rightGunPosition));
-                    shoot.Play();
-                    lastBulletTime = gameTime.TotalGameTime;
-                    spaceWasPressed = true;
-                }
-                else if (!spaceIsPressed)
-                {
-                    spaceWasPressed = false;
-                }
-
-                foreach (var bullet in bullets.ToArray())
-                {
-                    bullet.Update();
-                    if (!bullet.IsActive)
-                    {
-                        bullets.Remove(bullet);
-                    }
+                    player.PlayerMovement(player, _graphics);
+                    Bullet.UpdateAll(gameTime, player);
                 }
             }
+            
             base.Update(gameTime);
         }
 
@@ -186,14 +170,14 @@ namespace TucSpaceShooter
                         _spriteBatch.Draw(powerup.Texture, powerup.Position, Color.White);
                     }
 
-                    player.PlayerHealth(player, healthBar, healthPoint, healthEmpty, _spriteBatch);
-                   
-                    foreach (var bullet in bullets)
+                    if (currentState == GameStates.Play)
                     {
-                        bullet.Draw(_spriteBatch, bulletTexture);
+                        player.DrawGame(_spriteBatch, playerShip, playerShipAcc, stageOneBgr, player, bgrCounter);
+                        player.PlayerHealth(player, healthBar, healthPoint, healthEmpty, _spriteBatch);
+                        Bullet.DrawAll(_spriteBatch);
                     }
-
                     _spriteBatch.End();
+
                     bgrCounter++;
                     if (bgrCounter == 2160)
                     {
