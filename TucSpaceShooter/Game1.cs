@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.ComponentModel.Design;
 
 namespace TucSpaceShooter
 {
@@ -14,8 +15,14 @@ namespace TucSpaceShooter
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-       
         private GameStates currentState;
+        private Player player;
+        private Texture2D playerShip;
+        private Texture2D playerShipAcc;
+        private Texture2D stageOneBgr;
+        private Vector2 playerPosition;
+        private int bgrCounter;
+
 
         public Game1()
         {
@@ -33,9 +40,16 @@ namespace TucSpaceShooter
 
         protected override void LoadContent()
         {
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
-
             // TODO: use this.Content to load your game content here
+            _graphics.PreferredBackBufferHeight = 720;
+            _graphics.PreferredBackBufferWidth = 540;
+            _graphics.ApplyChanges();
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
+            playerShip = Content.Load<Texture2D>("TUCShip");
+            playerShipAcc = Content.Load<Texture2D>("TUCShipFire");
+            stageOneBgr = Content.Load<Texture2D>("Background_2");
+            player = new Player(playerPosition, _graphics);
+            playerPosition = player.Position;
         }
 
         protected override void Update(GameTime gameTime)
@@ -51,19 +65,20 @@ namespace TucSpaceShooter
                     break;
                 case GameStates.Play:
                     //kod för Play
+                    player.PlayerMovement(player, _graphics);
                     break;
                 case GameStates.Highscore:
                     //kod för highscore
                     break;
             }
+
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-
             // TODO: Add your drawing code here
+
             switch (currentState)
             {
                 case GameStates.Menu:
@@ -72,6 +87,11 @@ namespace TucSpaceShooter
                     break;
                 case GameStates.Play:
                     //kod för Play
+                    _spriteBatch.Begin();
+            
+                    player.DrawGame(_spriteBatch, playerShip, playerShipAcc, stageOneBgr, player, bgrCounter);
+            
+                    _spriteBatch.End();
                     
                     break;
                 case GameStates.Highscore:
@@ -79,7 +99,13 @@ namespace TucSpaceShooter
                     
                     break;
             }
+
             base.Draw(gameTime);
+            bgrCounter++;
+            if (bgrCounter == 720)
+            {
+                bgrCounter = 0;
+            }
         }
     }
 }
