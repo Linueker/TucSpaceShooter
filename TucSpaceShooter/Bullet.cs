@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -25,11 +26,12 @@ namespace TucSpaceShooter
         }
 
         // Call this method from Game1.cs to update the state of all bullets
-        public static void UpdateAll(GameTime gameTime, Player player)
+        public static void UpdateAll(GameTime gameTime, Player player, SoundEffect shoot)
         {
+            
             if (gameTime.TotalGameTime - LastBulletTime > BulletCooldown && Keyboard.GetState().IsKeyDown(Keys.Space))
             {
-                
+                shoot.Play();
                 Shoot(new Vector2(player.Position.X + 26, player.Position.Y));
                 Shoot(new Vector2(player.Position.X + -4, player.Position.Y));
                 LastBulletTime = gameTime.TotalGameTime;
