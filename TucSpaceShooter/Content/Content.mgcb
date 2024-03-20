@@ -69,6 +69,18 @@
 
 /build:EmptyHeart.png
 
+#begin EnemyBullets.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:EnemyBullets.png
+
 #begin FullHeart.png
 
 /importer:TextureImporter
@@ -102,6 +114,19 @@
 /build:ShieldShip.png
 
 /build:HealthContainer.png
+
+
+#begin PlayerBullets.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:PlayerBullets.png
 
 
 #begin TUCShip.png
