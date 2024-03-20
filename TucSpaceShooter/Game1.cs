@@ -4,10 +4,18 @@ using Microsoft.Xna.Framework.Input;
 
 namespace TucSpaceShooter
 {
+    public enum GameStates
+    {
+        Menu,
+        Play,
+        Highscore
+    }
     public class Game1 : Game
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+       
+        private GameStates currentState;
 
         public Game1()
         {
@@ -19,7 +27,7 @@ namespace TucSpaceShooter
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            currentState = GameStates.Menu;//Ska göra så att man startar i menyn, byt ut Menu för att starta i annan state
             base.Initialize();
         }
 
@@ -36,7 +44,18 @@ namespace TucSpaceShooter
                 Exit();
 
             // TODO: Add your update logic here
-
+            switch (currentState)
+            {
+                case GameStates.Menu:
+                    //Kod för meny
+                    break;
+                case GameStates.Play:
+                    //kod för Play
+                    break;
+                case GameStates.Highscore:
+                    //kod för highscore
+                    break;
+            }
             base.Update(gameTime);
         }
 
@@ -45,7 +64,21 @@ namespace TucSpaceShooter
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-
+            switch (currentState)
+            {
+                case GameStates.Menu:
+                    //Kod för meny
+                    
+                    break;
+                case GameStates.Play:
+                    //kod för Play
+                    
+                    break;
+                case GameStates.Highscore:
+                    //kod för highscore
+                    
+                    break;
+            }
             base.Draw(gameTime);
         }
     }
