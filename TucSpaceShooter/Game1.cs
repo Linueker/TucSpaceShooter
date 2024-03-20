@@ -33,6 +33,7 @@ namespace TucSpaceShooter
         private List<Bullet> bullets = new List<Bullet>();
         private TimeSpan lastBulletTime;
         private TimeSpan bulletCooldown;
+        private bool spaceWasPressed = false;
 
         public static GameStates CurrentState { get => currentState; set => currentState = value; }
 
@@ -69,7 +70,7 @@ namespace TucSpaceShooter
             bulletTexture = Content.Load<Texture2D>("PlayerBullets");
         }
 
-        protected override void Update(GameTime gameTime )
+        protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
@@ -83,47 +84,41 @@ namespace TucSpaceShooter
                 case GameStates.Play:
                     //kod för Play
                     player.PlayerMovement(player, _graphics);
-                    
+
                     break;
                 case GameStates.Highscore:
                     //kod för highscore
                     break;
             }
             {
-                if (currentState == GameStates.Play)
+                bool spaceIsPressed = Keyboard.GetState().IsKeyDown(Keys.Space);
+                if (spaceIsPressed && !spaceWasPressed && gameTime.TotalGameTime - lastBulletTime > bulletCooldown)
                 {
-                    // Existing player movement and game update code...
-                    player.PlayerMovement(player, _graphics);
+                    Vector2 leftGunPosition = new Vector2(player.Position.X + 26 - bulletTexture.Width / 2, player.Position.Y);
+                    Vector2 rightGunPosition = new Vector2(player.Position.X + -4 - bulletTexture.Width / 2, player.Position.Y);
 
-                    // Bullet firing logic
-                    if (Keyboard.GetState().IsKeyDown(Keys.Space) && gameTime.TotalGameTime - lastBulletTime > bulletCooldown)
+                    bullets.Add(new Bullet(leftGunPosition));
+                    bullets.Add(new Bullet(rightGunPosition));
+
+                    lastBulletTime = gameTime.TotalGameTime;
+                    spaceWasPressed = true;
+                }
+                else if (!spaceIsPressed)
+                {
+                    spaceWasPressed = false;
+                }
+
+                foreach (var bullet in bullets.ToArray())
+                {
+                    bullet.Update();
+                    if (!bullet.IsActive)
                     {
-                        // Assuming the player's ship's guns are at these 
-                        Vector2 leftGunPosition = new Vector2(player.Position.X + 26 - bulletTexture.Width / 2, player.Position.Y);
-                        Vector2 rightGunPosition = new Vector2(player.Position.X + -4  - bulletTexture.Width / 2, player.Position.Y);
-
-                        // Add new bullets to the list from both guns
-                        bullets.Add(new Bullet(leftGunPosition));
-                        bullets.Add(new Bullet(rightGunPosition));
-
-                        // Record the time the bullets were fired
-                        lastBulletTime = gameTime.TotalGameTime;
-                    }
-
-                    // Update existing bullets
-                    foreach (var bullet in bullets.ToList())
-                    {
-                        bullet.Update();
-                        if (!bullet.IsActive)
-                        {
-                            bullets.Remove(bullet);
-                        }
+                        bullets.Remove(bullet);
                     }
                 }
+
+                base.Update(gameTime);
             }
-        
-            
-            base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
