@@ -24,9 +24,7 @@ namespace TucSpaceShooter
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
-
         // Play
-
         private static GameStates currentState;
         private Player player;
         private Texture2D playerShip;
@@ -37,14 +35,15 @@ namespace TucSpaceShooter
         private Texture2D healthPoint;
         private Texture2D healthEmpty;
         private int bgrCounter;
+
+        //Bullet
         private Texture2D bulletTexture;
         private List<Bullet> bullets = new List<Bullet>();
         private TimeSpan lastBulletTime;
         private TimeSpan bulletCooldown;
 
-
-
         // Powerups
+        private Powerup powerup;
         private Texture2D jetpack;
         private Texture2D shield;
         private Texture2D repair;
@@ -90,7 +89,7 @@ namespace TucSpaceShooter
             player = new Player(playerPosition, _graphics, 5);
             playerPosition = player.Position;
 
-
+            powerup = new Powerup(playerPosition);
             jetpack = Content.Load<Texture2D>("JetpackShip");
             shield = Content.Load<Texture2D>("ShieldShip");
             repair = Content.Load<Texture2D>("RepairShip");
@@ -123,9 +122,8 @@ namespace TucSpaceShooter
                     player.PlayerMovement(player, _graphics);
 
                     player.HandlePowerupCollision(powerups);
-                    SpawnPowerup();
-                    UpdatePowerups(gameTime);
-
+                    powerup.SpawnPowerup(random, _graphics, powerupWidth, jetpack, shield, repair, doublePoints, triplePoints, powerups);
+                    powerup.UpdatePowerups(gameTime, powerups, _graphics);
 
                     break;
                 case GameStates.Highscore:
@@ -164,8 +162,6 @@ namespace TucSpaceShooter
                     }
                 }
             }
-        
-            
             base.Update(gameTime);
         }
 
@@ -187,7 +183,6 @@ namespace TucSpaceShooter
                     //kod för Play
                     _spriteBatch.Begin();
 
-
                     player.DrawGame(_spriteBatch, playerShip, playerShipAcc, stageOneBgr, player, bgrCounter);
 
                     foreach (Powerup powerup in powerups)
@@ -201,7 +196,6 @@ namespace TucSpaceShooter
                     {
                         bullet.Draw(_spriteBatch, bulletTexture);
                     }
-                    
 
                     _spriteBatch.End();
                     bgrCounter++;
@@ -218,73 +212,5 @@ namespace TucSpaceShooter
             }
             base.Draw(gameTime);
         }
-
-        private void SpawnPowerup()
-        {
-            // Slumpmässigt beslut om att skapa en ny powerup
-            if (random.Next(1000) < 5) // Justera tröskelvärdet för att ändra frekvensen av powerup-generering
-            {
-                int maxX = _graphics.PreferredBackBufferWidth - powerupWidth; // Maximalt x-värde för slumpmässig position
-
-                // Generera en X-koordinat inom spelplanen
-                int randomX = random.Next(maxX);
-
-                // Generera en Y-koordinat inom den synliga delen av spelplanen
-                int randomY = random.Next(-_graphics.PreferredBackBufferHeight, 0);
-
-                Vector2 powerupPosition = new Vector2(randomX, randomY);
-
-                PowerupType powerupType = (PowerupType)random.Next(Enum.GetNames(typeof(PowerupType)).Length);
-
-                Texture2D powerupTexture;
-                switch (powerupType)
-                {
-                    case PowerupType.Jetpack:
-                        powerupTexture = jetpack;
-                        break;
-                    case PowerupType.Shield:
-                        powerupTexture = shield;
-                        break;
-                    case PowerupType.Repair:
-                        powerupTexture = repair;
-                        break;
-                    case PowerupType.DoublePoints:
-                        powerupTexture = doublePoints;
-                        break;
-                    case PowerupType.TriplePoints:
-                        powerupTexture = triplePoints;
-                        break;
-                    default:
-                        powerupTexture = null;
-                        break;
-                }
-
-                // Skapa och lägg till powerupen i listan
-                Powerup newPowerup = new Powerup(powerupPosition, powerupType, 4, powerupTexture); // Du behöver ange en varaktighet för powerupen (0 för nu)
-                powerups.Add(newPowerup);
-            }
-        }
-
-
-
-
-        private void UpdatePowerups(GameTime gameTime)
-        {
-            // Uppdatera varje powerup
-            for (int i = powerups.Count - 1; i >= 0; i--)
-            {
-                powerups[i].Update(gameTime);
-
-                // Flytta powerupen neråt
-                powerups[i].Position += new Vector2(0, 3); // Fallhastighet för Powerup
-
-                // Kontrollera om powerupen har nått botten av spelplanen
-                if (powerups[i].Position.Y > _graphics.PreferredBackBufferHeight)
-                {
-                    powerups.RemoveAt(i); // Ta bort powerupen om den når botten av spelplanen
-                }
-            }
-        }
-
     }
 }
