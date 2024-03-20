@@ -1,7 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Linq;
 
 namespace TucSpaceShooter
 {
@@ -26,6 +29,10 @@ namespace TucSpaceShooter
         private Texture2D healthPoint;
         private Texture2D healthEmpty;
         private int bgrCounter;
+        private Texture2D bulletTexture;
+        private List<Bullet> bullets = new List<Bullet>();
+        private TimeSpan lastBulletTime;
+        private TimeSpan bulletCooldown;
 
         public static GameStates CurrentState { get => currentState; set => currentState = value; }
 
@@ -59,9 +66,10 @@ namespace TucSpaceShooter
             healthBar = Content.Load<Texture2D>("HealthContainer");
             healthPoint = Content.Load<Texture2D>("FullHeart");
             healthEmpty = Content.Load<Texture2D>("EmptyHeart");
+            bulletTexture = Content.Load<Texture2D>("PlayerBullets");
         }
 
-        protected override void Update(GameTime gameTime)
+        protected override void Update(GameTime gameTime )
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
@@ -81,7 +89,40 @@ namespace TucSpaceShooter
                     //kod för highscore
                     break;
             }
+            {
+                if (currentState == GameStates.Play)
+                {
+                    // Existing player movement and game update code...
+                    player.PlayerMovement(player, _graphics);
 
+                    // Bullet firing logic
+                    if (Keyboard.GetState().IsKeyDown(Keys.Space) && gameTime.TotalGameTime - lastBulletTime > bulletCooldown)
+                    {
+                        // Assuming the player's ship's guns are at these 
+                        Vector2 leftGunPosition = new Vector2(player.Position.X + 26 - bulletTexture.Width / 2, player.Position.Y);
+                        Vector2 rightGunPosition = new Vector2(player.Position.X + -4  - bulletTexture.Width / 2, player.Position.Y);
+
+                        // Add new bullets to the list from both guns
+                        bullets.Add(new Bullet(leftGunPosition));
+                        bullets.Add(new Bullet(rightGunPosition));
+
+                        // Record the time the bullets were fired
+                        lastBulletTime = gameTime.TotalGameTime;
+                    }
+
+                    // Update existing bullets
+                    foreach (var bullet in bullets.ToList())
+                    {
+                        bullet.Update();
+                        if (!bullet.IsActive)
+                        {
+                            bullets.Remove(bullet);
+                        }
+                    }
+                }
+            }
+        
+            
             base.Update(gameTime);
         }
 
@@ -103,6 +144,13 @@ namespace TucSpaceShooter
                     _spriteBatch.Begin();
                     player.DrawGame(_spriteBatch, playerShip, playerShipAcc, stageOneBgr, player, bgrCounter);
                     player.PlayerHealth(player, healthBar, healthPoint, healthEmpty, _spriteBatch);
+                   
+                    foreach (var bullet in bullets)
+                    {
+                        bullet.Draw(_spriteBatch, bulletTexture);
+                    }
+                    
+
                     _spriteBatch.End();
                     bgrCounter++;
                     if (bgrCounter == 720)
@@ -117,5 +165,6 @@ namespace TucSpaceShooter
             }
             base.Draw(gameTime);
         }
+        
     }
 }
