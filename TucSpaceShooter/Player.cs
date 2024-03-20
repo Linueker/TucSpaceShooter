@@ -7,6 +7,7 @@ using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Net.Mime;
 using System.Numerics;
+using System.Reflection;
 using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,11 +17,15 @@ namespace TucSpaceShooter
 {
     public class Player : Creature
     {
-        
-        public Player(Vector2 position, GraphicsDeviceManager graphics) : base(position)
+        private int health;
+
+        public int Health { get => health; set => health = value; }
+
+        public Player(Vector2 position, GraphicsDeviceManager graphics, int health) : base(position)
         {
-            this.position.X = graphics.PreferredBackBufferWidth/2 - 30;
-            this.position.Y = graphics.PreferredBackBufferHeight-70; 
+            this.position.X = graphics.PreferredBackBufferWidth / 2 - 30;
+            this.position.Y = graphics.PreferredBackBufferHeight - 70;
+            this.health = health;
         }
 
         public void DrawGame(SpriteBatch spriteBatch, Texture2D pShip, Texture2D pShipFire, Texture2D bgr, Player player, int counter)
@@ -38,33 +43,89 @@ namespace TucSpaceShooter
             {
                 if (counter % 3 == 0)
                 {
-                    spriteBatch.Draw(pShipFire, player.Position, Color.White);
+                    spriteBatch.Draw(pShipFire, new Vector2(player.Position.X - 20, player.Position.Y - 19), Color.White);
                 }
             }
-            spriteBatch.Draw(pShip, player.Position, Color.White);
+            spriteBatch.Draw(pShip, new Vector2(player.Position.X - 20, player.Position.Y - 19), Color.White);
+        }
+        public void PlayerHealth(Player player, Texture2D healthBar, Texture2D healthPoint, Texture2D healthEmpty, SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(healthBar, new Vector2(10, 10), Color.White);
+            if (player.health == 5)
+            {
+                spriteBatch.Draw(healthPoint, new Vector2(14, 12), Color.White);
+                spriteBatch.Draw(healthPoint, new Vector2(31, 12), Color.White);
+                spriteBatch.Draw(healthPoint, new Vector2(48, 12), Color.White);
+                spriteBatch.Draw(healthPoint, new Vector2(65, 12), Color.White);
+                spriteBatch.Draw(healthPoint, new Vector2(82, 12), Color.White);
+            }
+            else if (player.health == 4)
+            {
+                spriteBatch.Draw(healthPoint, new Vector2(14, 12), Color.White);
+                spriteBatch.Draw(healthPoint, new Vector2(31, 12), Color.White);
+                spriteBatch.Draw(healthPoint, new Vector2(48, 12), Color.White);
+                spriteBatch.Draw(healthPoint, new Vector2(65, 12), Color.White);
+                spriteBatch.Draw(healthEmpty, new Vector2(82, 12), Color.White);
+            }
+            else if (player.health == 3)
+            {
+                spriteBatch.Draw(healthPoint, new Vector2(14, 12), Color.White);
+                spriteBatch.Draw(healthPoint, new Vector2(31, 12), Color.White);
+                spriteBatch.Draw(healthPoint, new Vector2(48, 12), Color.White);
+                spriteBatch.Draw(healthEmpty, new Vector2(65, 12), Color.White);
+                spriteBatch.Draw(healthEmpty, new Vector2(82, 12), Color.White);
+            }
+            else if (player.health == 2)
+            {
+                spriteBatch.Draw(healthPoint, new Vector2(14, 12), Color.White);
+                spriteBatch.Draw(healthPoint, new Vector2(31, 12), Color.White);
+                spriteBatch.Draw(healthEmpty, new Vector2(48, 12), Color.White);
+                spriteBatch.Draw(healthEmpty, new Vector2(65, 12), Color.White);
+                spriteBatch.Draw(healthEmpty, new Vector2(82, 12), Color.White);
+            }
+            else if (player.health == 1)
+            {
+                spriteBatch.Draw(healthPoint, new Vector2(14, 12), Color.White);
+                spriteBatch.Draw(healthEmpty, new Vector2(31, 12), Color.White);
+                spriteBatch.Draw(healthEmpty, new Vector2(48, 12), Color.White);
+                spriteBatch.Draw(healthEmpty, new Vector2(65, 12), Color.White);
+                spriteBatch.Draw(healthEmpty, new Vector2(82, 12), Color.White);
+            }
+            else if (player.health == 0)
+            {
+                spriteBatch.Draw(healthEmpty, new Vector2(14, 12), Color.White);
+                spriteBatch.Draw(healthEmpty, new Vector2(31, 12), Color.White);
+                spriteBatch.Draw(healthEmpty, new Vector2(48, 12), Color.White);
+                spriteBatch.Draw(healthEmpty, new Vector2(65, 12), Color.White);
+                spriteBatch.Draw(healthEmpty, new Vector2(82, 12), Color.White);
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
         }
         public void MoveUp(Player player, GraphicsDeviceManager graphics)
         {
-            if (player.position.Y != 10)
+            if (player.position.Y != 20)
             {
                 player.position.Y -= 2;
             }
         }
         public void MoveDown(Player player, GraphicsDeviceManager graphics)
         {
-            if(player.position.Y != graphics.PreferredBackBufferHeight - 50)
+            if(player.position.Y != graphics.PreferredBackBufferHeight - 30)
             player.position.Y += 2;
         }
         public void MoveLeft(Player player, GraphicsDeviceManager graphics)
         {
-            if (player.position.X != -10)
+            if (player.position.X != 10)
             {
                 player.position.X -= 2;
             }
         }
         public void MoveRight(Player player, GraphicsDeviceManager graphics)
         {
-            if (player.position.X != graphics.PreferredBackBufferWidth - 50)
+            if (player.position.X != graphics.PreferredBackBufferWidth - 30)
             {
                 player.position.X += 2;
             }
