@@ -49,10 +49,7 @@
 /processorParam:TextureFormat=Color
 /build:Background_2.png
 
-
-#begin JetpackShip.png
 #begin EmptyHeart.png
-
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -62,11 +59,6 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-
-/build:JetpackShip.png
-
-#begin RepairShip.png
-
 /build:EmptyHeart.png
 
 #begin EnemyBullets.png
@@ -82,7 +74,6 @@
 /build:EnemyBullets.png
 
 #begin FullHeart.png
-
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -92,15 +83,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-
-/build:RepairShip.png
-
-#begin ShieldShip.png
-
 /build:FullHeart.png
 
 #begin HealthContainer.png
-
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -110,11 +95,25 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-
-/build:ShieldShip.png
-
 /build:HealthContainer.png
 
+#begin JetpackShip.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:JetpackShip.png
+
+#begin laser-gun-shot-sound-future-sci-fi-lazer-wobble-chakongaudio-174883.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:laser-gun-shot-sound-future-sci-fi-lazer-wobble-chakongaudio-174883.mp3
 
 #begin PlayerBullets.png
 /importer:TextureImporter
@@ -128,6 +127,29 @@
 /processorParam:TextureFormat=Color
 /build:PlayerBullets.png
 
+#begin RepairShip.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:RepairShip.png
+
+#begin ShieldShip.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:ShieldShip.png
 
 #begin TUCShip.png
 /importer:TextureImporter

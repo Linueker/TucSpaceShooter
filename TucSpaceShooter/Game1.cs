@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -42,6 +44,7 @@ namespace TucSpaceShooter
         private TimeSpan lastBulletTime;
         private TimeSpan bulletCooldown;
         private bool spaceWasPressed = false;
+        private SoundEffect shoot;
 
         // Powerups
         private Powerup powerup;
@@ -106,7 +109,9 @@ namespace TucSpaceShooter
 
 
             bulletTexture = Content.Load<Texture2D>("PlayerBullets");
+            shoot = Content.Load<SoundEffect>("laser-gun-shot-sound-future-sci-fi-lazer-wobble-chakongaudio-174883");
             Bullet.LoadContent(bulletTexture);
+
         }
 
         protected override void Update(GameTime gameTime)
@@ -149,12 +154,10 @@ namespace TucSpaceShooter
             switch (currentState)
             {
                 case GameStates.Menu:
-
                     //kod för meny
                     _spriteBatch.Begin();
                     
                     _spriteBatch.End();
-
                     break;
                 case GameStates.Play:
                     //kod för Play
