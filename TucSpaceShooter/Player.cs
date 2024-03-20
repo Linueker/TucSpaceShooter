@@ -17,6 +17,7 @@ namespace TucSpaceShooter
 {
     public class Player : Creature
     {
+
         private int health;
         private int speed = 2;
 
@@ -27,7 +28,68 @@ namespace TucSpaceShooter
             this.position.X = graphics.PreferredBackBufferWidth / 2 - 30;
             this.position.Y = graphics.PreferredBackBufferHeight - 70;
             this.health = health;
+
         }
+
+        public void ActivateJetpack()
+        {
+            // Logik för Jetpack Powerup
+        }
+
+        public void ActivateShield()
+        {
+            // Logik för Shield Powerup
+        }
+
+        public void ActivateRepair()
+        {
+            // Logik för Repair Powerup.
+        }
+
+        public void ActivateDoublePoints()
+        {
+            // Logik för Double Points Powerup.
+        }
+
+        public void ActivateTriplePoints()
+        {
+            // Logik för Triple Points Powerup. 
+        }
+
+        public void HandlePowerupCollision(List<Powerup> powerups)
+        {
+            foreach (Powerup powerup in powerups)
+            {
+                if (Intersects(powerup))
+                {
+                    powerup.ApplyPowerup(this);
+                    powerups.Remove(powerup);
+                    break;
+                }
+            }
+        }
+
+        public bool Intersects(Powerup powerup)
+        {
+            int playerHeight = 38;
+            int playerWidth = 40;
+            int powerupHeight = 16;
+            int powerupWidth = 16;
+
+            Rectangle playerBounds = new Rectangle((int)Position.X, (int)Position.Y, playerWidth, playerHeight); 
+            Rectangle powerupBounds = new Rectangle((int)powerup.Position.X, (int)powerup.Position.Y, powerupWidth, powerupHeight); 
+
+            return playerBounds.Intersects(powerupBounds);
+        }
+
+        public void DrawPowerups(SpriteBatch spriteBatch, List<Powerup> powerups)
+        {
+            foreach (Powerup powerup in powerups)
+            {
+                powerup.Draw(spriteBatch);
+            }
+        }
+
 
         public void DrawGame(SpriteBatch spriteBatch, Texture2D pShip, Texture2D pShipFire, Texture2D bgr, Player player, int counter)
         {

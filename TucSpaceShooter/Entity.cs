@@ -19,7 +19,7 @@ namespace TucSpaceShooter
 
         protected Entity(Vector2 position)
         {
-            this.position = Position;
+            this.position = position;
         }
     }
 }
