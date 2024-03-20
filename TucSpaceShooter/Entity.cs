@@ -21,7 +21,5 @@ namespace TucSpaceShooter
         {
             this.position = Position;
         }
-
-        
     }
 }

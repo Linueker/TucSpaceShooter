@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.ComponentModel.Design;
 
 namespace TucSpaceShooter
 {
@@ -8,10 +9,12 @@ namespace TucSpaceShooter
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-
         private Player player;
         private Texture2D playerShip;
+        private Texture2D playerShipAcc;
+        private Texture2D stageOneBgr;
         private Vector2 playerPosition;
+        private int bgrCounter;
 
         public Game1()
         {
@@ -29,15 +32,16 @@ namespace TucSpaceShooter
 
         protected override void LoadContent()
         {
+            // TODO: use this.Content to load your game content here
             _graphics.PreferredBackBufferHeight = 720;
             _graphics.PreferredBackBufferWidth = 540;
             _graphics.ApplyChanges();
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            playerShip = Content.Load<Texture2D>("TUCship");
+            playerShip = Content.Load<Texture2D>("TUCShip");
+            playerShipAcc = Content.Load<Texture2D>("TUCShipFire");
+            stageOneBgr = Content.Load<Texture2D>("Background_2");
             player = new Player(playerPosition, _graphics);
             playerPosition = player.Position;
-
-            // TODO: use this.Content to load your game content here
         }
 
         protected override void Update(GameTime gameTime)
@@ -45,20 +49,25 @@ namespace TucSpaceShooter
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            Player.PlayerMovement(player, _graphics);
-
+            player.PlayerMovement(player, _graphics);
+            
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-            _spriteBatch.Begin();
-            _spriteBatch.Draw(playerShip, player.Position, Color.White);
-            _spriteBatch.End();
             // TODO: Add your drawing code here
-
+            _spriteBatch.Begin();
+            
+            player.DrawGame(_spriteBatch, playerShip, playerShipAcc, stageOneBgr, player, bgrCounter);
+            
+            _spriteBatch.End();
             base.Draw(gameTime);
+            bgrCounter++;
+            if (bgrCounter == 720)
+            {
+                bgrCounter = 0;
+            }
         }
     }
 }
