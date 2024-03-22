@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -55,12 +56,13 @@ namespace TucSpaceShooter
             // Logik för Triple Points Powerup. 
         }
 
-        public void HandlePowerupCollision(List<Powerup> powerups)
+        public void HandlePowerupCollision(List<Powerup> powerups, SoundEffect pickUp)
         {
             foreach (Powerup powerup in powerups)
             {
                 if (Intersects(powerup))
                 {
+                    pickUp.Play();
                     powerup.ApplyPowerup(this);
                     powerups.Remove(powerup);
                     break;
@@ -159,7 +161,7 @@ namespace TucSpaceShooter
                 throw new NotImplementedException();
             }
         }
-        public void MoveUp(Player player, GraphicsDeviceManager graphics)
+        public void MoveUp(Player player)
         {
             if (player.position.Y != 20)
             {
@@ -171,7 +173,7 @@ namespace TucSpaceShooter
             if(player.position.Y != graphics.PreferredBackBufferHeight - 100)
             player.position.Y += speed;
         }
-        public void MoveLeft(Player player, GraphicsDeviceManager graphics)
+        public void MoveLeft(Player player)
         {
             if (player.position.X != 10)
             {
@@ -190,7 +192,7 @@ namespace TucSpaceShooter
             
             if (Keyboard.GetState().IsKeyDown(Keys.Up))
             {
-                player.MoveUp(player, graphics);
+                player.MoveUp(player);
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Down))
             {
@@ -198,7 +200,7 @@ namespace TucSpaceShooter
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Left))
             {
-                player.MoveLeft(player, graphics);
+                player.MoveLeft(player);
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
