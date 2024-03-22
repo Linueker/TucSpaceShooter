@@ -44,7 +44,7 @@ namespace TucSpaceShooter
             // Öka hastigheten med 3
             if (speed < 3)
             {
-                speed += 3;
+                speed = 5;
                 // Ställ in en timer för att inaktivera jetpack efter 6 sekunder
                 Timer timer = new Timer(DisableJetpack, null, 6000, Timeout.Infinite);
             }
@@ -244,14 +244,14 @@ namespace TucSpaceShooter
         }
         public void MoveLeft(Player player)
         {
-            if (player.position.X != 10)
+            if (player.position.X > 10)
             {
                 player.position.X -= speed;
             }
         }
         public void MoveRight(Player player, GraphicsDeviceManager graphics)
         {
-            if (player.position.X != graphics.PreferredBackBufferWidth - 30)
+            if (player.position.X < graphics.PreferredBackBufferWidth - 30)
             {
                 player.position.X += speed;
             }
