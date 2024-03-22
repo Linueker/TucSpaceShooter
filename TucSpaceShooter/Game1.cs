@@ -53,6 +53,7 @@ namespace TucSpaceShooter
         private Texture2D repair;
         private Texture2D doublePoints;
         private Texture2D triplePoints;
+        private Texture2D playerShield;
 
         private List<Powerup> powerups;
 
@@ -99,6 +100,7 @@ namespace TucSpaceShooter
             repair = Content.Load<Texture2D>("RepairShip");
             doublePoints = Content.Load<Texture2D>("2xPoints");
             triplePoints = Content.Load<Texture2D>("3xPoints");
+            playerShield = Content.Load<Texture2D>("PlayerShield");
 
             powerupWidth = 15;
             powerupHeight = 15;
@@ -157,7 +159,7 @@ namespace TucSpaceShooter
                     //kod för Play
                     _spriteBatch.Begin();
 
-                    player.DrawGame(_spriteBatch, playerShip, playerShipAcc, stageOneBgr, player, bgrCounter);
+                    player.DrawGame(_spriteBatch, playerShip, playerShipAcc, stageOneBgr, player, bgrCounter, playerShield);
 
                     foreach (Powerup powerup in powerups)
                     {

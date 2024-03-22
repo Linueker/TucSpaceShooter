@@ -10,6 +10,7 @@ using System.Numerics;
 using System.Reflection;
 using System.Security.Principal;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
 
@@ -21,6 +22,12 @@ namespace TucSpaceShooter
         private int health;
         private int speed = 2;
 
+        private bool isJetpackActive = false;
+        private bool isShieldActive = false;
+        private bool isRepairActive = false;
+        private bool isDoublePointsActive = false;
+        private bool isTriplePointsActive = false;
+
         public int Health { get => health; set => health = value; }
 
         public Player(Vector2 position, GraphicsDeviceManager graphics, int health) : base(position)
@@ -30,30 +37,76 @@ namespace TucSpaceShooter
             this.health = health;
 
         }
-
         public void ActivateJetpack()
         {
-            // Logik för Jetpack Powerup
+            // Aktivera jetpack-effekten och ställ in varaktighet
+            isJetpackActive = true;
+            // Öka hastigheten med 3
+            if (speed < 3)
+            {
+                speed += 3;
+                // Ställ in en timer för att inaktivera jetpack efter 6 sekunder
+                Timer timer = new Timer(DisableJetpack, null, 6000, Timeout.Infinite);
+            }
+        }
+
+        private void DisableJetpack(object state)
+        {
+            // Inaktivera jetpack-effekten och återställ hastigheten
+            isJetpackActive = false;
+            speed -= 3;
         }
 
         public void ActivateShield()
         {
-            // Logik för Shield Powerup
+            // Aktivera sköld-effekten och ställ in varaktighet
+            isShieldActive = true;
+            // Ställ in en timer för att inaktivera skölden efter 5 sekunder
+            Timer timer = new Timer(DisableShield, null, 5000, Timeout.Infinite);
+            // Texture2D - ActiveShield
+        }
+
+        private void DisableShield(object state)
+        {
+            // Inaktivera sköld-effekten
+            isShieldActive = false;
         }
 
         public void ActivateRepair()
         {
-            // Logik för Repair Powerup.
+            // Aktivera repair-effekten
+            isRepairActive = true;
+            // Om hälsan inte är full, öka den med 1
+            if (health < 5)
+                health++;
         }
 
         public void ActivateDoublePoints()
         {
-            // Logik för Double Points Powerup.
+            // Aktivera double-points-effekten
+            isDoublePointsActive = true;
+            // Ställ in en timer för att inaktivera double-points efter 6 sekunder
+            Timer timer = new Timer(DisableDoublePoints, null, 6000, Timeout.Infinite);
+        }
+
+        private void DisableDoublePoints(object state)
+        {
+            // Inaktivera double-points-effekten
+            isDoublePointsActive = false;
         }
 
         public void ActivateTriplePoints()
         {
-            // Logik för Triple Points Powerup. 
+            // Aktivera triple-points-effekten
+            isTriplePointsActive = true;
+            // Ställ in en timer för att inaktivera triple-points efter 6 sekunder
+            Timer timer = new Timer(DisableTriplePoints, null, 6000, Timeout.Infinite);
+        }
+
+        private void DisableTriplePoints(object state)
+        {
+            // Inaktivera triple-points-effekten
+            isTriplePointsActive = false;
         }
 
         public void HandlePowerupCollision(List<Powerup> powerups)
@@ -91,9 +144,8 @@ namespace TucSpaceShooter
         }
 
 
-        public void DrawGame(SpriteBatch spriteBatch, Texture2D pShip, Texture2D pShipFire, Texture2D bgr, Player player, int counter)
+        public void DrawGame(SpriteBatch spriteBatch, Texture2D pShip, Texture2D pShipFire, Texture2D bgr, Player player, int counter, Texture2D playerShield)
         {
-            
             if (counter == 0)
             {
                 spriteBatch.Draw(bgr, new Vector2(0, (-720 + counter/3)), Color.White);
@@ -111,6 +163,11 @@ namespace TucSpaceShooter
                 }
             }
             spriteBatch.Draw(pShip, new Vector2(player.Position.X - 20, player.Position.Y - 19), Color.White);
+
+            if (isShieldActive)
+            {
+                spriteBatch.Draw(playerShield, new Vector2(player.position.X - 12, player.position.Y - 10), Color.White);
+            }
         }
         public void PlayerHealth(Player player, Texture2D healthBar, Texture2D healthPoint, Texture2D healthEmpty, SpriteBatch spriteBatch)
         {
