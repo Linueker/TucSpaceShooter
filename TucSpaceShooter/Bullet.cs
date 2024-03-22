@@ -32,6 +32,7 @@ namespace TucSpaceShooter
             if (gameTime.TotalGameTime - LastBulletTime > BulletCooldown && Keyboard.GetState().IsKeyDown(Keys.Space))
             {
                 shoot.Play();
+                
                 Shoot(new Vector2(player.Position.X + 26, player.Position.Y));
                 Shoot(new Vector2(player.Position.X + -4, player.Position.Y));
                 LastBulletTime = gameTime.TotalGameTime;
