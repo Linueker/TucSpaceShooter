@@ -84,6 +84,13 @@ namespace TucSpaceShooter
             Deactivate();
         }
 
+        public static void DrawPowerups(SpriteBatch spriteBatch, List<Powerup> powerups)
+        {
+            foreach (Powerup powerup in powerups)
+            {
+                powerup.Draw(spriteBatch);
+            }
+        }
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(Texture, Position, Color.White);

@@ -17,7 +17,8 @@ namespace TucSpaceShooter
     {
         Menu,
         Play,
-        Highscore
+        Highscore,
+        Quit
     }
     public class Game1 : Game
     {
@@ -37,6 +38,8 @@ namespace TucSpaceShooter
         private Texture2D healthPoint;
         private Texture2D healthEmpty;
         private int bgrCounter;
+        private Song gameMusic;
+        private bool gameMusicIsPlaying;
 
         //Bullet
         private Texture2D bulletTexture;
@@ -53,12 +56,28 @@ namespace TucSpaceShooter
         private Texture2D repair;
         private Texture2D doublePoints;
         private Texture2D triplePoints;
+
         private Texture2D playerShield;
+
+        private SoundEffect pickUp;
 
         private List<Powerup> powerups;
 
         private int powerupWidth;
         private int powerupHeight;
+
+        //Menu
+        private MenuScreen menu;
+        private Texture2D startButtonTexture;
+        private Rectangle startButtonBounds;
+        private Texture2D highscoreButtonTexture;
+        private Rectangle highscoreButtonBounds;
+        private Texture2D quitButtonTexture;
+        private Rectangle quitButtonBounds;
+        Song menuMusic;
+        private bool menuMusicIsPlaying;
+
+
 
         public static GameStates CurrentState { get => currentState; set => currentState = value; }
 
@@ -76,7 +95,7 @@ namespace TucSpaceShooter
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            currentState = GameStates.Play;//Ska göra så att man startar i menyn, byt ut Menu för att starta i annan state
+            currentState = GameStates.Menu;//Ska göra så att man startar i menyn, byt ut Menu för att starta i annan state
             base.Initialize();
         }
 
@@ -100,19 +119,38 @@ namespace TucSpaceShooter
             repair = Content.Load<Texture2D>("RepairShip");
             doublePoints = Content.Load<Texture2D>("2xPoints");
             triplePoints = Content.Load<Texture2D>("3xPoints");
+
             playerShield = Content.Load<Texture2D>("PlayerShield");
+            
+            pickUp = Content.Load<SoundEffect>("power_up_grab-88510");
 
             powerupWidth = 15;
             powerupHeight = 15;
 
-            healthBar = Content.Load<Texture2D>("HealthContainer");
-            healthPoint = Content.Load<Texture2D>("FullHeart");
-            healthEmpty = Content.Load<Texture2D>("EmptyHeart");
-
+            healthBar = Content.Load<Texture2D>("LeftHealthContainer");
+            healthPoint = Content.Load<Texture2D>("FullHeartRed");
+            healthEmpty = Content.Load<Texture2D>("EmptyHeartNew");
 
             bulletTexture = Content.Load<Texture2D>("PlayerBullets");
             shoot = Content.Load<SoundEffect>("laser-gun-shot-sound-future-sci-fi-lazer-wobble-chakongaudio-174883");
+            SoundEffect.MasterVolume = 0.5f;
             Bullet.LoadContent(bulletTexture);
+
+            //Menu
+            startButtonTexture = Content.Load<Texture2D>("StartButton");
+            highscoreButtonTexture = Content.Load<Texture2D>("HiscoreButton");
+            quitButtonTexture = Content.Load<Texture2D>("QuitButton");
+
+            startButtonBounds = new Rectangle((_graphics.PreferredBackBufferWidth-startButtonTexture.Width)/2,270, startButtonTexture.Width, startButtonTexture.Height);
+            highscoreButtonBounds = new Rectangle((_graphics.PreferredBackBufferWidth-highscoreButtonTexture.Width)/2,300, highscoreButtonTexture.Width, highscoreButtonTexture.Height);
+            quitButtonBounds = new Rectangle((_graphics.PreferredBackBufferWidth-quitButtonTexture.Width)/2,330,quitButtonTexture.Width, quitButtonTexture.Height);
+            menu = new MenuScreen(startButtonTexture, startButtonBounds, highscoreButtonTexture, highscoreButtonBounds, quitButtonTexture, quitButtonBounds);
+
+            menuMusic = Content.Load<Song>("electric-dreams-167873");
+            menuMusicIsPlaying = false;
+            gameMusic = Content.Load<Song>("kim-lightyear-angel-eyes-vision-ii-189557");
+            gameMusicIsPlaying = false;
+            MediaPlayer.Volume = 0.5f;
 
         }
 
@@ -126,11 +164,22 @@ namespace TucSpaceShooter
             {
                 case GameStates.Menu:
                     //Kod för meny
+                    if (!menuMusicIsPlaying)
+                    {
+                        MediaPlayer.Play(menuMusic);
+                        menuMusicIsPlaying = true;  
+                    }
+                    menu.Update(gameTime);
                     break;
                 case GameStates.Play:
                     //kod för Play
+                    if (!gameMusicIsPlaying)
+                    {
+                        MediaPlayer.Play(gameMusic);
+                        gameMusicIsPlaying = true;
+                    }
                     player.PlayerMovement(player, _graphics);
-                    player.HandlePowerupCollision(powerups);
+                    player.HandlePowerupCollision(powerups, pickUp);
                     powerup.SpawnPowerup(random, _graphics, powerupWidth, jetpack, shield, repair, doublePoints, triplePoints, powerups);
                     powerup.UpdatePowerups(gameTime, powerups, _graphics);
                     Bullet.UpdateAll(gameTime, player, shoot);
@@ -138,8 +187,8 @@ namespace TucSpaceShooter
                 case GameStates.Highscore:
                     //kod för highscore
                     break;
+
             }
-            
             base.Update(gameTime);
         }
 
@@ -152,35 +201,40 @@ namespace TucSpaceShooter
                 case GameStates.Menu:
                     //kod för meny
                     _spriteBatch.Begin();
-                    
+
+                    menu.Draw(_spriteBatch);
+
                     _spriteBatch.End();
                     break;
                 case GameStates.Play:
                     //kod för Play
                     _spriteBatch.Begin();
 
-                    player.DrawGame(_spriteBatch, playerShip, playerShipAcc, stageOneBgr, player, bgrCounter, playerShield);
-
-                    foreach (Powerup powerup in powerups)
-                    {
-                        _spriteBatch.Draw(powerup.Texture, powerup.Position, Color.White);
-                    }
-                    player.PlayerHealth(player, healthBar, healthPoint, healthEmpty, _spriteBatch);
+                    Background.DrawBackground(bgrCounter, _spriteBatch, stageOneBgr);
+                    player.DrawPlayer(_spriteBatch, playerShip, playerShipAcc, player, bgrCounter, playerShield);
+                    DrawPowerups(_spriteBatch, powerups);
+                    player.DrawPlayerHealth(player, healthBar, healthPoint, healthEmpty, _spriteBatch);
+                    
                     Bullet.DrawAll(_spriteBatch);
                     
                     _spriteBatch.End();
-
                     bgrCounter++;
-                    if (bgrCounter == 2160)
-                    {
-                        bgrCounter = 0;
-                    }
-
                     break;
                 case GameStates.Highscore:
                     //kod för highscore
+                    _spriteBatch.Begin();
 
+                    GraphicsDevice.Clear(Color.Orange);
+
+                    _spriteBatch.End();
                     break;
+                case GameStates.Quit:
+                    Exit();
+                    break;
+            }
+            if (bgrCounter == 2160)
+            {
+                bgrCounter = 0;
             }
             base.Draw(gameTime);
         }

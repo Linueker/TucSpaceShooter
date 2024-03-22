@@ -49,6 +49,12 @@
 /processorParam:TextureFormat=Color
 /build:Background_2.png
 
+#begin electric-dreams-167873.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:electric-dreams-167873.mp3
+
 #begin EmptyHeart.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -60,6 +66,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:EmptyHeart.png
+
+#begin EmptyHeartNew.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:EmptyHeartNew.png
 
 #begin EnemyBullets.png
 /importer:TextureImporter
@@ -85,6 +103,30 @@
 /processorParam:TextureFormat=Color
 /build:FullHeart.png
 
+#begin FullHeartBrown.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:FullHeartBrown.png
+
+#begin FullHeartRed.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:FullHeartRed.png
+
 #begin HealthContainer.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -96,6 +138,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:HealthContainer.png
+
+#begin HiscoreButton.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:HiscoreButton.png
 
 #begin JetpackShip.png
 /importer:TextureImporter
@@ -109,11 +163,29 @@
 /processorParam:TextureFormat=Color
 /build:JetpackShip.png
 
+#begin kim-lightyear-angel-eyes-vision-ii-189557.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:kim-lightyear-angel-eyes-vision-ii-189557.mp3
+
 #begin laser-gun-shot-sound-future-sci-fi-lazer-wobble-chakongaudio-174883.mp3
 /importer:Mp3Importer
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:laser-gun-shot-sound-future-sci-fi-lazer-wobble-chakongaudio-174883.mp3
+
+#begin LeftHealthContainer.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:LeftHealthContainer.png
 
 #begin PlayerBullets.png
 /importer:TextureImporter
@@ -127,7 +199,17 @@
 /processorParam:TextureFormat=Color
 /build:PlayerBullets.png
 
+
 #begin PlayerShield.png
+
+#begin power_up_grab-88510.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:power_up_grab-88510.mp3
+
+#begin QuitButton.png
+
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -137,7 +219,11 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
+
 /build:PlayerShield.png
+
+/build:QuitButton.png
+
 
 #begin RepairShip.png
 /importer:TextureImporter
@@ -151,6 +237,18 @@
 /processorParam:TextureFormat=Color
 /build:RepairShip.png
 
+#begin RightHealthContainer.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:RightHealthContainer.png
+
 #begin ShieldShip.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -162,6 +260,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:ShieldShip.png
+
+#begin StartButton.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:StartButton.png
 
 #begin TUCShip.png
 /importer:TextureImporter
