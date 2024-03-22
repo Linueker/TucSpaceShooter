@@ -147,28 +147,29 @@ namespace TucSpaceShooter
         // Ritar upp spelar-sprite
         public void DrawPlayer(SpriteBatch spriteBatch, Texture2D pShip, Texture2D pShipFire, Player player, int counter, Texture2D playerShield)
         {
-
-            if (Keyboard.GetState().IsKeyDown(Keys.Down)
-                || Keyboard.GetState().IsKeyDown(Keys.Up)
-                || Keyboard.GetState().IsKeyDown(Keys.Left)
-                || Keyboard.GetState().IsKeyDown(Keys.Right))
-            {
-                // bakgrunds-countern utnyttjas för att får "blinkande" eld när spelarskeppet rör på sig.
-                if (counter % 3 == 0)
+    
+                if (Keyboard.GetState().IsKeyDown(Keys.Down)
+                    || Keyboard.GetState().IsKeyDown(Keys.Up)
+                    || Keyboard.GetState().IsKeyDown(Keys.Left)
+                    || Keyboard.GetState().IsKeyDown(Keys.Right))
                 {
-                    spriteBatch.Draw(pShipFire, new Vector2(player.Position.X - 20, player.Position.Y - 19), Color.White);
+                    // bakgrunds-countern utnyttjas för att får "blinkande" eld när spelarskeppet rör på sig.
+                    if (counter % 3 == 0)
+                    {
+                        spriteBatch.Draw(pShipFire, new Vector2(player.Position.X - 20, player.Position.Y - 19), Color.White);
+                    }
                 }
-            }
-            spriteBatch.Draw(pShip, new Vector2(player.Position.X - 20, player.Position.Y - 19), Color.White);
-
-
-            if (isShieldActive)
-            {
-                spriteBatch.Draw(playerShield, new Vector2(player.position.X - 12, player.position.Y - 10), Color.White);
-            if (counter == 40 || counter == 150)
-            {
-                player.health--;
-
+                spriteBatch.Draw(pShip, new Vector2(player.Position.X - 20, player.Position.Y - 19), Color.White);
+    
+    
+                if (isShieldActive)
+                {
+                    spriteBatch.Draw(playerShield, new Vector2(player.position.X - 12, player.position.Y - 10), Color.White);
+                if (counter == 40 || counter == 150)
+                {
+                    player.health--;
+    
+                }
             }
         }
 
