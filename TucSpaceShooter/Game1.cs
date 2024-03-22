@@ -103,15 +103,15 @@ namespace TucSpaceShooter
             powerupWidth = 15;
             powerupHeight = 15;
 
-            healthBar = Content.Load<Texture2D>("HealthContainer");
-            healthPoint = Content.Load<Texture2D>("FullHeart");
-            healthEmpty = Content.Load<Texture2D>("EmptyHeart");
-
+            healthBar = Content.Load<Texture2D>("LeftHealthContainer");
+            healthPoint = Content.Load<Texture2D>("FullHeartRed");
+            healthEmpty = Content.Load<Texture2D>("EmptyHeartNew");
 
             bulletTexture = Content.Load<Texture2D>("PlayerBullets");
             shoot = Content.Load<SoundEffect>("laser-gun-shot-sound-future-sci-fi-lazer-wobble-chakongaudio-174883");
+            SoundEffect.MasterVolume = 0.1f;
+            
             Bullet.LoadContent(bulletTexture);
-
         }
 
         protected override void Update(GameTime gameTime)
@@ -137,7 +137,6 @@ namespace TucSpaceShooter
                     //kod för highscore
                     break;
             }
-            
             base.Update(gameTime);
         }
 
@@ -156,14 +155,10 @@ namespace TucSpaceShooter
                 case GameStates.Play:
                     //kod för Play
                     _spriteBatch.Begin();
-
-                    player.DrawGame(_spriteBatch, playerShip, playerShipAcc, stageOneBgr, player, bgrCounter);
-
-                    foreach (Powerup powerup in powerups)
-                    {
-                        _spriteBatch.Draw(powerup.Texture, powerup.Position, Color.White);
-                    }
-                    player.PlayerHealth(player, healthBar, healthPoint, healthEmpty, _spriteBatch);
+                    Background.DrawBackground(bgrCounter, _spriteBatch, stageOneBgr);
+                    player.DrawPlayer(_spriteBatch, playerShip, playerShipAcc, player, bgrCounter);
+                    DrawPowerups(_spriteBatch, powerups);
+                    player.DrawPlayerHealth(player, healthBar, healthPoint, healthEmpty, _spriteBatch);
                     Bullet.DrawAll(_spriteBatch);
                     
                     _spriteBatch.End();
@@ -173,7 +168,6 @@ namespace TucSpaceShooter
                     {
                         bgrCounter = 0;
                     }
-
                     break;
                 case GameStates.Highscore:
                     //kod för highscore

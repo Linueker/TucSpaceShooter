@@ -61,6 +61,18 @@
 /processorParam:TextureFormat=Color
 /build:EmptyHeart.png
 
+#begin EmptyHeartNew.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:EmptyHeartNew.png
+
 #begin EnemyBullets.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -84,6 +96,30 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:FullHeart.png
+
+#begin FullHeartBrown.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:FullHeartBrown.png
+
+#begin FullHeartRed.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:FullHeartRed.png
 
 #begin HealthContainer.png
 /importer:TextureImporter
@@ -115,6 +151,18 @@
 /processorParam:Quality=Best
 /build:laser-gun-shot-sound-future-sci-fi-lazer-wobble-chakongaudio-174883.mp3
 
+#begin LeftHealthContainer.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:LeftHealthContainer.png
+
 #begin PlayerBullets.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -138,6 +186,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:RepairShip.png
+
+#begin RightHealthContainer.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:RightHealthContainer.png
 
 #begin ShieldShip.png
 /importer:TextureImporter
