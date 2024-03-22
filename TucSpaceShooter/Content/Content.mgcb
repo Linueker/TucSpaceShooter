@@ -49,6 +49,12 @@
 /processorParam:TextureFormat=Color
 /build:Background_2.png
 
+#begin electric-dreams-167873.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:electric-dreams-167873.mp3
+
 #begin EmptyHeart.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -157,6 +163,12 @@
 /processorParam:TextureFormat=Color
 /build:JetpackShip.png
 
+#begin kim-lightyear-angel-eyes-vision-ii-189557.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:kim-lightyear-angel-eyes-vision-ii-189557.mp3
+
 #begin laser-gun-shot-sound-future-sci-fi-lazer-wobble-chakongaudio-174883.mp3
 /importer:Mp3Importer
 /processor:SoundEffectProcessor
@@ -186,6 +198,12 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:PlayerBullets.png
+
+#begin power_up_grab-88510.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:power_up_grab-88510.mp3
 
 #begin QuitButton.png
 /importer:TextureImporter
