@@ -199,6 +199,9 @@
 /processorParam:TextureFormat=Color
 /build:PlayerBullets.png
 
+
+#begin PlayerShield.png
+
 #begin power_up_grab-88510.mp3
 /importer:Mp3Importer
 /processor:SoundEffectProcessor
@@ -206,6 +209,7 @@
 /build:power_up_grab-88510.mp3
 
 #begin QuitButton.png
+
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -215,7 +219,11 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
+
+/build:PlayerShield.png
+
 /build:QuitButton.png
+
 
 #begin RepairShip.png
 /importer:TextureImporter

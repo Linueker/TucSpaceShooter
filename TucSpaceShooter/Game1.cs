@@ -56,6 +56,9 @@ namespace TucSpaceShooter
         private Texture2D repair;
         private Texture2D doublePoints;
         private Texture2D triplePoints;
+
+        private Texture2D playerShield;
+
         private SoundEffect pickUp;
 
         private List<Powerup> powerups;
@@ -116,6 +119,9 @@ namespace TucSpaceShooter
             repair = Content.Load<Texture2D>("RepairShip");
             doublePoints = Content.Load<Texture2D>("2xPoints");
             triplePoints = Content.Load<Texture2D>("3xPoints");
+
+            playerShield = Content.Load<Texture2D>("PlayerShield");
+            
             pickUp = Content.Load<SoundEffect>("power_up_grab-88510");
 
             powerupWidth = 15;
@@ -205,9 +211,10 @@ namespace TucSpaceShooter
                     _spriteBatch.Begin();
 
                     Background.DrawBackground(bgrCounter, _spriteBatch, stageOneBgr);
-                    player.DrawPlayer(_spriteBatch, playerShip, playerShipAcc, player, bgrCounter);
+                    player.DrawPlayer(_spriteBatch, playerShip, playerShipAcc, player, bgrCounter, playerShield);
                     DrawPowerups(_spriteBatch, powerups);
                     player.DrawPlayerHealth(player, healthBar, healthPoint, healthEmpty, _spriteBatch);
+                    
                     Bullet.DrawAll(_spriteBatch);
                     
                     _spriteBatch.End();
