@@ -133,6 +133,18 @@
 /processorParam:TextureFormat=Color
 /build:HealthContainer.png
 
+#begin HiscoreButton.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:HiscoreButton.png
+
 #begin JetpackShip.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -175,6 +187,18 @@
 /processorParam:TextureFormat=Color
 /build:PlayerBullets.png
 
+#begin QuitButton.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:QuitButton.png
+
 #begin RepairShip.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -210,6 +234,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:ShieldShip.png
+
+#begin StartButton.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:StartButton.png
 
 #begin TUCShip.png
 /importer:TextureImporter
