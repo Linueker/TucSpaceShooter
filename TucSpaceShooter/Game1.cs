@@ -17,7 +17,8 @@ namespace TucSpaceShooter
     {
         Menu,
         Play,
-        Highscore
+        Highscore,
+        Quit
     }
     public class Game1 : Game
     {
@@ -59,6 +60,17 @@ namespace TucSpaceShooter
         private int powerupWidth;
         private int powerupHeight;
 
+        //Menu
+        private MenuScreen menu;
+        private Texture2D startButtonTexture;
+        private Rectangle startButtonBounds;
+        private Texture2D highscoreButtonTexture;
+        private Rectangle highscoreButtonBounds;
+        private Texture2D quitButtonTexture;
+        private Rectangle quitButtonBounds;
+
+
+
         public static GameStates CurrentState { get => currentState; set => currentState = value; }
 
 
@@ -75,7 +87,7 @@ namespace TucSpaceShooter
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            currentState = GameStates.Play;//Ska göra så att man startar i menyn, byt ut Menu för att starta i annan state
+            currentState = GameStates.Menu;//Ska göra så att man startar i menyn, byt ut Menu för att starta i annan state
             base.Initialize();
         }
 
@@ -112,6 +124,17 @@ namespace TucSpaceShooter
             shoot = Content.Load<SoundEffect>("laser-gun-shot-sound-future-sci-fi-lazer-wobble-chakongaudio-174883");
             Bullet.LoadContent(bulletTexture);
 
+            //Menu
+            startButtonTexture = Content.Load<Texture2D>("StartButton");
+            highscoreButtonTexture = Content.Load<Texture2D>("HiscoreButton");
+            quitButtonTexture = Content.Load<Texture2D>("QuitButton");
+
+            startButtonBounds = new Rectangle((_graphics.PreferredBackBufferWidth-startButtonTexture.Width)/2,200, startButtonTexture.Width, startButtonTexture.Height);
+            highscoreButtonBounds = new Rectangle((_graphics.PreferredBackBufferWidth-highscoreButtonTexture.Width)/2,300, highscoreButtonTexture.Width, highscoreButtonTexture.Height);
+            quitButtonBounds = new Rectangle((_graphics.PreferredBackBufferWidth-quitButtonTexture.Width)/2,400,quitButtonTexture.Width, quitButtonTexture.Height);
+
+            menu = new MenuScreen(startButtonTexture, startButtonBounds, highscoreButtonTexture, highscoreButtonBounds, quitButtonTexture, quitButtonBounds);
+
         }
 
         protected override void Update(GameTime gameTime)
@@ -124,6 +147,7 @@ namespace TucSpaceShooter
             {
                 case GameStates.Menu:
                     //Kod för meny
+                    menu.Update(gameTime);
                     break;
                 case GameStates.Play:
                     //kod för Play
@@ -136,6 +160,7 @@ namespace TucSpaceShooter
                 case GameStates.Highscore:
                     //kod för highscore
                     break;
+
             }
             
             base.Update(gameTime);
@@ -150,7 +175,9 @@ namespace TucSpaceShooter
                 case GameStates.Menu:
                     //kod för meny
                     _spriteBatch.Begin();
-                    
+
+                    menu.Draw(_spriteBatch);
+
                     _spriteBatch.End();
                     break;
                 case GameStates.Play:
@@ -177,7 +204,14 @@ namespace TucSpaceShooter
                     break;
                 case GameStates.Highscore:
                     //kod för highscore
+                    _spriteBatch.Begin();
 
+                    GraphicsDevice.Clear(Color.Orange);
+
+                    _spriteBatch.End();
+                    break;
+                case GameStates.Quit:
+                    Exit();
                     break;
             }
             base.Draw(gameTime);
