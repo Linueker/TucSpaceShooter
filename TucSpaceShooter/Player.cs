@@ -232,14 +232,14 @@ namespace TucSpaceShooter
         }
         public void MoveUp(Player player)
         {
-            if (player.position.Y != 20)
+            if (player.position.Y > 20)
             {
                 player.position.Y -= speed;
             }
         }
         public void MoveDown(Player player, GraphicsDeviceManager graphics)
         {
-            if(player.position.Y != graphics.PreferredBackBufferHeight - 100)
+            if(player.position.Y < graphics.PreferredBackBufferHeight - 100)
             player.position.Y += speed;
         }
         public void MoveLeft(Player player)
