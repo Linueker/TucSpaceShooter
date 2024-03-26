@@ -17,16 +17,17 @@ namespace TucSpaceShooter
         private Button startButton;
         private Button highscoreButton;
         private Button quitButton;
+        //private Texture2D background;
 
-        public MenuScreen(Texture2D startButtonTexture, Rectangle startButtonBounds, Texture2D highscoreButtonTexture, Rectangle highscoreButtonBounds, Texture2D quitButtonTexture, Rectangle quitButtonBounds)
+        public MenuScreen(Texture2D startButtonTexture, Rectangle startButtonBounds, Texture2D highscoreButtonTexture, Rectangle highscoreButtonBounds, Texture2D quitButtonTexture, Rectangle quitButtonBounds/*, Texture2D background*/)
         {
             startButton = new Button(startButtonTexture, startButtonBounds);
             highscoreButton = new Button(highscoreButtonTexture, highscoreButtonBounds);
             quitButton = new Button(quitButtonTexture, quitButtonBounds);
-
+            //this.background = background;
         }
 
-        public void Update(GameTime gameTime)
+        public void MainMenu()
         {
             MouseState mouseState = Mouse.GetState();
 
@@ -46,6 +47,7 @@ namespace TucSpaceShooter
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            
             startButton.Draw(spriteBatch);
             highscoreButton.Draw(spriteBatch);
             quitButton.Draw(spriteBatch);
