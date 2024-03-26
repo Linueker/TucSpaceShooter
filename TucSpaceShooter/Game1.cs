@@ -70,6 +70,7 @@ namespace TucSpaceShooter
         private Texture2D repair;
         private Texture2D doublePoints;
         private Texture2D triplePoints;
+        private Texture2D powerUpBar;
 
         private Texture2D playerShield;
 
@@ -140,6 +141,7 @@ namespace TucSpaceShooter
             repair = Content.Load<Texture2D>("RepairShip");
             doublePoints = Content.Load<Texture2D>("2xPoints");
             triplePoints = Content.Load<Texture2D>("3xPoints");
+            powerUpBar = Content.Load<Texture2D>("RightHealthContainer");
 
             playerShield = Content.Load<Texture2D>("PlayerShield");
             
@@ -284,16 +286,15 @@ namespace TucSpaceShooter
                     Background.DrawBackground(bgrCounter, _spriteBatch, stageOneBgr);
                     player.DrawPlayer(_spriteBatch, playerShip, playerShipAcc, player, bgrCounter, playerShield);
                     DrawPowerups(_spriteBatch, powerups);
-                    player.DrawPlayerHealth(player, healthBar, healthPoint, healthEmpty, _spriteBatch);
-
                                         //enemy
                     _spriteBatch.Draw(enemyShipOne, enemiesOne.Position, Color.White);
                     _spriteBatch.Draw(enemyShipTwo, enemiesTwo.Position, Color.White);
                     _spriteBatch.Draw(enemyShipThree, enemiesThree.Position, Color.White);
                     _spriteBatch.Draw(BossShip, bossEnemy.Position, Color.White);
+
                     
                     Bullet.DrawAll(_spriteBatch);
-                    
+                    player.DrawPlayerHealth(player, healthBar, healthPoint, healthEmpty, _spriteBatch, powerUpBar, jetpack, shield, doublePoints, triplePoints);
                     _spriteBatch.End();
                     bgrCounter++;
                     break;
