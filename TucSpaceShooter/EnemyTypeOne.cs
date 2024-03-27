@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using System.Net.Mail;
@@ -63,7 +64,7 @@ namespace TucSpaceShooter
         }
 
         // EnemyTypOne-klassen
-        public override void Damage(GraphicsDeviceManager graphics)
+        public override void Damage(GraphicsDeviceManager graphics, Player player)
         {
             if (isNotDead)
             {
@@ -76,13 +77,12 @@ namespace TucSpaceShooter
                         if (EnemyHealth <= 0)
                         {
                             ResetPosition(graphics);
+                            player.points.AddPoints(player, EnemyType.One);
                             break;
                         }
                     }
                 }
             }
         }
-
-
     }
 }

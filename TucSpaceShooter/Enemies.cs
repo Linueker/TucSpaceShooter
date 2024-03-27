@@ -43,7 +43,7 @@ namespace TucSpaceShooter
         /// <summary>
         /// list bullet kan jag använda mig av. 
         /// </summary>
-        public virtual void Damage(GraphicsDeviceManager graphics) 
+        public virtual void Damage(GraphicsDeviceManager graphics, Player player) 
         {
         }
 
