@@ -109,6 +109,8 @@ namespace TucSpaceShooter
 
         //GameOver
         private Texture2D gameOverImg;
+        private Song endSong;
+        private bool endSongIsPlaying;
 
         //GameTimer
         float timer = 0f;
@@ -224,8 +226,10 @@ namespace TucSpaceShooter
                 menuTitle[i - 1] = Content.Load<Texture2D>("MenuTitle" + i.ToString());
             }
 
+            //GameOver
             gameOverImg = Content.Load<Texture2D>("GameOverTitle");
-
+            endSong = Content.Load<Song>("lady-of-the-80x27s-128379");
+            endSongIsPlaying = false;
         }
 
         protected override void Update(GameTime gameTime)
@@ -235,7 +239,6 @@ namespace TucSpaceShooter
             // TODO: Add your update logic here
             switch (currentState)
             {
-
                 case GameStates.Menu:
                     //Kod för meny
                     if (!menuMusicIsPlaying)
@@ -323,6 +326,11 @@ namespace TucSpaceShooter
                     break;
 
                 case GameStates.GameOver:
+                    if (!endSongIsPlaying)
+                    {
+                        MediaPlayer.Play(endSong);
+                        endSongIsPlaying = true;
+                    }
                     break;
 
             }
