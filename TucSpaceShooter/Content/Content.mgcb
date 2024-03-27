@@ -49,21 +49,6 @@
 /processorParam:TextureFormat=Color
 /build:Background_2.png
 
-
-#begin BossMonsterRnd.png
-
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-
-
-
 #begin BossEye1.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -352,8 +337,17 @@
 /processorParam:TextureFormat=Color
 /build:BossEye9.png
 
+#begin BossMonsterRnd.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
 /build:BossMonsterRnd.png
-
 
 #begin electric-dreams-167873.mp3
 /importer:Mp3Importer
@@ -409,11 +403,7 @@
 /processorParam:TextureFormat=Color
 /build:EnemyBullets.png
 
-
-#begin Foreground.png
-
 #begin EnemyY.png
-
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -423,9 +413,6 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-
-/build:Foreground.png
-
 /build:EnemyY.png
 
 #begin EnemyYX.png
@@ -440,6 +427,17 @@
 /processorParam:TextureFormat=Color
 /build:EnemyYX.png
 
+#begin Foreground.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Foreground.png
 
 #begin FullHeart.png
 /importer:TextureImporter
@@ -476,6 +474,13 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:FullHeartRed.png
+
+#begin GameFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:GameFont.spritefont
 
 #begin HealthContainer.png
 /importer:TextureImporter
@@ -537,11 +542,7 @@
 /processorParam:TextureFormat=Color
 /build:LeftHealthContainer.png
 
-
 #begin MenuTitle1.png
-
-#begin Obstacle1.png
-
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -551,15 +552,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-
 /build:MenuTitle1.png
 
 #begin MenuTitle10.png
-
-/build:Obstacle1.png
-
-#begin Obstacle2.png
-
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -569,7 +564,6 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-
 /build:MenuTitle10.png
 
 #begin MenuTitle2.png
@@ -668,8 +662,29 @@
 /processorParam:TextureFormat=Color
 /build:MenuTitle9.png
 
-/build:Obstacle2.png
+#begin Obstacle1.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Obstacle1.png
 
+#begin Obstacle2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Obstacle2.png
 
 #begin PlayerBullets.png
 /importer:TextureImporter
