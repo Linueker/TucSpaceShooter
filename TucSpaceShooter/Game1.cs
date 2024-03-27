@@ -98,6 +98,16 @@ namespace TucSpaceShooter
         private Texture2D[] menuTitle;
         private int currentMenuTitle;
 
+        //Highscore
+        private HighscoreScreen highscoreMenu;
+        private Texture2D highscoreBackground;
+        private Texture2D[] highscoreTitle;
+        private int currentHighscoreTitle;
+        private int highscoreTitleCounter;
+        private Texture2D highscoreBoard;
+        private Texture2D backButtonTexture;
+        private Rectangle backButtonBounds;
+        
 
 
         public static GameStates CurrentState { get => currentState; set => currentState = value; }
@@ -199,6 +209,18 @@ namespace TucSpaceShooter
             {
                 menuTitle[i - 1] = Content.Load<Texture2D>("MenuTitle" + i.ToString());
             }
+
+            //Highscore
+            highscoreBackground = Content.Load<Texture2D>("Background_2");
+            highscoreBoard = Content.Load<Texture2D>("HiscoreBoard");
+            highscoreTitle = new Texture2D[10];
+            for(int i = 1;i <= 10; i++)
+            {
+                highscoreTitle[i - 1] = Content.Load<Texture2D>("HiScoreTitle" + i.ToString());
+            }
+            backButtonTexture = Content.Load<Texture2D>("BackButton");
+            backButtonBounds = new Rectangle(0,0/*(_graphics.PreferredBackBufferHeight-backButtonTexture.Height)*/,backButtonTexture.Width,backButtonTexture.Height);
+            highscoreMenu = new HighscoreScreen(backButtonTexture, backButtonBounds);
         }
 
         protected override void Update(GameTime gameTime)
@@ -252,6 +274,17 @@ namespace TucSpaceShooter
                     break;
                 case GameStates.Highscore:
                     //kod för highscore
+                    highscoreTitleCounter++;
+                    if (highscoreTitleCounter == 6)
+                    {
+                        highscoreTitleCounter = 0;
+                        currentHighscoreTitle++;
+                        if (currentHighscoreTitle > highscoreTitle.Length-1)
+                        {
+                            currentHighscoreTitle = 0;
+                        }
+                    }
+                    highscoreMenu.ClickButton();
                     break;
 
             }
@@ -301,7 +334,11 @@ namespace TucSpaceShooter
                     //kod för highscore
                     _spriteBatch.Begin();
 
-                    GraphicsDevice.Clear(Color.Orange);
+                    _spriteBatch.Draw(highscoreBackground, Vector2.Zero, Color.White);
+                    _spriteBatch.Draw(highscoreBoard, new Vector2((_graphics.PreferredBackBufferWidth - highscoreBoard.Width)/2,140), Color.White);
+                    _spriteBatch.Draw(highscoreTitle[currentHighscoreTitle], new Vector2((_graphics.PreferredBackBufferWidth - highscoreTitle[currentHighscoreTitle].Width)/2,0), Color.White);
+
+                    highscoreMenu.Draw(_spriteBatch);
 
                     _spriteBatch.End();
                     break;
