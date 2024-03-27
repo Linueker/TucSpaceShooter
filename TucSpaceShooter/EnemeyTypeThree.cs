@@ -9,52 +9,85 @@ namespace TucSpaceShooter
 {
     public class EnemyTypeThree : Enemies
     {
-        bool moveRight = true;
         bool moveBack = true;
-        int movingSpeed = 1;
         int pxelToRight = 1;
-        public EnemyTypeThree(Vector2 position, GraphicsDeviceManager graphics) :
-            base(position, graphics)
+        private static List<EnemyTypeThree> enemyTypeThreeList = new List<EnemyTypeThree>();
+        private const int center = 24;
+        private int movingSpeed = 1;
+        private bool moveRight = true;
+        public bool isNotDead = true;
+
+
+        public EnemyTypeThree(Vector2 position, GraphicsDeviceManager graphics, int enemyHealth) :
+            base(position, graphics, enemyHealth)
         {
             this.position.X = graphics.PreferredBackBufferWidth / 2 - 30;
             this.position.Y = graphics.PreferredBackBufferHeight;
         }
         public override void MoveToRandomPosition(GraphicsDeviceManager graphics)
         {
-            if (position.Y < graphics.PreferredBackBufferHeight)
+            if (isNotDead)
             {
-                position.Y += 1;
-            }
-            else
-            {
-                position.Y = 0;
-            }
-            if (moveBack)
-            {
-                position.Y += movingSpeed;
-            }
-            else
-            {
-                position.Y -= movingSpeed;
-            }
-            if (position.Y <= 20 || position.Y >= graphics.PreferredBackBufferWidth - 60)
-            {
-                moveBack = !moveBack;
-            }
-            if (moveRight)
-            {
-                position.X += movingSpeed;
+                if (position.Y < graphics.PreferredBackBufferHeight)
+                {
+                    position.Y += 1;
+                }
+                else
+                {
+                    position.Y = 0;
+                }
+                if (moveBack)
+                {
+                    position.Y += movingSpeed;
+                }
+                else
+                {
+                    position.Y -= movingSpeed;
+                }
+                if (position.Y <= 20 || position.Y >= graphics.PreferredBackBufferWidth - 60)
+                {
+                    moveBack = !moveBack;
+                }
+                if (moveRight)
+                {
+                    position.X += movingSpeed;
 
+                }
+                else
+                {
+                    position.X -= movingSpeed;
+                    position.Y -= movingSpeed;
+                    position.X -= movingSpeed;
+                }
+                if (position.X <= 20 || position.X >= graphics.PreferredBackBufferWidth - 60)
+                {
+                    moveRight = !moveRight;
+                }
             }
-            else
+        }
+        public void ResetPosition(GraphicsDeviceManager graphics)
+        {
+            Random random = new Random();
+            position.X = random.Next(graphics.PreferredBackBufferWidth - 60);
+            position.Y = random.Next(-graphics.PreferredBackBufferHeight, 0);
+        }
+        public override void Damage(GraphicsDeviceManager graphics)
+        {
+            if (isNotDead)
             {
-                position.X -= movingSpeed;// attacing 
-                position.Y -= movingSpeed;//rolling back
-                position.X -= movingSpeed;// last attack
-            }
-            if (position.X <= 20 || position.X >= graphics.PreferredBackBufferWidth - 60)
-            {
-                moveRight = !moveRight;
+                foreach (var bullet in Bullet.Bullets)
+                {
+                    float hitDistance = Vector2.Distance(position, bullet.Position);
+                    if (hitDistance <= center)
+                    {
+                        EnemyHealth--;
+                        if (EnemyHealth <= 0)
+                        {
+                            ResetPosition(graphics);
+                            break;
+                        }
+                    }
+                }
             }
         }
     }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,16 +21,20 @@ namespace TucSpaceShooter
         private bool movingForward = true;
         private Vector2 firstPositionBoss;
         private bool firstAttack = true;
-        public Enemies(Vector2 position, GraphicsDeviceManager graphics) : base(position)
+        private int enemyHealth;
+        public Enemies(Vector2 position, GraphicsDeviceManager graphics, int enemyHealth) : base(position)
         {
             this.position.X = graphics.PreferredBackBufferWidth / 2 - 30;
             this.position.Y = graphics.PreferredBackBufferHeight;
-            //this.enemyRandom = new Random();
             this.firstPositionBoss = position;
             this.moveRight = moveRight;
             this.moveback = moveback;
-
-            //this.EnemiesTyp = enemyType;
+            this.EnemyHealth = enemyHealth;
+        }
+        public int EnemyHealth
+        {
+            get { return enemyHealth; }
+            set { enemyHealth = value; }
         }
         /* this should be an abstract method */
         public virtual void MoveToRandomPosition(GraphicsDeviceManager graphics)
@@ -38,36 +43,14 @@ namespace TucSpaceShooter
         /// <summary>
         /// list bullet kan jag använda mig av. 
         /// </summary>
-        public virtual void Damage() 
+        public virtual void Damage(GraphicsDeviceManager graphics) 
         {
         }
-        /* the  logic i need but not the method  */
-        //private void BossMovement(Enemies enemies, GraphicsDeviceManager graphics)
-        //{
-        //    // Rörelsemönster för fiendens boss-typ
-        //    // Fram och tillbaka-rörelse
-        //    if (movingForward)
-        //    {
-        //        enemies.position.X += movingSpeed;
-        //        if (enemies.position.X >= graphics.PreferredBackBufferWidth - 60)
-        //        {
-        //            movingForward = false;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        enemies.position.X -= movingSpeed;
-        //        if (enemies.position.X <= firstPositionBoss.X)
-        //        {
-        //            movingForward = true;
-        //            if (!firstAttack)
-        //            {
 
-        //            }
-        //            firstAttack = false;
-        //        }
-        //    }
-        //}
+        public virtual void ResetPosition(GraphicsDeviceManager graphics)
+        {
+
+        }
     }
 }
 
