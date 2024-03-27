@@ -10,58 +10,43 @@ namespace TucSpaceShooter
     public class EnmeyBoss : Enemies
     {
         bool moveRight = true;
+        bool moveLeft = false;
         bool moveBack = true;
         int movingSpeed = 1;
         int pxelToRight = 1;
         bool isDead = false;
         bool moveForward=true;
-        public EnmeyBoss(Vector2 position, GraphicsDeviceManager graphics) :
-            base(position, graphics)
+        public EnmeyBoss(Vector2 position, GraphicsDeviceManager graphics, int enemyHealth) :
+            base(position, graphics, enemyHealth)
         {
-            this.position.X = graphics.PreferredBackBufferWidth / 2 - 30;
-            this.position.Y = graphics.PreferredBackBufferHeight;
+            this.position.X = graphics.PreferredBackBufferWidth / 2 - 70;
+            this.position.Y = -300;
         }
         public override void MoveToRandomPosition(GraphicsDeviceManager graphics)
         {
             if (!isDead)
             {
-                if (position.Y < graphics.PreferredBackBufferHeight)
-                {
-                    position.Y += 1;
-                }
-                else
-                {
-                    position.Y = 0;
-                }
-
-                if (moveBack)
+                if (position.Y < 80)
                 {
                     position.Y += movingSpeed;
                 }
-                else
+                if (position.X > 20 && moveRight && position.Y > 60)
                 {
-                    position.Y -= movingSpeed;
+                    position.X -= movingSpeed;
                 }
-
-                if (position.Y <= 20 || position.Y >= graphics.PreferredBackBufferHeight - 60)
+                if (position.X < 21)
                 {
-                    moveBack = !moveBack;
+                    moveRight = false;
+                    moveLeft = true;
                 }
-
-                if (moveRight)
+                if(moveLeft && position.Y == 80 && position.X <400) 
                 {
                     position.X += movingSpeed;
                 }
-                else
+                if(position.X > 399)
                 {
-                    position.X -= movingSpeed; // attacing 
-                    position.Y -= movingSpeed; // rolling back
-                    position.X -= movingSpeed; // last attack
-                }
-
-                if (position.X <= 20 || position.X >= graphics.PreferredBackBufferWidth - 60)
-                {
-                    moveRight = !moveRight;
+                    moveLeft = false;
+                    moveRight = true;   
                 }
             }
         }

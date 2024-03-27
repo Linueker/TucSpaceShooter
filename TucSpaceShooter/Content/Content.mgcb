@@ -37,7 +37,17 @@
 /processorParam:TextureFormat=Color
 /build:3xPoints.png
 
+
 #begin BackButton.png
+
+#begin a-hero-of-the-80s_v2_60sec-178277.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:a-hero-of-the-80s_v2_60sec-178277.mp3
+
+#begin Background_2.png
+
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -47,6 +57,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
+
 /build:BackButton.png
 
 #begin Background_2.png
@@ -59,6 +70,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
+
 /build:Background_2.png
 
 #begin BossEye1.png
@@ -487,6 +499,25 @@
 /processorParam:TextureFormat=Color
 /build:FullHeartRed.png
 
+#begin GameFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:GameFont.spritefont
+
+#begin GameOverTitle.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:GameOverTitle.png
+
 #begin HealthContainer.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -661,6 +692,12 @@
 /processorParam:Quality=Best
 /build:kim-lightyear-angel-eyes-vision-ii-189557.mp3
 
+#begin lady-of-the-80x27s-128379.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:lady-of-the-80x27s-128379.mp3
+
 #begin laser-gun-shot-sound-future-sci-fi-lazer-wobble-chakongaudio-174883.mp3
 /importer:Mp3Importer
 /processor:SoundEffectProcessor
@@ -679,6 +716,7 @@
 /processorParam:TextureFormat=Color
 /build:LeftHealthContainer.png
 
+
 #begin MenuButton.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -690,6 +728,7 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:MenuButton.png
+
 
 #begin MenuTitle1.png
 /importer:TextureImporter

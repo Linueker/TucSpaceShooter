@@ -18,6 +18,7 @@ namespace TucSpaceShooter
     {
         Menu,
         Play,
+        GameOver,
         Highscore,
         Quit
     }
@@ -41,9 +42,13 @@ namespace TucSpaceShooter
         private int bgrCounter;
         private Song gameMusic;
         private bool gameMusicIsPlaying;
+
         //enemy
         private EnemyTypOne enemiesOne;
+        private List<EnemyTypOne> enemyTypOnesList= new List<EnemyTypOne>();
+        private List<EnemyTypeTwo> enemyTypTwoList= new List<EnemyTypeTwo>();
         private EnemyTypeTwo enemiesTwo;
+        private List<EnemyTypeThree> enemyTypThreeList = new List<EnemyTypeThree>();
         private EnemyTypeThree enemiesThree;
         private EnmeyBoss bossEnemy;
         private Texture2D enemyShipOne;
@@ -54,6 +59,9 @@ namespace TucSpaceShooter
         private Vector2 enemyPositiontwo;
         private Vector2 enemyPositionthree;
         private Vector2 enemyPositionBoss;
+        private Song bossMusic;
+        private bool bossMusicIsPlaying;
+        private SpriteFont font;
 
         //Bullet
         private Texture2D bulletTexture;
@@ -70,6 +78,7 @@ namespace TucSpaceShooter
         private Texture2D repair;
         private Texture2D doublePoints;
         private Texture2D triplePoints;
+        private Texture2D powerUpBar;
 
         private Texture2D playerShield;
 
@@ -98,6 +107,7 @@ namespace TucSpaceShooter
         private Texture2D[] menuTitle;
         private int currentMenuTitle;
 
+
         //Highscore
         private HighscoreScreen highscoreMenu;
         private Texture2D highscoreBackground;
@@ -109,9 +119,19 @@ namespace TucSpaceShooter
         private Rectangle backButtonBounds;
         
 
+        //GameOver
+        private Texture2D gameOverImg;
+        private Song endSong;
+        private bool endSongIsPlaying;
+
+
+        //GameTimer
+        float timer = 0f;
+        //Sätter tiden för hur länge fiender ska spawnas innan bossen kommer (sekunder + f). Höj om banan ska va längre. 
+        float enemyDuration = 10f;
+        bool drawEnemy = true;
 
         public static GameStates CurrentState { get => currentState; set => currentState = value; }
-
 
         public Game1()
         {
@@ -150,10 +170,13 @@ namespace TucSpaceShooter
             repair = Content.Load<Texture2D>("RepairShip");
             doublePoints = Content.Load<Texture2D>("2xPoints");
             triplePoints = Content.Load<Texture2D>("3xPoints");
+            powerUpBar = Content.Load<Texture2D>("RightHealthContainer");
 
             playerShield = Content.Load<Texture2D>("PlayerShield");
             
             pickUp = Content.Load<SoundEffect>("power_up_grab-88510");
+
+            Fonts.LoadContent(Content);
 
             powerupWidth = 15;
             powerupHeight = 15;
@@ -167,10 +190,14 @@ namespace TucSpaceShooter
             SoundEffect.MasterVolume = 0.5f;
             Bullet.LoadContent(bulletTexture);
 
-            enemiesOne = new EnemyTypOne(enemyPosition, _graphics);
-            enemiesTwo = new EnemyTypeTwo(enemyPositiontwo, _graphics);
-            enemiesThree = new EnemyTypeThree(enemyPositionthree, _graphics);
-            bossEnemy = new EnmeyBoss(enemyPositionBoss, _graphics);
+            enemiesOne = new EnemyTypOne(enemyPosition, _graphics,10);
+            enemyTypOnesList.Add(enemiesOne);
+            enemiesTwo = new EnemyTypeTwo(enemyPositiontwo, _graphics,10);
+            enemyTypTwoList.Add(enemiesTwo);
+            enemiesTwo.ResetPosition(_graphics);
+            enemiesThree = new EnemyTypeThree(enemyPositionthree, _graphics, 10);
+            enemyTypThreeList.Add(enemiesThree);
+            bossEnemy = new EnmeyBoss(enemyPositionBoss, _graphics, 10);
             enemyPosition = enemiesOne.Position;
             enemyPositiontwo = enemiesTwo.Position;
             enemyPositionthree = enemiesThree.Position;
@@ -194,6 +221,8 @@ namespace TucSpaceShooter
             menuMusicIsPlaying = false;
             gameMusic = Content.Load<Song>("kim-lightyear-angel-eyes-vision-ii-189557");
             gameMusicIsPlaying = false;
+            bossMusic = Content.Load<Song>("a-hero-of-the-80s_v2_60sec-178277");
+            bossMusicIsPlaying = false;
             MediaPlayer.Volume = 0.5f;
 
             menuBackground = Content.Load<Texture2D>("Background_2");
@@ -210,6 +239,7 @@ namespace TucSpaceShooter
                 menuTitle[i - 1] = Content.Load<Texture2D>("MenuTitle" + i.ToString());
             }
 
+
             //Highscore
             highscoreBackground = Content.Load<Texture2D>("Background_2");
             highscoreBoard = Content.Load<Texture2D>("HiscoreBoard");
@@ -221,6 +251,12 @@ namespace TucSpaceShooter
             backButtonTexture = Content.Load<Texture2D>("BackButton");
             backButtonBounds = new Rectangle(0,0/*(_graphics.PreferredBackBufferHeight-backButtonTexture.Height)*/,backButtonTexture.Width,backButtonTexture.Height);
             highscoreMenu = new HighscoreScreen(backButtonTexture, backButtonBounds);
+
+            //GameOver
+            gameOverImg = Content.Load<Texture2D>("GameOverTitle");
+            endSong = Content.Load<Song>("lady-of-the-80x27s-128379");
+            endSongIsPlaying = false;
+
         }
 
         protected override void Update(GameTime gameTime)
@@ -257,20 +293,60 @@ namespace TucSpaceShooter
                     break;
                 case GameStates.Play:
                     //kod för Play
+                    if(player.Health == 0)
+                    {
+                        CurrentState = GameStates.GameOver;
+                    }
                     if (!gameMusicIsPlaying)
                     {
                         MediaPlayer.Play(gameMusic);
                         gameMusicIsPlaying = true;
                     }
+                    timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    
+                    if (timer >= enemyDuration)
+                    {
+                        drawEnemy = false;
+                    }
+
+                    base.Update(gameTime);
                     player.PlayerMovement(player, _graphics);
                     player.HandlePowerupCollision(powerups, pickUp);
                     powerup.SpawnPowerup(random, _graphics, powerupWidth, jetpack, shield, repair, doublePoints, triplePoints, powerups);
                     powerup.UpdatePowerups(gameTime, powerups, _graphics);
-                    enemiesOne.MoveToRandomPosition(_graphics);
-                    enemiesTwo.MoveToRandomPosition(_graphics);
-                    enemiesThree.MoveToRandomPosition(_graphics);
-                    bossEnemy.MoveToRandomPosition(_graphics);
+                    //enemiesOne.MoveToRandomPosition(_graphics);
+                    if (drawEnemy)
+                    {
+                        foreach (EnemyTypOne enemy in enemyTypOnesList.ToList())
+                        {
+                            enemy.MoveToRandomPosition(_graphics);
+                            enemy.Damage(_graphics, player);
+                        }
+                        foreach (EnemyTypeTwo enemy in enemyTypTwoList.ToList())
+                        {
+                            enemy.MoveToRandomPosition(_graphics);
+                            enemy.Damage(_graphics, player);
+                        }
+                        foreach (EnemyTypeThree enemy in enemyTypThreeList.ToList())
+                        {
+                            enemy.MoveToRandomPosition(_graphics);
+                            enemy.Damage(_graphics, player);
+                        }
+                        enemiesTwo.MoveToRandomPosition(_graphics);
+                        enemiesThree.MoveToRandomPosition(_graphics);
+                    }
+                    else
+                    {
+                        if (!bossMusicIsPlaying)
+                        {
+                            MediaPlayer.Play(bossMusic);
+                            bossMusicIsPlaying = true;
+                        }
+                        bossEnemy.MoveToRandomPosition(_graphics);
+                    }
+                    
                     Bullet.UpdateAll(gameTime, player, shoot);
+      
                     break;
                 case GameStates.Highscore:
                     //kod för highscore
@@ -285,6 +361,14 @@ namespace TucSpaceShooter
                         }
                     }
                     highscoreMenu.ClickButton();
+                    break;
+
+                case GameStates.GameOver:
+                    if (!endSongIsPlaying)
+                    {
+                        MediaPlayer.Play(endSong);
+                        endSongIsPlaying = true;
+                    }
                     break;
 
             }
@@ -317,16 +401,47 @@ namespace TucSpaceShooter
                     Background.DrawBackground(bgrCounter, _spriteBatch, stageOneBgr);
                     player.DrawPlayer(_spriteBatch, playerShip, playerShipAcc, player, bgrCounter, playerShield);
                     DrawPowerups(_spriteBatch, powerups);
-                    player.DrawPlayerHealth(player, healthBar, healthPoint, healthEmpty, _spriteBatch);
 
-                                        //enemy
-                    _spriteBatch.Draw(enemyShipOne, enemiesOne.Position, Color.White);
-                    _spriteBatch.Draw(enemyShipTwo, enemiesTwo.Position, Color.White);
-                    _spriteBatch.Draw(enemyShipThree, enemiesThree.Position, Color.White);
-                    _spriteBatch.Draw(BossShip, bossEnemy.Position, Color.White);
-                    
+                    player.DrawPlayerHealth(player, healthBar, healthPoint, healthEmpty, _spriteBatch, powerUpBar, jetpack, shield, doublePoints, triplePoints);
+
+                    //_spriteBatch.Draw(enemyShipOne, enemiesOne.Position, Color.White);
+                    if (drawEnemy)
+                    {
+                        foreach (EnemyTypOne enemy in enemyTypOnesList)
+                        {
+                            if (enemy.EnemyHealth != 0)
+                            {
+                                _spriteBatch.Draw(enemyShipOne, enemy.Position, Color.White);
+                                break;
+                            }
+                        }
+                        foreach (EnemyTypeTwo enemy in enemyTypTwoList)
+                        {
+                            if (enemy.EnemyHealth != 0)
+                            {
+                                _spriteBatch.Draw(enemyShipTwo, enemiesTwo.Position, Color.White);
+                                break;
+                            }
+                        }
+                        foreach (EnemyTypeThree enemy in enemyTypThreeList)
+                        {
+                            if (enemy.EnemyHealth != 0)
+                            {
+                                _spriteBatch.Draw(enemyShipThree, enemiesThree.Position, Color.White);
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        _spriteBatch.Draw(BossShip, bossEnemy.Position, Color.White);
+                    }
                     Bullet.DrawAll(_spriteBatch);
-                    
+
+                    Fonts.DrawText(_spriteBatch, "SCORE: " + player.points.GetCurrentPoints(), new Vector2(10, 10), Color.White);
+
+                    player.DrawPlayerHealth(player, healthBar, healthPoint, healthEmpty, _spriteBatch, powerUpBar, jetpack, shield, doublePoints, triplePoints);
+
                     _spriteBatch.End();
                     bgrCounter++;
                     break;
@@ -340,6 +455,16 @@ namespace TucSpaceShooter
 
                     highscoreMenu.Draw(_spriteBatch);
 
+                    _spriteBatch.End();
+                    break;
+                case GameStates.GameOver:
+                    _spriteBatch.Begin();
+
+                    Background.DrawBackground(bgrCounter, _spriteBatch, stageOneBgr);
+                    _spriteBatch.Draw(gameOverImg, new Vector2(100, 100), Color.White);
+                    Fonts.DrawText(_spriteBatch, "FINAL SCORE: \n" + player.points.GetCurrentPoints(), new Vector2(175, 300), Color.White);
+                    Fonts.DrawText(_spriteBatch, "ENTER NAME: \n", new Vector2(175, 430), Color.White);
+                    bgrCounter++;
                     _spriteBatch.End();
                     break;
                 case GameStates.Quit:

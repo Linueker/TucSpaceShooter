@@ -1,6 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
 using System.Linq;
 using System.Net.Mail;
 using System.Text;
@@ -12,24 +15,25 @@ namespace TucSpaceShooter
     {
         private int movingSpeed = 1;
         private bool moveRight = true;
-        private Bullet bullet;
-        //private bool movingForward = true;
-        //private Vector2 firstPositionBoss;
-        //private bool firstAttack = true;
-        //those two should be send from enemies.cs so all the enemy have those two. ask the grupp first
-        // private int health=1;
-        //private int dam= 2;
-        public EnemyTypOne(Vector2 position, GraphicsDeviceManager graphics) :
-            base(position, graphics)
+        private const int center = 16;
+        private bool isDead = false;
+        private static List<EnemyTypeTwo> enemyTypeTwoList = new List<EnemyTypeTwo>();
+        private bool isNotDead = true;
+        bool moveBack = true;
+        private static List<EnemyTypOne> enemyTypeOneList= new List<EnemyTypOne>();
+        public bool IsNotDead { get { return isDead; } }
+
+        public EnemyTypOne(Vector2 position, GraphicsDeviceManager graphics, int enemyHealth) :
+            base(position, graphics, enemyHealth)
         {
             this.position.X = graphics.PreferredBackBufferWidth / 2 - 30;
             this.position.Y = graphics.PreferredBackBufferHeight;
-            //this.enemyRandom = new Random();
-            //this.firstPositionBoss = position;
-            //this.EnemiesTyp = enemyType;
+            enemyTypeOneList.Add(this);
         }
-        public override void MoveToRandomPosition(GraphicsDeviceManager graphics)
+        public override void MoveToRandomPosition(GraphicsDeviceManager graphics )
         {
+            if (isNotDead)
+            { 
             if (position.Y < graphics.PreferredBackBufferHeight)
             {
                 position.Y += 1;
@@ -50,20 +54,35 @@ namespace TucSpaceShooter
             {
                 moveRight = !moveRight;
             }
-
+            }
         }
-        //public override void Damage()
-        //{
-        //    if (bullet.position == position.X)
-        //    {
-        //        position.X = 0;
-        //        position.Y = 0;
-        //    }
-        //}
+        public void ResetPosition(GraphicsDeviceManager graphics)
+        {
+            Random random = new Random();
+            position.X = random.Next(graphics.PreferredBackBufferWidth - 60);
+            position.Y = random.Next(-graphics.PreferredBackBufferHeight, 0);
+        }
+
+        // EnemyTypOne-klassen
+        public override void Damage(GraphicsDeviceManager graphics, Player player)
+        {
+            if (isNotDead)
+            {
+                foreach (var bullet in Bullet.Bullets)
+                {
+                    float hitDistance = Vector2.Distance(position, bullet.Position);
+                    if (hitDistance <= center)
+                    {
+                        EnemyHealth--;
+                        if (EnemyHealth <= 0)
+                        {
+                            ResetPosition(graphics);
+                            player.points.AddPoints(player, EnemyType.One);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
     }
 }
-/*
- * jag vill fixa en lista för Enemy 1
- * ställa sig på rad
- * rand rörelse för rand index i listan. 
- */
