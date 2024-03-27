@@ -12,6 +12,7 @@ namespace TucSpaceShooter
         bool moveRight = true;
         bool moveLeft = false;
         bool moveBack = true;
+        private const int center = 70;
         int movingSpeed = 1;
         int pxelToRight = 1;
         bool isDead = false;
@@ -19,7 +20,7 @@ namespace TucSpaceShooter
         public EnmeyBoss(Vector2 position, GraphicsDeviceManager graphics, int enemyHealth) :
             base(position, graphics, enemyHealth)
         {
-            this.position.X = graphics.PreferredBackBufferWidth / 2 - 70;
+            this.position.X = graphics.PreferredBackBufferWidth / 2 - 60;
             this.position.Y = -300;
         }
         public override void MoveToRandomPosition(GraphicsDeviceManager graphics)
@@ -47,6 +48,31 @@ namespace TucSpaceShooter
                 {
                     moveLeft = false;
                     moveRight = true;   
+                }
+            }
+        }
+        public override void Damage(GraphicsDeviceManager graphics, Player player)
+        {
+            if (!isDead)
+            {
+                foreach (var bullet in Bullet.Bullets)
+                {
+                    float hitDistance = Vector2.Distance(position, bullet.Position);
+                    if (hitDistance <= center)
+                    {
+                        EnemyHealth--;
+                        if (EnemyHealth <= 0)
+                        {
+                            ResetPosition(graphics);
+                            player.points.AddPoints(player, EnemyType.Boss);
+                            isDead = true;
+                            player.Health = 0;
+                            
+                            break;
+                        }
+                        Bullet.Bullets.Remove(bullet);
+                        break;
+                    }
                 }
             }
         }

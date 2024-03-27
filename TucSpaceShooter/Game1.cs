@@ -184,7 +184,7 @@ namespace TucSpaceShooter
             enemiesTwo.ResetPosition(_graphics);
             enemiesThree = new EnemyTypeThree(enemyPositionthree, _graphics, 10);
             enemyTypThreeList.Add(enemiesThree);
-            bossEnemy = new EnmeyBoss(enemyPositionBoss, _graphics, 10);
+            bossEnemy = new EnmeyBoss(enemyPositionBoss, _graphics, 50);
             enemyPosition = enemiesOne.Position;
             enemyPositiontwo = enemiesTwo.Position;
             enemyPositionthree = enemiesThree.Position;
@@ -316,6 +316,7 @@ namespace TucSpaceShooter
                             bossMusicIsPlaying = true;
                         }
                         bossEnemy.MoveToRandomPosition(_graphics);
+                        bossEnemy.Damage(_graphics, player);
                     }
                     
                     Bullet.UpdateAll(gameTime, player, shoot);
@@ -373,7 +374,7 @@ namespace TucSpaceShooter
                         {
                             if (enemy.EnemyHealth != 0)
                             {
-                                _spriteBatch.Draw(enemyShipOne, enemy.Position, Color.White);
+                                _spriteBatch.Draw(enemyShipOne, new Vector2(enemiesOne.Position.X - 16, enemiesOne.Position.Y), Color.White);
                                 break;
                             }
                         }
@@ -381,7 +382,7 @@ namespace TucSpaceShooter
                         {
                             if (enemy.EnemyHealth != 0)
                             {
-                                _spriteBatch.Draw(enemyShipTwo, enemiesTwo.Position, Color.White);
+                                _spriteBatch.Draw(enemyShipTwo, new Vector2(enemiesTwo.Position.X - 27, enemiesTwo.Position.Y), Color.White);
                                 break;
                             }
                         }
@@ -389,14 +390,14 @@ namespace TucSpaceShooter
                         {
                             if (enemy.EnemyHealth != 0)
                             {
-                                _spriteBatch.Draw(enemyShipThree, enemiesThree.Position, Color.White);
+                                _spriteBatch.Draw(enemyShipThree, new Vector2(enemiesThree.Position.X -24, enemiesThree.Position.Y), Color.White);
                                 break;
                             }
                         }
                     }
                     else
                     {
-                        _spriteBatch.Draw(BossShip, bossEnemy.Position, Color.White);
+                        _spriteBatch.Draw(BossShip, new Vector2(bossEnemy.Position.X-60, bossEnemy.Position.Y), Color.White);
                     }
                     Bullet.DrawAll(_spriteBatch);
 
