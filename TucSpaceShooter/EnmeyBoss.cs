@@ -20,7 +20,7 @@ namespace TucSpaceShooter
             base(position, graphics, enemyHealth)
         {
             this.position.X = graphics.PreferredBackBufferWidth / 2 - 70;
-            this.position.Y = -180;
+            this.position.Y = -300;
         }
         public override void MoveToRandomPosition(GraphicsDeviceManager graphics)
         {

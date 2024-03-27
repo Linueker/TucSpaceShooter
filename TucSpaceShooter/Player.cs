@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -165,7 +166,8 @@ namespace TucSpaceShooter
             {
                 spriteBatch.Draw(playerShield, new Vector2(player.position.X - 12, player.position.Y - 10), Color.White);
             }
-            if (counter == 40 || counter == 150)
+            //Sänker spelar-health snabbt för att komma till GameOver-state
+            if (counter % 17 == 0)
             {
                 player.health--;
             }

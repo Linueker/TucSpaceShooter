@@ -18,6 +18,7 @@ namespace TucSpaceShooter
     {
         Menu,
         Play,
+        GameOver,
         Highscore,
         Quit
     }
@@ -41,6 +42,7 @@ namespace TucSpaceShooter
         private int bgrCounter;
         private Song gameMusic;
         private bool gameMusicIsPlaying;
+
         //enemy
         private EnemyTypOne enemiesOne;
         private List<EnemyTypOne> enemyTypOnesList= new List<EnemyTypOne>();
@@ -57,6 +59,8 @@ namespace TucSpaceShooter
         private Vector2 enemyPositiontwo;
         private Vector2 enemyPositionthree;
         private Vector2 enemyPositionBoss;
+        private Song bossMusic;
+        private bool bossMusicIsPlaying;
         private SpriteFont font;
 
         //Bullet
@@ -103,15 +107,16 @@ namespace TucSpaceShooter
         private Texture2D[] menuTitle;
         private int currentMenuTitle;
 
+        //GameOver
+        private Texture2D gameOverImg;
+
         //GameTimer
         float timer = 0f;
-        float enemyDuration = 1f;
+        //Sätter tiden för hur länge fiender ska spawnas innan bossen kommer (sekunder + f). Höj om banan ska va längre. 
+        float enemyDuration = 10f;
         bool drawEnemy = true;
 
-
-
         public static GameStates CurrentState { get => currentState; set => currentState = value; }
-
 
         public Game1()
         {
@@ -201,6 +206,8 @@ namespace TucSpaceShooter
             menuMusicIsPlaying = false;
             gameMusic = Content.Load<Song>("kim-lightyear-angel-eyes-vision-ii-189557");
             gameMusicIsPlaying = false;
+            bossMusic = Content.Load<Song>("a-hero-of-the-80s_v2_60sec-178277");
+            bossMusicIsPlaying = false;
             MediaPlayer.Volume = 0.5f;
 
             menuBackground = Content.Load<Texture2D>("Background_2");
@@ -217,7 +224,7 @@ namespace TucSpaceShooter
                 menuTitle[i - 1] = Content.Load<Texture2D>("MenuTitle" + i.ToString());
             }
 
-            //GameTimer
+            gameOverImg = Content.Load<Texture2D>("GameOverTitle");
 
         }
 
@@ -228,6 +235,7 @@ namespace TucSpaceShooter
             // TODO: Add your update logic here
             switch (currentState)
             {
+
                 case GameStates.Menu:
                     //Kod för meny
                     if (!menuMusicIsPlaying)
@@ -255,6 +263,10 @@ namespace TucSpaceShooter
                     break;
                 case GameStates.Play:
                     //kod för Play
+                    if(player.Health == 0)
+                    {
+                        CurrentState = GameStates.GameOver;
+                    }
                     if (!gameMusicIsPlaying)
                     {
                         MediaPlayer.Play(gameMusic);
@@ -273,29 +285,44 @@ namespace TucSpaceShooter
                     powerup.SpawnPowerup(random, _graphics, powerupWidth, jetpack, shield, repair, doublePoints, triplePoints, powerups);
                     powerup.UpdatePowerups(gameTime, powerups, _graphics);
                     //enemiesOne.MoveToRandomPosition(_graphics);
-                    foreach (EnemyTypOne enemy in enemyTypOnesList.ToList()) 
+                    if (drawEnemy)
                     {
-                        enemy.MoveToRandomPosition(_graphics);
-                        enemy.Damage(_graphics, player);
+                        foreach (EnemyTypOne enemy in enemyTypOnesList.ToList())
+                        {
+                            enemy.MoveToRandomPosition(_graphics);
+                            enemy.Damage(_graphics, player);
+                        }
+                        foreach (EnemyTypeTwo enemy in enemyTypTwoList.ToList())
+                        {
+                            enemy.MoveToRandomPosition(_graphics);
+                            enemy.Damage(_graphics, player);
+                        }
+                        foreach (EnemyTypeThree enemy in enemyTypThreeList.ToList())
+                        {
+                            enemy.MoveToRandomPosition(_graphics);
+                            enemy.Damage(_graphics, player);
+                        }
+                        enemiesTwo.MoveToRandomPosition(_graphics);
+                        enemiesThree.MoveToRandomPosition(_graphics);
                     }
-                    foreach (EnemyTypeTwo enemy in enemyTypTwoList.ToList())
+                    else
                     {
-                        enemy.MoveToRandomPosition(_graphics);
-                        enemy.Damage(_graphics, player);
+                        if (!bossMusicIsPlaying)
+                        {
+                            MediaPlayer.Play(bossMusic);
+                            bossMusicIsPlaying = true;
+                        }
+                        bossEnemy.MoveToRandomPosition(_graphics);
                     }
-                    foreach (EnemyTypeThree enemy in enemyTypThreeList.ToList())
-                    {
-                        enemy.MoveToRandomPosition(_graphics);
-                        enemy.Damage(_graphics, player);
-                    }
-                    enemiesTwo.MoveToRandomPosition(_graphics);
-                    enemiesThree.MoveToRandomPosition(_graphics);
-                    bossEnemy.MoveToRandomPosition(_graphics);
+                    
                     Bullet.UpdateAll(gameTime, player, shoot);
       
                     break;
                 case GameStates.Highscore:
                     //kod för highscore
+                    break;
+
+                case GameStates.GameOver:
                     break;
 
             }
@@ -378,6 +405,16 @@ namespace TucSpaceShooter
 
                     GraphicsDevice.Clear(Color.Orange);
 
+                    _spriteBatch.End();
+                    break;
+                case GameStates.GameOver:
+                    _spriteBatch.Begin();
+
+                    Background.DrawBackground(bgrCounter, _spriteBatch, stageOneBgr);
+                    _spriteBatch.Draw(gameOverImg, new Vector2(100, 100), Color.White);
+                    Fonts.DrawText(_spriteBatch, "FINAL SCORE: \n" + player.points.GetCurrentPoints(), new Vector2(175, 300), Color.White);
+                    Fonts.DrawText(_spriteBatch, "ENTER NAME: \n", new Vector2(175, 430), Color.White);
+                    bgrCounter++;
                     _spriteBatch.End();
                     break;
                 case GameStates.Quit:
