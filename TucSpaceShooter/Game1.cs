@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using static TucSpaceShooter.Powerup;
@@ -73,6 +74,7 @@ namespace TucSpaceShooter
         private Texture2D repair;
         private Texture2D doublePoints;
         private Texture2D triplePoints;
+        private Texture2D powerUpBar;
 
         private Texture2D playerShield;
 
@@ -93,6 +95,13 @@ namespace TucSpaceShooter
         private Rectangle quitButtonBounds;
         Song menuMusic;
         private bool menuMusicIsPlaying;
+        private Texture2D menuBackground;
+        private Texture2D[] bossEye;
+        private int currentBossEye;
+        private int menuCounter;
+        private Texture2D menuForeground;
+        private Texture2D[] menuTitle;
+        private int currentMenuTitle;
 
 
 
@@ -136,6 +145,7 @@ namespace TucSpaceShooter
             repair = Content.Load<Texture2D>("RepairShip");
             doublePoints = Content.Load<Texture2D>("2xPoints");
             triplePoints = Content.Load<Texture2D>("3xPoints");
+            powerUpBar = Content.Load<Texture2D>("RightHealthContainer");
 
             playerShield = Content.Load<Texture2D>("PlayerShield");
             
@@ -175,9 +185,9 @@ namespace TucSpaceShooter
             highscoreButtonTexture = Content.Load<Texture2D>("HiscoreButton");
             quitButtonTexture = Content.Load<Texture2D>("QuitButton");
 
-            startButtonBounds = new Rectangle((_graphics.PreferredBackBufferWidth-startButtonTexture.Width)/2,270, startButtonTexture.Width, startButtonTexture.Height);
-            highscoreButtonBounds = new Rectangle((_graphics.PreferredBackBufferWidth-highscoreButtonTexture.Width)/2,300, highscoreButtonTexture.Width, highscoreButtonTexture.Height);
-            quitButtonBounds = new Rectangle((_graphics.PreferredBackBufferWidth-quitButtonTexture.Width)/2,330,quitButtonTexture.Width, quitButtonTexture.Height);
+            startButtonBounds = new Rectangle((_graphics.PreferredBackBufferWidth-startButtonTexture.Width)/2,285, startButtonTexture.Width, startButtonTexture.Height);
+            highscoreButtonBounds = new Rectangle((_graphics.PreferredBackBufferWidth-highscoreButtonTexture.Width)/2,335, highscoreButtonTexture.Width, highscoreButtonTexture.Height);
+            quitButtonBounds = new Rectangle((_graphics.PreferredBackBufferWidth-quitButtonTexture.Width)/2,385,quitButtonTexture.Width, quitButtonTexture.Height);
             menu = new MenuScreen(startButtonTexture, startButtonBounds, highscoreButtonTexture, highscoreButtonBounds, quitButtonTexture, quitButtonBounds);
 
             menuMusic = Content.Load<Song>("electric-dreams-167873");
@@ -186,6 +196,19 @@ namespace TucSpaceShooter
             gameMusicIsPlaying = false;
             MediaPlayer.Volume = 0.5f;
 
+            menuBackground = Content.Load<Texture2D>("Background_2");
+            bossEye = new Texture2D[24];
+            for (int i = 1; i <= 24; i++)
+            {
+                bossEye[i - 1] = Content.Load<Texture2D>("BossEye" + i.ToString());
+            }
+            menuForeground = Content.Load<Texture2D>("Foreground");
+
+            menuTitle = new Texture2D[10];
+            for (int i = 1; i <= 10; i++)
+            {
+                menuTitle[i - 1] = Content.Load<Texture2D>("MenuTitle" + i.ToString());
+            }
         }
 
         protected override void Update(GameTime gameTime)
@@ -200,9 +223,25 @@ namespace TucSpaceShooter
                     if (!menuMusicIsPlaying)
                     {
                         MediaPlayer.Play(menuMusic);
-                        menuMusicIsPlaying = true;  
+                        menuMusicIsPlaying = true;
                     }
-                    menu.Update(gameTime);
+                    menuCounter++;
+                    if (menuCounter >= 6)//ändra siffran för att anpassa meny animationernas hastighet
+                    {
+                        menuCounter = 0;
+                        currentBossEye++;
+                        currentMenuTitle++;
+
+                        if (currentBossEye > bossEye.Length-1)
+                        {
+                            currentBossEye = 0;
+                        }
+                        if (currentMenuTitle > menuTitle.Length - 1)
+                        {
+                            currentMenuTitle = 0;
+                        }
+                    }
+                    menu.MainMenu();
                     break;
                 case GameStates.Play:
                     //kod för Play
@@ -255,6 +294,11 @@ namespace TucSpaceShooter
                     //kod för meny
                     _spriteBatch.Begin();
 
+                    _spriteBatch.Draw(menuBackground, Vector2.Zero, Color.White);
+                    _spriteBatch.Draw(bossEye[currentBossEye], new Vector2(0,130), Color.White);
+                    _spriteBatch.Draw(menuForeground, Vector2.Zero, Color.White);
+                    _spriteBatch.Draw(menuTitle[currentMenuTitle], new Vector2((_graphics.PreferredBackBufferWidth - menuTitle[currentMenuTitle].Width)/2,70), Color.White);
+
                     menu.Draw(_spriteBatch);
 
                     _spriteBatch.End();
@@ -266,6 +310,7 @@ namespace TucSpaceShooter
                     Background.DrawBackground(bgrCounter, _spriteBatch, stageOneBgr);
                     player.DrawPlayer(_spriteBatch, playerShip, playerShipAcc, player, bgrCounter, playerShield);
                     DrawPowerups(_spriteBatch, powerups);
+
                     player.DrawPlayerHealth(player, healthBar, healthPoint, healthEmpty, _spriteBatch);
                      //enemy
                     //_spriteBatch.Draw(enemyShipOne, enemiesOne.Position, Color.White);
@@ -291,9 +336,13 @@ namespace TucSpaceShooter
                         }
                     }
                     
+
                     _spriteBatch.Draw(BossShip, bossEnemy.Position, Color.White);
+
                     
                     Bullet.DrawAll(_spriteBatch);
+
+                    player.DrawPlayerHealth(player, healthBar, healthPoint, healthEmpty, _spriteBatch, powerUpBar, jetpack, shield, doublePoints, triplePoints);
                     _spriteBatch.End();
                     bgrCounter++;
                     break;

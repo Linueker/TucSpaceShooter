@@ -4,15 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Metrics;
-using System.Linq;
-using System.Net.Mime;
-using System.Numerics;
-using System.Reflection;
-using System.Security.Principal;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
 
 namespace TucSpaceShooter
@@ -33,7 +25,7 @@ namespace TucSpaceShooter
 
         public Player(Vector2 position, GraphicsDeviceManager graphics, int health) : base(position)
         {
-            this.position.X = graphics.PreferredBackBufferWidth / 2 - 30;
+            this.position.X = graphics.PreferredBackBufferWidth / 2 - 12;
             this.position.Y = graphics.PreferredBackBufferHeight - 110;
             this.health = health;
         }
@@ -147,36 +139,38 @@ namespace TucSpaceShooter
         // Ritar upp spelar-sprite
         public void DrawPlayer(SpriteBatch spriteBatch, Texture2D pShip, Texture2D pShipFire, Player player, int counter, Texture2D playerShield)
         {
-    
-                if (Keyboard.GetState().IsKeyDown(Keys.Down)
-                    || Keyboard.GetState().IsKeyDown(Keys.Up)
-                    || Keyboard.GetState().IsKeyDown(Keys.Left)
-                    || Keyboard.GetState().IsKeyDown(Keys.Right))
+            
+            if (Keyboard.GetState().IsKeyDown(Keys.Down)
+                || Keyboard.GetState().IsKeyDown(Keys.Up)
+                || Keyboard.GetState().IsKeyDown(Keys.Left)
+                || Keyboard.GetState().IsKeyDown(Keys.Right))
+            {
+                // bakgrunds-countern utnyttjas för att får "blinkande" eld när spelarskeppet rör på sig.
+                if (counter % 3 == 0)
                 {
-                    // bakgrunds-countern utnyttjas för att får "blinkande" eld när spelarskeppet rör på sig.
-                    if (counter % 3 == 0)
-                    {
-                        spriteBatch.Draw(pShipFire, new Vector2(player.Position.X - 20, player.Position.Y - 19), Color.White);
-                    }
+                    spriteBatch.Draw(pShipFire, new Vector2(player.Position.X - 20, player.Position.Y - 19), Color.White);
                 }
-                spriteBatch.Draw(pShip, new Vector2(player.Position.X - 20, player.Position.Y - 19), Color.White);
-    
-    
-                if (isShieldActive)
-                {
-                    spriteBatch.Draw(playerShield, new Vector2(player.position.X - 12, player.position.Y - 10), Color.White);
-                if (counter == 40 || counter == 150)
-                {
-                    player.health--;
-    
-                }
+            }
+            spriteBatch.Draw(pShip, new Vector2(player.Position.X - 20, player.Position.Y - 19), Color.White);
+
+
+            if (isShieldActive)
+            {
+                spriteBatch.Draw(playerShield, new Vector2(player.position.X - 12, player.position.Y - 10), Color.White);
+            }
+            if (counter == 40 || counter == 150)
+            {
+                player.health--;
             }
         }
 
         // Ritar ut spelarens hälsa i fönstret. 
-        public void DrawPlayerHealth(Player player, Texture2D healthBar, Texture2D healthPoint, Texture2D healthEmpty, SpriteBatch spriteBatch)
+        public void DrawPlayerHealth(Player player, Texture2D healthBar, Texture2D healthPoint, Texture2D healthEmpty, SpriteBatch spriteBatch, Texture2D powerUpBar, Texture2D jetpack, Texture2D shield, Texture2D doublePoints, Texture2D triplePoints)
         {
+            
             spriteBatch.Draw(healthBar, new Vector2(-2, 670), Color.White);
+            DrawPowerUps(spriteBatch,powerUpBar, jetpack, shield, doublePoints, triplePoints);
+            
             if (player.health == 5)
             {
                 spriteBatch.Draw(healthPoint, new Vector2(5, 674), Color.White);
@@ -230,16 +224,37 @@ namespace TucSpaceShooter
                 throw new NotImplementedException();
             }
         }
+
+        public void DrawPowerUps(SpriteBatch spriteBatch, Texture2D powerUpBar, Texture2D jetpack, Texture2D shield, Texture2D doublePoints, Texture2D triplePoints)
+        {
+            spriteBatch.Draw(powerUpBar, new Vector2(320, 670), Color.White);
+            if (isJetpackActive)
+            {
+                spriteBatch.Draw(jetpack, new Vector2(388, 680), Color.White);
+            }
+            if (isShieldActive)
+            {
+                spriteBatch.Draw(shield, new Vector2(423, 680), Color.White);
+            }
+            if (isDoublePointsActive)
+            {
+                spriteBatch.Draw(doublePoints, new Vector2(456, 680), Color.White);
+            }
+            if (isTriplePointsActive)
+            {
+                spriteBatch.Draw(triplePoints, new Vector2(494, 680), Color.White);
+            }
+        }
         public void MoveUp(Player player)
         {
-            if (player.position.Y != 20)
+            if (player.position.Y > 20)
             {
                 player.position.Y -= speed;
             }
         }
         public void MoveDown(Player player, GraphicsDeviceManager graphics)
         {
-            if(player.position.Y != graphics.PreferredBackBufferHeight - 100)
+            if(player.position.Y < graphics.PreferredBackBufferHeight - 100)
             player.position.Y += speed;
         }
         public void MoveLeft(Player player)
