@@ -18,6 +18,8 @@ namespace TucSpaceShooter
         private bool isActive;
         private const float Speed = 10; // Speed at which the bullet moves
 
+        public Vector2 Position { get => position; set => position = value; }
+
         // Constructor for individual bullets
         private Bullet(Vector2 position)
         {
