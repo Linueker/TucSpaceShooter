@@ -260,17 +260,17 @@ namespace TucSpaceShooter
                     foreach (EnemyTypOne enemy in enemyTypOnesList.ToList()) 
                     {
                         enemy.MoveToRandomPosition(_graphics);
-                        enemy.Damage(_graphics);
+                        enemy.Damage(_graphics, player);
                     }
                     foreach (EnemyTypeTwo enemy in enemyTypTwoList.ToList())
                     {
                         enemy.MoveToRandomPosition(_graphics);
-                        enemy.Damage(_graphics);
+                        enemy.Damage(_graphics, player);
                     }
                     foreach (EnemyTypeThree enemy in enemyTypThreeList.ToList())
                     {
                         enemy.MoveToRandomPosition(_graphics);
-                        enemy.Damage(_graphics);
+                        enemy.Damage(_graphics, player);
                     }
                     enemiesTwo.MoveToRandomPosition(_graphics);
                     enemiesThree.MoveToRandomPosition(_graphics);
@@ -350,7 +350,7 @@ namespace TucSpaceShooter
                     
                     Bullet.DrawAll(_spriteBatch);
 
-                    Fonts.DrawText(_spriteBatch, "Points: " + player.points.GetCurrentPoints(), new Vector2(10, 10), Color.White);
+                    Fonts.DrawText(_spriteBatch, "SCORE: " + player.points.GetCurrentPoints(), new Vector2(10, 10), Color.White);
 
 
                     player.DrawPlayerHealth(player, healthBar, healthPoint, healthEmpty, _spriteBatch, powerUpBar, jetpack, shield, doublePoints, triplePoints);
