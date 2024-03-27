@@ -20,7 +20,7 @@ namespace TucSpaceShooter
         public EnmeyBoss(Vector2 position, GraphicsDeviceManager graphics, int enemyHealth) :
             base(position, graphics, enemyHealth)
         {
-            this.position.X = graphics.PreferredBackBufferWidth / 2 - 60;
+            this.position.X = graphics.PreferredBackBufferWidth / 2 -5;
             this.position.Y = -300;
         }
         public override void MoveToRandomPosition(GraphicsDeviceManager graphics)
@@ -31,20 +31,20 @@ namespace TucSpaceShooter
                 {
                     position.Y += movingSpeed;
                 }
-                if (position.X > 20 && moveRight && position.Y > 60)
+                if (position.X > 60 && moveRight && position.Y > 60)
                 {
                     position.X -= movingSpeed;
                 }
-                if (position.X < 21)
+                if (position.X < 61)
                 {
                     moveRight = false;
                     moveLeft = true;
                 }
-                if(moveLeft && position.Y == 80 && position.X <400) 
+                if(moveLeft && position.Y == 80 && position.X <460) 
                 {
                     position.X += movingSpeed;
                 }
-                if(position.X > 399)
+                if(position.X > 459)
                 {
                     moveLeft = false;
                     moveRight = true;   
