@@ -151,6 +151,8 @@ namespace TucSpaceShooter
             
             pickUp = Content.Load<SoundEffect>("power_up_grab-88510");
 
+            Fonts.LoadContent(Content);
+
             powerupWidth = 15;
             powerupHeight = 15;
 
@@ -337,12 +339,22 @@ namespace TucSpaceShooter
                     }
                     
 
+
+                    //enemy
+                    _spriteBatch.Draw(enemyShipOne, enemiesOne.Position, Color.White);
+                    _spriteBatch.Draw(enemyShipTwo, enemiesTwo.Position, Color.White);
+                    _spriteBatch.Draw(enemyShipThree, enemiesThree.Position, Color.White);
+
                     _spriteBatch.Draw(BossShip, bossEnemy.Position, Color.White);
 
                     
                     Bullet.DrawAll(_spriteBatch);
 
+                    Fonts.DrawText(_spriteBatch, "Points: " + player.points.GetCurrentPoints(), new Vector2(10, 10), Color.White);
+
+
                     player.DrawPlayerHealth(player, healthBar, healthPoint, healthEmpty, _spriteBatch, powerUpBar, jetpack, shield, doublePoints, triplePoints);
+
                     _spriteBatch.End();
                     bgrCounter++;
                     break;

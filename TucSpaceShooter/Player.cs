@@ -15,6 +15,8 @@ namespace TucSpaceShooter
         private int health;
         private int speed = 2;
 
+        public Points points { get; set; }
+
         private bool isJetpackActive = false;
         private bool isShieldActive = false;
         private bool isRepairActive = false;
@@ -22,9 +24,12 @@ namespace TucSpaceShooter
         private bool isTriplePointsActive = false;
 
         public int Health { get => health; set => health = value; }
+        public bool IsDoublePointsActive { get => isDoublePointsActive; set => isDoublePointsActive = value; }
+        public bool IsTriplePointsActive { get => isTriplePointsActive; set => isTriplePointsActive = value; }
 
         public Player(Vector2 position, GraphicsDeviceManager graphics, int health) : base(position)
         {
+            points = new Points();
             this.position.X = graphics.PreferredBackBufferWidth / 2 - 12;
             this.position.Y = graphics.PreferredBackBufferHeight - 110;
             this.health = health;
@@ -55,7 +60,6 @@ namespace TucSpaceShooter
             isShieldActive = true;
             // Ställ in en timer för att inaktivera skölden efter 5 sekunder
             Timer timer = new Timer(DisableShield, null, 5000, Timeout.Infinite);
-            // Texture2D - ActiveShield
         }
 
         private void DisableShield(object state)
@@ -68,6 +72,7 @@ namespace TucSpaceShooter
         {
             // Aktivera repair-effekten
             isRepairActive = true;
+
             // Om hälsan inte är full, öka den med 1
             if (health < 5)
                 health++;
@@ -77,7 +82,8 @@ namespace TucSpaceShooter
         {
             // Aktivera double-points-effekten
             isDoublePointsActive = true;
-            // Ställ in en timer för att inaktivera double-points efter 6 sekunder
+
+            // Ställ in en timer för att inaktivera double-points efter 10 sekunder
             Timer timer = new Timer(DisableDoublePoints, null, 6000, Timeout.Infinite);
         }
 
@@ -91,7 +97,8 @@ namespace TucSpaceShooter
         {
             // Aktivera triple-points-effekten
             isTriplePointsActive = true;
-            // Ställ in en timer för att inaktivera triple-points efter 6 sekunder
+
+            // Ställ in en timer för att inaktivera triple-points efter 10 sekunder
             Timer timer = new Timer(DisableTriplePoints, null, 6000, Timeout.Infinite);
         }
 
