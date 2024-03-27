@@ -103,6 +103,11 @@ namespace TucSpaceShooter
         private Texture2D[] menuTitle;
         private int currentMenuTitle;
 
+        //GameTimer
+        float timer = 0f;
+        float enemyDuration = 1f;
+        bool drawEnemy = true;
+
 
 
         public static GameStates CurrentState { get => currentState; set => currentState = value; }
@@ -211,6 +216,9 @@ namespace TucSpaceShooter
             {
                 menuTitle[i - 1] = Content.Load<Texture2D>("MenuTitle" + i.ToString());
             }
+
+            //GameTimer
+
         }
 
         protected override void Update(GameTime gameTime)
@@ -252,6 +260,14 @@ namespace TucSpaceShooter
                         MediaPlayer.Play(gameMusic);
                         gameMusicIsPlaying = true;
                     }
+                    timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    
+                    if (timer >= enemyDuration)
+                    {
+                        drawEnemy = false;
+                    }
+
+                    base.Update(gameTime);
                     player.PlayerMovement(player, _graphics);
                     player.HandlePowerupCollision(powerups, pickUp);
                     powerup.SpawnPowerup(random, _graphics, powerupWidth, jetpack, shield, repair, doublePoints, triplePoints, powerups);
@@ -313,45 +329,43 @@ namespace TucSpaceShooter
                     player.DrawPlayer(_spriteBatch, playerShip, playerShipAcc, player, bgrCounter, playerShield);
                     DrawPowerups(_spriteBatch, powerups);
 
-                    player.DrawPlayerHealth(player, healthBar, healthPoint, healthEmpty, _spriteBatch);
-                     //enemy
-                    //_spriteBatch.Draw(enemyShipOne, enemiesOne.Position, Color.White);
-                    foreach(EnemyTypOne enemy in enemyTypOnesList)
-                    {
-                        if (enemy.EnemyHealth != 0) { 
-                        _spriteBatch.Draw(enemyShipOne, enemy.Position, Color.White);
-                            break;
-                        }
-                    }
-                    foreach(EnemyTypeTwo enemy in enemyTypTwoList)
-                    {
-                        if (enemy.EnemyHealth != 0) { 
-                            _spriteBatch.Draw(enemyShipTwo, enemiesTwo.Position, Color.White);                        
-                            break;
-                        }
-                    }
-                    foreach(EnemyTypeThree enemy in enemyTypThreeList)
-                    {
-                        if (enemy.EnemyHealth != 0) { 
-                        _spriteBatch.Draw(enemyShipThree, enemiesThree.Position, Color.White);
-                            break;
-                        }
-                    }
-                    
-
-
+                    player.DrawPlayerHealth(player, healthBar, healthPoint, healthEmpty, _spriteBatch, powerUpBar, jetpack, shield, doublePoints, triplePoints);
                     //enemy
-                    _spriteBatch.Draw(enemyShipOne, enemiesOne.Position, Color.White);
-                    _spriteBatch.Draw(enemyShipTwo, enemiesTwo.Position, Color.White);
-                    _spriteBatch.Draw(enemyShipThree, enemiesThree.Position, Color.White);
-
-                    _spriteBatch.Draw(BossShip, bossEnemy.Position, Color.White);
-
-                    
+                    //_spriteBatch.Draw(enemyShipOne, enemiesOne.Position, Color.White);
+                    if (drawEnemy)
+                    {
+                        foreach (EnemyTypOne enemy in enemyTypOnesList)
+                        {
+                            if (enemy.EnemyHealth != 0)
+                            {
+                                _spriteBatch.Draw(enemyShipOne, enemy.Position, Color.White);
+                                break;
+                            }
+                        }
+                        foreach (EnemyTypeTwo enemy in enemyTypTwoList)
+                        {
+                            if (enemy.EnemyHealth != 0)
+                            {
+                                _spriteBatch.Draw(enemyShipTwo, enemiesTwo.Position, Color.White);
+                                break;
+                            }
+                        }
+                        foreach (EnemyTypeThree enemy in enemyTypThreeList)
+                        {
+                            if (enemy.EnemyHealth != 0)
+                            {
+                                _spriteBatch.Draw(enemyShipThree, enemiesThree.Position, Color.White);
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        _spriteBatch.Draw(BossShip, bossEnemy.Position, Color.White);
+                    }
                     Bullet.DrawAll(_spriteBatch);
 
                     Fonts.DrawText(_spriteBatch, "Points: " + player.points.GetCurrentPoints(), new Vector2(10, 10), Color.White);
-
 
                     player.DrawPlayerHealth(player, healthBar, healthPoint, healthEmpty, _spriteBatch, powerUpBar, jetpack, shield, doublePoints, triplePoints);
 
