@@ -226,10 +226,6 @@ namespace TucSpaceShooter
                 spriteBatch.Draw(healthEmpty, new Vector2(98, 674), Color.White);
                 spriteBatch.Draw(healthEmpty, new Vector2(129, 674), Color.White);
             }
-            else
-            {
-                throw new NotImplementedException();
-            }
         }
 
         public void DrawPowerUps(SpriteBatch spriteBatch, Texture2D powerUpBar, Texture2D jetpack, Texture2D shield, Texture2D doublePoints, Texture2D triplePoints)

@@ -16,16 +16,16 @@ public class Points
         switch (enemyType)
         {
             case EnemyType.One:
-                basePoints = 100;
+                basePoints = 500;
                 break;
             case EnemyType.Two:
-                basePoints = 200;
+                basePoints = 700;
                 break;
             case EnemyType.Three:
-                basePoints = 300;
+                basePoints = 1000;
                 break;
             case EnemyType.Boss:
-                basePoints = 1000;
+                basePoints = 3000;
                 break;
             default:
                 break;

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+//using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -71,7 +72,7 @@ namespace TucSpaceShooter
             position.X = random.Next(graphics.PreferredBackBufferWidth - 60);
             position.Y = random.Next(-graphics.PreferredBackBufferHeight, 0);
         }
-        public override void Damage(GraphicsDeviceManager graphics)
+        public override void Damage(GraphicsDeviceManager graphics, Player player)
         {
             if (isNotDead)
             {
@@ -84,6 +85,7 @@ namespace TucSpaceShooter
                         if (EnemyHealth <= 0)
                         {
                             ResetPosition(graphics);
+                            player.points.AddPoints(player, EnemyType.Three);
                             break;
                         }
                     }

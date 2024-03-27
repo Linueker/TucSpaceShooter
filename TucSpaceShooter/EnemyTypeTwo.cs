@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+//using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using TucSpaceShooter;
@@ -55,7 +56,7 @@ public class EnemyTypeTwo : Enemies
         position.Y = random.Next(-graphics.PreferredBackBufferHeight, 0);
     }
 
-    public override void Damage(GraphicsDeviceManager graphics)
+    public override void Damage(GraphicsDeviceManager graphics, Player player)
     {
         if (isNotDead)
         {
@@ -68,6 +69,7 @@ public class EnemyTypeTwo : Enemies
                     if (EnemyHealth <= 0)
                     {
                         ResetPosition(graphics);
+                        player.points.AddPoints(player, EnemyType.Two);
                         break;
                     }
                 }

@@ -21,7 +21,7 @@ namespace TucSpaceShooter
         // Ny metod för att rita ut spelarens poäng
         public static void DrawPoints(SpriteBatch spriteBatch, Player player, Vector2 position, Color color)
         {
-            string pointsText = "Points: " + player.points.GetCurrentPoints();
+            string pointsText = "SCORE: " + player.points.GetCurrentPoints();
             spriteBatch.DrawString(gameFont, pointsText, position, color);
         }
     }
