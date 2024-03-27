@@ -43,7 +43,10 @@ namespace TucSpaceShooter
         private bool gameMusicIsPlaying;
         //enemy
         private EnemyTypOne enemiesOne;
+        private List<EnemyTypOne> enemyTypOnesList= new List<EnemyTypOne>();
+        private List<EnemyTypeTwo> enemyTypTwoList= new List<EnemyTypeTwo>();
         private EnemyTypeTwo enemiesTwo;
+        private List<EnemyTypeThree> enemyTypThreeList = new List<EnemyTypeThree>();
         private EnemyTypeThree enemiesThree;
         private EnmeyBoss bossEnemy;
         private Texture2D enemyShipOne;
@@ -54,6 +57,7 @@ namespace TucSpaceShooter
         private Vector2 enemyPositiontwo;
         private Vector2 enemyPositionthree;
         private Vector2 enemyPositionBoss;
+        private SpriteFont font;
 
         //Bullet
         private Texture2D bulletTexture;
@@ -159,10 +163,14 @@ namespace TucSpaceShooter
             SoundEffect.MasterVolume = 0.5f;
             Bullet.LoadContent(bulletTexture);
 
-            enemiesOne = new EnemyTypOne(enemyPosition, _graphics);
-            enemiesTwo = new EnemyTypeTwo(enemyPositiontwo, _graphics);
-            enemiesThree = new EnemyTypeThree(enemyPositionthree, _graphics);
-            bossEnemy = new EnmeyBoss(enemyPositionBoss, _graphics);
+            enemiesOne = new EnemyTypOne(enemyPosition, _graphics,10);
+            enemyTypOnesList.Add(enemiesOne);
+            enemiesTwo = new EnemyTypeTwo(enemyPositiontwo, _graphics,10);
+            enemyTypTwoList.Add(enemiesTwo);
+            enemiesTwo.ResetPosition(_graphics);
+            enemiesThree = new EnemyTypeThree(enemyPositionthree, _graphics, 10);
+            enemyTypThreeList.Add(enemiesThree);
+            bossEnemy = new EnmeyBoss(enemyPositionBoss, _graphics, 10);
             enemyPosition = enemiesOne.Position;
             enemyPositiontwo = enemiesTwo.Position;
             enemyPositionthree = enemiesThree.Position;
@@ -246,11 +254,27 @@ namespace TucSpaceShooter
                     player.HandlePowerupCollision(powerups, pickUp);
                     powerup.SpawnPowerup(random, _graphics, powerupWidth, jetpack, shield, repair, doublePoints, triplePoints, powerups);
                     powerup.UpdatePowerups(gameTime, powerups, _graphics);
-                    enemiesOne.MoveToRandomPosition(_graphics);
+                    //enemiesOne.MoveToRandomPosition(_graphics);
+                    foreach (EnemyTypOne enemy in enemyTypOnesList.ToList()) 
+                    {
+                        enemy.MoveToRandomPosition(_graphics);
+                        enemy.Damage(_graphics);
+                    }
+                    foreach (EnemyTypeTwo enemy in enemyTypTwoList.ToList())
+                    {
+                        enemy.MoveToRandomPosition(_graphics);
+                        enemy.Damage(_graphics);
+                    }
+                    foreach (EnemyTypeThree enemy in enemyTypThreeList.ToList())
+                    {
+                        enemy.MoveToRandomPosition(_graphics);
+                        enemy.Damage(_graphics);
+                    }
                     enemiesTwo.MoveToRandomPosition(_graphics);
                     enemiesThree.MoveToRandomPosition(_graphics);
                     bossEnemy.MoveToRandomPosition(_graphics);
                     Bullet.UpdateAll(gameTime, player, shoot);
+      
                     break;
                 case GameStates.Highscore:
                     //kod för highscore
@@ -286,14 +310,38 @@ namespace TucSpaceShooter
                     Background.DrawBackground(bgrCounter, _spriteBatch, stageOneBgr);
                     player.DrawPlayer(_spriteBatch, playerShip, playerShipAcc, player, bgrCounter, playerShield);
                     DrawPowerups(_spriteBatch, powerups);
-                                        //enemy
-                    _spriteBatch.Draw(enemyShipOne, enemiesOne.Position, Color.White);
-                    _spriteBatch.Draw(enemyShipTwo, enemiesTwo.Position, Color.White);
-                    _spriteBatch.Draw(enemyShipThree, enemiesThree.Position, Color.White);
+
+                    player.DrawPlayerHealth(player, healthBar, healthPoint, healthEmpty, _spriteBatch);
+                     //enemy
+                    //_spriteBatch.Draw(enemyShipOne, enemiesOne.Position, Color.White);
+                    foreach(EnemyTypOne enemy in enemyTypOnesList)
+                    {
+                        if (enemy.EnemyHealth != 0) { 
+                        _spriteBatch.Draw(enemyShipOne, enemy.Position, Color.White);
+                            break;
+                        }
+                    }
+                    foreach(EnemyTypeTwo enemy in enemyTypTwoList)
+                    {
+                        if (enemy.EnemyHealth != 0) { 
+                            _spriteBatch.Draw(enemyShipTwo, enemiesTwo.Position, Color.White);                        
+                            break;
+                        }
+                    }
+                    foreach(EnemyTypeThree enemy in enemyTypThreeList)
+                    {
+                        if (enemy.EnemyHealth != 0) { 
+                        _spriteBatch.Draw(enemyShipThree, enemiesThree.Position, Color.White);
+                            break;
+                        }
+                    }
+                    
+
                     _spriteBatch.Draw(BossShip, bossEnemy.Position, Color.White);
 
                     
                     Bullet.DrawAll(_spriteBatch);
+
                     player.DrawPlayerHealth(player, healthBar, healthPoint, healthEmpty, _spriteBatch, powerUpBar, jetpack, shield, doublePoints, triplePoints);
                     _spriteBatch.End();
                     bgrCounter++;

@@ -15,8 +15,8 @@ namespace TucSpaceShooter
         int pxelToRight = 1;
         bool isDead = false;
         bool moveForward=true;
-        public EnmeyBoss(Vector2 position, GraphicsDeviceManager graphics) :
-            base(position, graphics)
+        public EnmeyBoss(Vector2 position, GraphicsDeviceManager graphics, int enemyHealth) :
+            base(position, graphics, enemyHealth)
         {
             this.position.X = graphics.PreferredBackBufferWidth / 2 - 30;
             this.position.Y = graphics.PreferredBackBufferHeight;
@@ -43,7 +43,7 @@ namespace TucSpaceShooter
                     position.Y -= movingSpeed;
                 }
 
-                if (position.Y <= 20 || position.Y >= graphics.PreferredBackBufferHeight - 60)
+                if (position.Y <= 30 || position.Y >= graphics.PreferredBackBufferHeight - 60)
                 {
                     moveBack = !moveBack;
                 }
@@ -54,9 +54,9 @@ namespace TucSpaceShooter
                 }
                 else
                 {
-                    position.X -= movingSpeed; // attacing 
-                    position.Y -= movingSpeed; // rolling back
-                    position.X -= movingSpeed; // last attack
+                    position.X -= movingSpeed;
+                    position.Y -= movingSpeed; 
+                    position.X -= movingSpeed; 
                 }
 
                 if (position.X <= 20 || position.X >= graphics.PreferredBackBufferWidth - 60)
