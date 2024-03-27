@@ -313,7 +313,7 @@ namespace TucSpaceShooter
                     player.DrawPlayer(_spriteBatch, playerShip, playerShipAcc, player, bgrCounter, playerShield);
                     DrawPowerups(_spriteBatch, powerups);
 
-                    player.DrawPlayerHealth(player, healthBar, healthPoint, healthEmpty, _spriteBatch);
+                    player.DrawPlayerHealth(player, healthBar, healthPoint, healthEmpty, _spriteBatch, powerUpBar, jetpack, shield, doublePoints, triplePoints);
                      //enemy
                     //_spriteBatch.Draw(enemyShipOne, enemiesOne.Position, Color.White);
                     foreach(EnemyTypOne enemy in enemyTypOnesList)
