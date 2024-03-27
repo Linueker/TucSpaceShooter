@@ -86,8 +86,11 @@ namespace TucSpaceShooter
                         {
                             ResetPosition(graphics);
                             player.points.AddPoints(player, EnemyType.Three);
+                            
                             break;
                         }
+                        Bullet.Bullets.Remove(bullet);
+                        break;
                     }
                 }
             }

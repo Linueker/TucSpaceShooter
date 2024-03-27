@@ -25,7 +25,7 @@ public class Points
                 basePoints = 1000;
                 break;
             case EnemyType.Boss:
-                basePoints = 3000;
+                basePoints = 10000;
                 break;
             default:
                 break;

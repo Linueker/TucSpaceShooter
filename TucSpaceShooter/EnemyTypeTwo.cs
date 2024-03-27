@@ -70,8 +70,11 @@ public class EnemyTypeTwo : Enemies
                     {
                         ResetPosition(graphics);
                         player.points.AddPoints(player, EnemyType.Two);
+                        
                         break;
                     }
+                    Bullet.Bullets.Remove(bullet);
+                    break;
                 }
             }
         }
