@@ -50,7 +50,7 @@ namespace TucSpaceShooter
         private EnemyTypeTwo enemiesTwo;
         private List<EnemyTypeThree> enemyTypThreeList = new List<EnemyTypeThree>();
         private EnemyTypeThree enemiesThree;
-        private EnmeyBoss bossEnemy;
+        private EnemeyBoss bossEnemy;
         private Texture2D enemyShipOne;
         private Texture2D enemyShipTwo;
         private Texture2D enemyShipThree;
@@ -190,22 +190,23 @@ namespace TucSpaceShooter
             SoundEffect.MasterVolume = 0.5f;
             Bullet.LoadContent(bulletTexture);
 
-            enemiesOne = new EnemyTypOne(enemyPosition, _graphics,10);
+            enemyShipOne = Content.Load<Texture2D>("EnemyY");
+            enemiesOne = new EnemyTypOne(enemyPosition, _graphics, enemyShipOne, 10);
             enemyTypOnesList.Add(enemiesOne);
-            enemiesTwo = new EnemyTypeTwo(enemyPositiontwo, _graphics,10);
+            enemyShipTwo = Content.Load<Texture2D>("EnemyYX");
+            enemiesTwo = new EnemyTypeTwo(enemyPositiontwo, _graphics, enemyShipTwo, 10);
             enemyTypTwoList.Add(enemiesTwo);
-            enemiesTwo.ResetPosition(_graphics);
-            enemiesThree = new EnemyTypeThree(enemyPositionthree, _graphics, 10);
+            //enemiesTwo.ResetPosition(_graphics);
+            enemyShipThree = Content.Load<Texture2D>("Enemy3X");
+            enemiesThree = new EnemyTypeThree(enemyPositionthree, _graphics, enemyShipThree, 10);
             enemyTypThreeList.Add(enemiesThree);
-            bossEnemy = new EnmeyBoss(enemyPositionBoss, _graphics, 50);
+            /*Boss*/
+            BossShip = Content.Load<Texture2D>("BossMonsterRnd");
+            bossEnemy = new EnemeyBoss(enemyPositionBoss, _graphics, BossShip, 10);
             enemyPosition = enemiesOne.Position;
             enemyPositiontwo = enemiesTwo.Position;
             enemyPositionthree = enemiesThree.Position;
             enemyPositionBoss = bossEnemy.Position;
-            enemyShipOne = Content.Load<Texture2D>("EnemyY");
-            enemyShipTwo = Content.Load<Texture2D>("EnemyYX");
-            enemyShipThree = Content.Load<Texture2D>("Enemy3X");
-            BossShip = Content.Load<Texture2D>("BossMonsterRnd");
 
             //Menu
             startButtonTexture = Content.Load<Texture2D>("StartButton");
@@ -320,20 +321,27 @@ namespace TucSpaceShooter
                         foreach (EnemyTypOne enemy in enemyTypOnesList.ToList())
                         {
                             enemy.MoveToRandomPosition(_graphics);
-                            enemy.Damage(_graphics, player);
+                            enemy.DamageToTheEnemy(_graphics, player);
+                            enemy.MakeDamageToPlayer(gameTime, player);
                         }
                         foreach (EnemyTypeTwo enemy in enemyTypTwoList.ToList())
                         {
                             enemy.MoveToRandomPosition(_graphics);
-                            enemy.Damage(_graphics, player);
+                            enemy.DamageToTheEnemy(_graphics, player);
+                            enemy.MakeDamageToPlayer(gameTime, player);
+
+
                         }
                         foreach (EnemyTypeThree enemy in enemyTypThreeList.ToList())
                         {
                             enemy.MoveToRandomPosition(_graphics);
-                            enemy.Damage(_graphics, player);
+                            enemy.DamageToTheEnemy(_graphics, player);
+                            enemy.MakeDamageToPlayer(gameTime, player);
                         }
                         enemiesTwo.MoveToRandomPosition(_graphics);
                         enemiesThree.MoveToRandomPosition(_graphics);
+                        bossEnemy.MoveToRandomPosition(_graphics);
+                        Bullet.UpdateAll(gameTime, player, shoot);
                     }
                     else
                     {
@@ -343,7 +351,7 @@ namespace TucSpaceShooter
                             bossMusicIsPlaying = true;
                         }
                         bossEnemy.MoveToRandomPosition(_graphics);
-                        bossEnemy.Damage(_graphics, player);
+                        bossEnemy.DamageToTheEnemy(_graphics, player);
                     }
                     
                     Bullet.UpdateAll(gameTime, player, shoot);
@@ -408,30 +416,9 @@ namespace TucSpaceShooter
                     //_spriteBatch.Draw(enemyShipOne, enemiesOne.Position, Color.White);
                     if (drawEnemy)
                     {
-                        foreach (EnemyTypOne enemy in enemyTypOnesList)
-                        {
-                            if (enemy.EnemyHealth != 0)
-                            {
-                                _spriteBatch.Draw(enemyShipOne, new Vector2(enemiesOne.Position.X - 16, enemiesOne.Position.Y), Color.White);
-                                break;
-                            }
-                        }
-                        foreach (EnemyTypeTwo enemy in enemyTypTwoList)
-                        {
-                            if (enemy.EnemyHealth != 0)
-                            {
-                                _spriteBatch.Draw(enemyShipTwo, new Vector2(enemiesTwo.Position.X - 27, enemiesTwo.Position.Y), Color.White);
-                                break;
-                            }
-                        }
-                        foreach (EnemyTypeThree enemy in enemyTypThreeList)
-                        {
-                            if (enemy.EnemyHealth != 0)
-                            {
-                                _spriteBatch.Draw(enemyShipThree, new Vector2(enemiesThree.Position.X -24, enemiesThree.Position.Y), Color.White);
-                                break;
-                            }
-                        }
+                        enemiesOne.DrawEnemy(_spriteBatch);
+                        enemiesTwo.DrawEnemy(_spriteBatch);
+                        enemiesThree.DrawEnemy(_spriteBatch);
                     }
                     else
                     {

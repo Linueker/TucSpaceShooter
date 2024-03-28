@@ -17,43 +17,56 @@ namespace TucSpaceShooter
         private bool moveRight = true;
         private const int center = 16;
         private bool isDead = false;
-        private static List<EnemyTypeTwo> enemyTypeTwoList = new List<EnemyTypeTwo>();
         private bool isNotDead = true;
         bool moveBack = true;
-        private static List<EnemyTypOne> enemyTypeOneList= new List<EnemyTypOne>();
+        float timerForDamageThePlayer = 0f;
+        float damageDuration = 9f;
+        bool damageEnemy = true;
+        private static List<EnemyTypOne> enemyTypeOneList = new List<EnemyTypOne>();
         public bool IsNotDead { get { return isDead; } }
 
-        public EnemyTypOne(Vector2 position, GraphicsDeviceManager graphics, int enemyHealth) :
-            base(position, graphics, enemyHealth)
+        public EnemyTypOne(Vector2 position, GraphicsDeviceManager graphics, Texture2D enemyTextureOne, int enemyHealth) :
+            base(position, graphics, enemyTextureOne, enemyHealth)
         {
             this.position.X = graphics.PreferredBackBufferWidth / 2 - 30;
             this.position.Y = graphics.PreferredBackBufferHeight;
             enemyTypeOneList.Add(this);
         }
-        public override void MoveToRandomPosition(GraphicsDeviceManager graphics )
+        public override void MoveToRandomPosition(GraphicsDeviceManager graphics)
         {
             if (isNotDead)
-            { 
-            if (position.Y < graphics.PreferredBackBufferHeight)
             {
-                position.Y += 1;
+                if (position.Y < graphics.PreferredBackBufferHeight)
+                {
+                    position.Y += 1;
+                }
+                else
+                {
+                    position.Y = 0;
+                }
+                if (moveRight)
+                {
+                    position.X += movingSpeed;
+                }
+                else
+                {
+                    position.X -= movingSpeed;
+                }
+                if (position.X <= 20 || position.X >= graphics.PreferredBackBufferWidth - 60)
+                {
+                    moveRight = !moveRight;
+                }
             }
-            else
+        }
+        public override void DrawEnemy(SpriteBatch spriteBatch)
+        {
+            foreach (EnemyTypOne enemy in enemyTypeOneList)
             {
-                position.Y = 0;
-            }
-            if (moveRight)
-            {
-                position.X += movingSpeed;
-            }
-            else
-            {
-                position.X -= movingSpeed;
-            }
-            if (position.X <= 20 || position.X >= graphics.PreferredBackBufferWidth - 60)
-            {
-                moveRight = !moveRight;
-            }
+                if (enemy.EnemyHealth != 0)
+                {
+                    spriteBatch.Draw(enemy.GetEnemyTexture(), enemy.Position, Color.White);
+                    break;
+                }
             }
         }
         public void ResetPosition(GraphicsDeviceManager graphics)
@@ -63,8 +76,7 @@ namespace TucSpaceShooter
             position.Y = random.Next(-graphics.PreferredBackBufferHeight, 0);
         }
 
-        // EnemyTypOne-klassen
-        public override void Damage(GraphicsDeviceManager graphics, Player player)
+        public override void DamageToTheEnemy(GraphicsDeviceManager graphics, Player player)
         {
             if (isNotDead)
             {
@@ -78,13 +90,34 @@ namespace TucSpaceShooter
                         {
                             ResetPosition(graphics);
                             player.points.AddPoints(player, EnemyType.One);
-                            
                             break;
                         }
                         Bullet.Bullets.Remove(bullet);
                         break;
                     }
                 }
+            }
+        }
+        public override void MakeDamageToPlayer(GameTime gameTime, Player player)
+        {
+            if (damageEnemy)
+            {
+                timerForDamageThePlayer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                if (timerForDamageThePlayer >= damageDuration)
+                {
+                    damageEnemy = false;
+                }
+
+                float makeDamageToPlayer = Vector2.Distance(position, player.Position);
+                float damageRadius = center;
+                if (makeDamageToPlayer <= damageRadius)
+                {
+                    player.Health--;
+                    damageEnemy = false;
+                }
+
+
             }
         }
     }
