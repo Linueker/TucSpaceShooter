@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,12 +15,16 @@ public class EnemyTypeTwo : Enemies
     public bool isNotDead = true;
     private const int center = 27;
     bool moveBack = true;
+    float timerForDamageThePlayer = 0f;
+    float damageDuration = 9f;//9
+    bool damageEnemy = true;
 
-    public EnemyTypeTwo(Vector2 position, GraphicsDeviceManager graphics, int enemyHealth) :
-        base(position, graphics, enemyHealth)
+    public EnemyTypeTwo(Vector2 position, GraphicsDeviceManager graphics, Texture2D enemyTextureTwo, int enemyHealth) :
+        base(position, graphics, enemyTextureTwo, enemyHealth)
     {
         this.position.X = graphics.PreferredBackBufferWidth / 2 - 30;
         this.position.Y = graphics.PreferredBackBufferHeight;
+        enemyTypeTwoList.Add(this);
     }
 
     public override void MoveToRandomPosition(GraphicsDeviceManager graphics)
@@ -48,6 +53,17 @@ public class EnemyTypeTwo : Enemies
             }
         }
     }
+    public override void DrawEnemy(SpriteBatch spriteBatch)
+    {
+        foreach (EnemyTypeTwo enemy in enemyTypeTwoList)
+        {
+            if (enemy.EnemyHealth != 0)
+            {
+                spriteBatch.Draw(enemy.GetEnemyTexture(), enemy.Position, Color.White);
+                break;
+            }
+        }
+    }
 
     public void ResetPosition(GraphicsDeviceManager graphics)
     {
@@ -56,7 +72,7 @@ public class EnemyTypeTwo : Enemies
         position.Y = random.Next(-graphics.PreferredBackBufferHeight, 0);
     }
 
-    public override void Damage(GraphicsDeviceManager graphics, Player player)
+    public override void DamageToTheEnemy(GraphicsDeviceManager graphics, Player player)
     {
         if (isNotDead)
         {
@@ -70,7 +86,6 @@ public class EnemyTypeTwo : Enemies
                     {
                         ResetPosition(graphics);
                         player.points.AddPoints(player, EnemyType.Two);
-                        
                         break;
                     }
                     Bullet.Bullets.Remove(bullet);
@@ -79,9 +94,25 @@ public class EnemyTypeTwo : Enemies
             }
         }
     }
+    public override void MakeDamageToPlayer(GameTime gameTime, Player player)
+    {
+        if (damageEnemy)
+        {
+            timerForDamageThePlayer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (timerForDamageThePlayer >= damageDuration)
+            {
+                damageEnemy = false;
+            }
+
+            float makeDamageToPlayer = Vector2.Distance(position, player.Position);
+            float damageRadius = center;
+            if (makeDamageToPlayer <= damageRadius)
+            {
+                player.Health--;
+                damageEnemy = false;
+            }
+
+        }
+    }
 }
-/*
- * Draw metod för all enemy
- * health
- * Boss position 
- */
