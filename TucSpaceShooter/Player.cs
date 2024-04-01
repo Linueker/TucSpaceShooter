@@ -167,7 +167,7 @@ namespace TucSpaceShooter
                 spriteBatch.Draw(playerShield, new Vector2(player.position.X - 12, player.position.Y - 10), Color.White);
             }
             //Sänker spelar-health snabbt för att komma till GameOver-state
-            //if (counter % 235 == 0)
+            //if (counter % 2 == 0)
             //{
             //    player.health--;
             //}
