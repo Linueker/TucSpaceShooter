@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics.Metrics;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using static TucSpaceShooter.Powerup;
@@ -29,6 +30,11 @@ namespace TucSpaceShooter
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
+        private KeyboardState keyboardState;
+        private Keys[] keys;
+        private string userInput;
+        private HighscoreScreen playerHighscore;
+        
         // Play
         private static GameStates currentState;
         private Player player;
@@ -97,7 +103,7 @@ namespace TucSpaceShooter
         private Rectangle highscoreButtonBounds;
         private Texture2D quitButtonTexture;
         private Rectangle quitButtonBounds;
-        Song menuMusic;
+        private Song menuMusic;
         private bool menuMusicIsPlaying;
         private Texture2D menuBackground;
         private Texture2D[] bossEye;
@@ -117,7 +123,13 @@ namespace TucSpaceShooter
         private Texture2D highscoreBoard;
         private Texture2D backButtonTexture;
         private Rectangle backButtonBounds;
-        
+        private Rectangle saveButtonBounds;
+        private Button saveButton;
+        List<string> highscores;
+        private string topTen;
+        private bool victory;
+        private int placing;
+
 
         //GameOver
         private Texture2D gameOverImg;
@@ -157,13 +169,25 @@ namespace TucSpaceShooter
             _graphics.PreferredBackBufferWidth = 540;
             _graphics.ApplyChanges();
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+            Fonts.LoadContent(Content);
+            userInput = "";
+            MediaPlayer.Volume = 0.5f;
+            SoundEffect.MasterVolume = 0.5f;
 
+            //Player
             playerShip = Content.Load<Texture2D>("TUCShip");
             playerShipAcc = Content.Load<Texture2D>("TUCShipFire");
             stageOneBgr = Content.Load<Texture2D>("Background_2");
             player = new Player(playerPosition, _graphics, 5);
             playerPosition = player.Position;
+            healthBar = Content.Load<Texture2D>("LeftHealthContainer");
+            healthPoint = Content.Load<Texture2D>("FullHeartRed");
+            healthEmpty = Content.Load<Texture2D>("EmptyHeartNew");
+            gameMusic = Content.Load<Song>("kim-lightyear-angel-eyes-vision-ii-189557");
+            gameMusicIsPlaying = false;
+            playerHighscore = new HighscoreScreen(backButtonTexture,saveButtonBounds);
 
+            //PowerUps
             powerup = new Powerup(playerPosition);
             jetpack = Content.Load<Texture2D>("JetpackShip");
             shield = Content.Load<Texture2D>("ShieldShip");
@@ -171,25 +195,17 @@ namespace TucSpaceShooter
             doublePoints = Content.Load<Texture2D>("2xPoints");
             triplePoints = Content.Load<Texture2D>("3xPoints");
             powerUpBar = Content.Load<Texture2D>("RightHealthContainer");
-
             playerShield = Content.Load<Texture2D>("PlayerShield");
-            
             pickUp = Content.Load<SoundEffect>("power_up_grab-88510");
-
-            Fonts.LoadContent(Content);
-
             powerupWidth = 15;
             powerupHeight = 15;
-
-            healthBar = Content.Load<Texture2D>("LeftHealthContainer");
-            healthPoint = Content.Load<Texture2D>("FullHeartRed");
-            healthEmpty = Content.Load<Texture2D>("EmptyHeartNew");
-
+            
+            //Bullets
             bulletTexture = Content.Load<Texture2D>("PlayerBullets");
             shoot = Content.Load<SoundEffect>("laser-gun-shot-sound-future-sci-fi-lazer-wobble-chakongaudio-174883");
-            SoundEffect.MasterVolume = 0.5f;
             Bullet.LoadContent(bulletTexture);
 
+            //Enemies
             enemyShipOne = Content.Load<Texture2D>("EnemyY");
             enemiesOne = new EnemyTypOne(enemyPosition, _graphics, enemyShipOne, 10);
             enemyTypOnesList.Add(enemiesOne);
@@ -207,25 +223,20 @@ namespace TucSpaceShooter
             enemyPositiontwo = enemiesTwo.Position;
             enemyPositionthree = enemiesThree.Position;
             enemyPositionBoss = bossEnemy.Position;
+            bossMusic = Content.Load<Song>("a-hero-of-the-80s_v2_60sec-178277");
+            bossMusicIsPlaying = false;
+
 
             //Menu
             startButtonTexture = Content.Load<Texture2D>("StartButton");
             highscoreButtonTexture = Content.Load<Texture2D>("HiscoreButton");
             quitButtonTexture = Content.Load<Texture2D>("QuitButton");
-
             startButtonBounds = new Rectangle((_graphics.PreferredBackBufferWidth-startButtonTexture.Width)/2,285, startButtonTexture.Width, startButtonTexture.Height);
             highscoreButtonBounds = new Rectangle((_graphics.PreferredBackBufferWidth-highscoreButtonTexture.Width)/2,335, highscoreButtonTexture.Width, highscoreButtonTexture.Height);
             quitButtonBounds = new Rectangle((_graphics.PreferredBackBufferWidth-quitButtonTexture.Width)/2,385,quitButtonTexture.Width, quitButtonTexture.Height);
             menu = new MenuScreen(startButtonTexture, startButtonBounds, highscoreButtonTexture, highscoreButtonBounds, quitButtonTexture, quitButtonBounds);
-
             menuMusic = Content.Load<Song>("electric-dreams-167873");
             menuMusicIsPlaying = false;
-            gameMusic = Content.Load<Song>("kim-lightyear-angel-eyes-vision-ii-189557");
-            gameMusicIsPlaying = false;
-            bossMusic = Content.Load<Song>("a-hero-of-the-80s_v2_60sec-178277");
-            bossMusicIsPlaying = false;
-            MediaPlayer.Volume = 0.5f;
-
             menuBackground = Content.Load<Texture2D>("Background_2");
             bossEye = new Texture2D[24];
             for (int i = 1; i <= 24; i++)
@@ -233,13 +244,11 @@ namespace TucSpaceShooter
                 bossEye[i - 1] = Content.Load<Texture2D>("BossEye" + i.ToString());
             }
             menuForeground = Content.Load<Texture2D>("Foreground");
-
             menuTitle = new Texture2D[10];
             for (int i = 1; i <= 10; i++)
             {
                 menuTitle[i - 1] = Content.Load<Texture2D>("MenuTitle" + i.ToString());
             }
-
 
             //Highscore
             highscoreBackground = Content.Load<Texture2D>("Background_2");
@@ -251,12 +260,18 @@ namespace TucSpaceShooter
             }
             backButtonTexture = Content.Load<Texture2D>("BackButton");
             backButtonBounds = new Rectangle(0,0/*(_graphics.PreferredBackBufferHeight-backButtonTexture.Height)*/,backButtonTexture.Width,backButtonTexture.Height);
+            saveButtonBounds = new Rectangle(240,500/*(_graphics.PreferredBackBufferHeight-backButtonTexture.Height)*/, backButtonTexture.Width, backButtonTexture.Height);
             highscoreMenu = new HighscoreScreen(backButtonTexture, backButtonBounds);
+            highscores = new List<string>();
+            topTen = "";
+            victory = false;
+            placing = 1;
 
             //GameOver
             gameOverImg = Content.Load<Texture2D>("GameOverTitle");
             endSong = Content.Load<Song>("lady-of-the-80x27s-128379");
             endSongIsPlaying = false;
+            saveButton = new Button(backButtonTexture, saveButtonBounds);
 
         }
 
@@ -369,7 +384,20 @@ namespace TucSpaceShooter
                             currentHighscoreTitle = 0;
                         }
                     }
-                    highscoreMenu.ClickButton();
+                    highscoreMenu.ClickButton(victory);
+                    if (!victory)
+                    {
+                        highscores = HighscoreScreen.ReadJson();
+                        highscores.Sort();
+                        highscores.Reverse();
+
+                        foreach (var score in highscores.Take(10))
+                        {
+                            topTen += ($"{placing}:  {score}");
+                            placing++;
+                        }
+                        victory = true;
+                    }
                     break;
 
                 case GameStates.GameOver:
@@ -378,6 +406,11 @@ namespace TucSpaceShooter
                         MediaPlayer.Play(endSong);
                         endSongIsPlaying = true;
                     }
+                    keyboardState = Keyboard.GetState();
+                    keys = keyboardState.GetPressedKeys();
+                    userInput = HighscoreScreen.EnterPlayerName(userInput, keys, keyboardState);
+                    playerHighscore.Save(player, userInput, highscores, saveButton);
+
                     break;
 
             }
@@ -425,11 +458,8 @@ namespace TucSpaceShooter
                         _spriteBatch.Draw(BossShip, new Vector2(bossEnemy.Position.X-60, bossEnemy.Position.Y), Color.White);
                     }
                     Bullet.DrawAll(_spriteBatch);
-
                     Fonts.DrawText(_spriteBatch, "SCORE: " + player.points.GetCurrentPoints(), new Vector2(10, 10), Color.White);
-
                     player.DrawPlayerHealth(player, healthBar, healthPoint, healthEmpty, _spriteBatch, powerUpBar, jetpack, shield, doublePoints, triplePoints);
-
                     _spriteBatch.End();
                     bgrCounter++;
                     break;
@@ -440,8 +470,10 @@ namespace TucSpaceShooter
                     _spriteBatch.Draw(highscoreBackground, Vector2.Zero, Color.White);
                     _spriteBatch.Draw(highscoreBoard, new Vector2((_graphics.PreferredBackBufferWidth - highscoreBoard.Width)/2,140), Color.White);
                     _spriteBatch.Draw(highscoreTitle[currentHighscoreTitle], new Vector2((_graphics.PreferredBackBufferWidth - highscoreTitle[currentHighscoreTitle].Width)/2,0), Color.White);
+                    Fonts.DrawText(_spriteBatch, topTen, new Vector2(160, 180), Color.White);
+                    
 
-                    highscoreMenu.Draw(_spriteBatch);
+                    highscoreMenu.DrawBackbutton(_spriteBatch);
 
                     _spriteBatch.End();
                     break;
@@ -452,7 +484,10 @@ namespace TucSpaceShooter
                     _spriteBatch.Draw(gameOverImg, new Vector2(100, 100), Color.White);
                     Fonts.DrawText(_spriteBatch, "FINAL SCORE: \n" + player.points.GetCurrentPoints(), new Vector2(175, 300), Color.White);
                     Fonts.DrawText(_spriteBatch, "ENTER NAME: \n", new Vector2(175, 430), Color.White);
+                    Fonts.DrawText(_spriteBatch, userInput, new Vector2(175, 460), Color.White);
+                    _spriteBatch.Draw(backButtonTexture, saveButtonBounds, Color.White);    
                     bgrCounter++;
+
                     _spriteBatch.End();
                     break;
                 case GameStates.Quit:
