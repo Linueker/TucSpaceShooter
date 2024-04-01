@@ -218,7 +218,7 @@ namespace TucSpaceShooter
             enemyTypThreeList.Add(enemiesThree);
             /*Boss*/
             BossShip = Content.Load<Texture2D>("BossMonsterRnd");
-            bossEnemy = new EnemeyBoss(enemyPositionBoss, _graphics, BossShip, 10);
+            bossEnemy = new EnemeyBoss(enemyPositionBoss, _graphics, BossShip, 100);
             enemyPosition = enemiesOne.Position;
             enemyPositiontwo = enemiesTwo.Position;
             enemyPositionthree = enemiesThree.Position;
@@ -355,7 +355,10 @@ namespace TucSpaceShooter
                         }
                         enemiesTwo.MoveToRandomPosition(_graphics);
                         enemiesThree.MoveToRandomPosition(_graphics);
-                        bossEnemy.MoveToRandomPosition(_graphics);
+                        if (!drawEnemy)
+                        {
+                            bossEnemy.MoveToRandomPosition(_graphics);
+                        }
                         Bullet.UpdateAll(gameTime, player, shoot);
                     }
                     else
