@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,13 +18,17 @@ namespace TucSpaceShooter
         private int movingSpeed = 1;
         private bool moveRight = true;
         public bool isNotDead = true;
+        float timerForDamageThePlayer = 0f;
+        float damageDuration = 9f;//9
+        bool damageEnemy = true;
 
 
-        public EnemyTypeThree(Vector2 position, GraphicsDeviceManager graphics, int enemyHealth) :
-            base(position, graphics, enemyHealth)
+        public EnemyTypeThree(Vector2 position, GraphicsDeviceManager graphics, Texture2D enemyTextureThree, int enemyHealth) :
+            base(position, graphics, enemyTextureThree, enemyHealth)
         {
             this.position.X = graphics.PreferredBackBufferWidth / 2 - 30;
             this.position.Y = graphics.PreferredBackBufferHeight;
+            enemyTypeThreeList.Add(this);
         }
         public override void MoveToRandomPosition(GraphicsDeviceManager graphics)
         {
@@ -66,13 +71,24 @@ namespace TucSpaceShooter
                 }
             }
         }
+        public override void DrawEnemy(SpriteBatch spriteBatch)
+        {
+            foreach (EnemyTypeThree enemy in enemyTypeThreeList)
+            {
+                if (enemy.EnemyHealth != 0)
+                {
+                    spriteBatch.Draw(enemy.GetEnemyTexture(), enemy.Position, Color.White);
+                    break;
+                }
+            }
+        }
         public void ResetPosition(GraphicsDeviceManager graphics)
         {
             Random random = new Random();
             position.X = random.Next(graphics.PreferredBackBufferWidth - 60);
             position.Y = random.Next(-graphics.PreferredBackBufferHeight, 0);
         }
-        public override void Damage(GraphicsDeviceManager graphics, Player player)
+        public override void DamageToTheEnemy(GraphicsDeviceManager graphics, Player player)
         {
             if (isNotDead)
             {
@@ -86,13 +102,33 @@ namespace TucSpaceShooter
                         {
                             ResetPosition(graphics);
                             player.points.AddPoints(player, EnemyType.Three);
-                            
                             break;
                         }
                         Bullet.Bullets.Remove(bullet);
                         break;
                     }
                 }
+            }
+        }
+        public override void MakeDamageToPlayer(GameTime gameTime, Player player)
+        {
+            if (damageEnemy)
+            {
+                timerForDamageThePlayer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                if (timerForDamageThePlayer >= damageDuration)
+                {
+                    damageEnemy = false;
+                }
+
+                float makeDamageToPlayer = Vector2.Distance(position, player.Position);
+                float damageRadius = center;
+                if (makeDamageToPlayer <= damageRadius)
+                {
+                    player.Health--;
+                    damageEnemy = false;
+                }
+
             }
         }
     }

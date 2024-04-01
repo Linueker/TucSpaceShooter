@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TucSpaceShooter
 {
-    public class EnmeyBoss : Enemies
+    public class EnemeyBoss : Enemies
     {
         bool moveRight = true;
         bool moveLeft = false;
@@ -17,8 +18,8 @@ namespace TucSpaceShooter
         int pxelToRight = 1;
         bool isDead = false;
         bool moveForward=true;
-        public EnmeyBoss(Vector2 position, GraphicsDeviceManager graphics, int enemyHealth) :
-            base(position, graphics, enemyHealth)
+        public EnemeyBoss(Vector2 position, GraphicsDeviceManager graphics, Texture2D enemyTextureTwo, int enemyHealth) :
+            base(position, graphics, enemyTextureTwo, enemyHealth)
         {
             this.position.X = graphics.PreferredBackBufferWidth / 2 -5;
             this.position.Y = -300;
@@ -51,7 +52,7 @@ namespace TucSpaceShooter
                 }
             }
         }
-        public override void Damage(GraphicsDeviceManager graphics, Player player)
+        public override void DamageToTheEnemy(GraphicsDeviceManager graphics, Player player)
         {
             if (!isDead)
             {
