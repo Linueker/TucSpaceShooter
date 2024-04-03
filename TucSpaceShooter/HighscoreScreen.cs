@@ -30,9 +30,18 @@ namespace TucSpaceShooter
 
             if (backButton.IsClicked(mouseState))
             {
-                Game1.CurrentState = GameStates.Menu;
-                victory = false;
+                
+                ResetGame(victory);
+                
             }
+        }
+        private void ResetGame(bool victory)
+        {
+            // Återställ spelvariabler, positioner, poäng osv. till det ursprungliga tillståndet
+            // Exempel:
+            Game1.CurrentState = GameStates.Menu;
+            victory = false;
+            // Återställ andra variabler och objekt till deras ursprungliga tillstånd
         }
 
         public void DrawBackbutton(SpriteBatch spriteBatch)

@@ -20,15 +20,16 @@ public class EnemyTypeTwo : Enemies
     float timerForDamageThePlayer = 0f;
     float damageDuration = 9f;//9
     bool damageEnemy = true;
-    private Vector2 position;
     
-    
+
+    public static List<EnemyTypeTwo> EnemyTypeTwoList { get => enemyTypeTwoList; set => enemyTypeTwoList = value; }
 
     public EnemyTypeTwo(Vector2 position, GraphicsDeviceManager graphics, Texture2D enemyTextureTwo, int enemyHealth) :
         base(position, graphics, enemyTextureTwo, enemyHealth)
     {
         this.position.X = graphics.PreferredBackBufferWidth / 2 - 30;
         this.position.Y = graphics.PreferredBackBufferHeight;
+        enemyHealth = 10;
         enemyTypeTwoList.Add(this);
     }
 
@@ -91,6 +92,7 @@ public class EnemyTypeTwo : Enemies
                     if (EnemyHealth <= 0)
                     {
                         ResetPosition(graphics);
+                        EnemyHealth = 10;
                         player.points.AddPoints(player, EnemyType.Two);
                         break;
                     }
