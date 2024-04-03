@@ -95,8 +95,7 @@ public class EnemyTypeTwo : Enemies
                     EnemyHealth--;
                     if (EnemyHealth <= 0)
                     {
-                        ResetPosition(graphics);
-                        EnemyHealth = 10;
+                        //ResetPosition(graphics);
                         player.points.AddPoints(player, EnemyType.Two);
                         break;
                     }
