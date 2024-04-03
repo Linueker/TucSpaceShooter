@@ -16,6 +16,7 @@ namespace TucSpaceShooter
         private Button backButton;
         private static bool keyPressed = false;
         static string PATH = "scores.json";
+        
 
         public HighscoreScreen(Texture2D backButtonTexture, Rectangle backButtonBounds)
         {
@@ -97,10 +98,8 @@ namespace TucSpaceShooter
             {
                 AddStringToJson($"{player.points.GetCurrentPoints()} - {userInput} \n", highscores);
                 Game1.CurrentState = GameStates.Highscore;
-                
             }
 
         }
-       
     }
 }
