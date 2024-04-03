@@ -447,7 +447,7 @@ namespace TucSpaceShooter
                             bossMusicIsPlaying = true;
                         }
                         bossEnemy.MoveToRandomPosition(_graphics);
-                        bossEnemy.DamageToTheEnemy(_graphics, player);
+                        bossEnemy.DamageToTheEnemy(_graphics, player, _spriteBatch);
                         bossEnemy.BossBulletCollision(player);  
                     }
                   

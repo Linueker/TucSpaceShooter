@@ -36,7 +36,7 @@ namespace TucSpaceShooter
             this.position.X = graphics.PreferredBackBufferWidth / 2 - 30;
             this.position.Y = graphics.PreferredBackBufferHeight;
             enemyTypeOneList.Add(this);
-            enemyHealth = 5;
+            EnemyHealth = 5;
         }
         public override void MoveToRandomPosition(GraphicsDeviceManager graphics)
         {
@@ -96,8 +96,7 @@ namespace TucSpaceShooter
                         EnemyHealth--;
                         if (EnemyHealth <= 0)
                         {
-                            ResetPosition(graphics);
-                            EnemyHealth = 5;
+                            //ResetPosition(graphics);
                             player.points.AddPoints(player, EnemyType.One);
                             break;
                         }
