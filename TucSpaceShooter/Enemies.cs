@@ -62,7 +62,7 @@ namespace TucSpaceShooter
         public virtual void MoveToRandomPosition(GraphicsDeviceManager graphics)
         {
         }
-        public virtual void DamageToTheEnemy(GraphicsDeviceManager graphics, Player player)
+        public virtual void DamageToTheEnemy(GraphicsDeviceManager graphics, Player player, SpriteBatch spriteBatch)
         {
         }
 

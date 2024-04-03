@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
@@ -140,12 +141,23 @@ namespace TucSpaceShooter
         private Song endSong;
         private bool endSongIsPlaying;
 
-
         //GameTimer
         float timer = 0f;
         //Sätter tiden för hur länge fiender ska spawnas innan bossen kommer (sekunder + f). Höj om banan ska va längre. 
         float enemyDuration = 60f;
         bool drawEnemy = true;
+
+        //Explosion
+        private Texture2D[] bossExplosion;
+        private Texture2D[] explosion;
+        private int currentExplosion;
+        private int explosionCounter;
+        private float explosionTimer;
+        private bool drawExplosionOne = true;
+        private bool drawExplosionTwo = true;
+        private bool drawExplosionThree = true;
+        private bool drawExplosionBoss = true;
+
 
         public static GameStates CurrentState { get => currentState; set => currentState = value; }
 
@@ -211,6 +223,18 @@ namespace TucSpaceShooter
             RightBulletTexture = Content.Load<Texture2D>("EnemyBulletRight");
             shoot = Content.Load<SoundEffect>("laser-gun-shot-sound-future-sci-fi-lazer-wobble-chakongaudio-174883");
             Bullet.LoadContent(bulletTexture, enemyBulletTexture, LeftBulletTexture, RightBulletTexture);
+
+            // Ladda explosionstexterna från Content
+            explosion = new Texture2D[7];
+            for (int i = 1; i <= 7; i++)
+            {
+                explosion[i - 1] = Content.Load<Texture2D>("Explosion" + i.ToString());
+            }
+            bossExplosion = new Texture2D[7];
+            for (int i = 1; i <= 7; i++)
+            {
+                bossExplosion[i - 1] = Content.Load<Texture2D>("BossExplosion" + i.ToString());
+            }
 
             //Enemies
             enemyShipOne = Content.Load<Texture2D>("EnemyY");
@@ -332,6 +356,46 @@ namespace TucSpaceShooter
                         drawEnemy = false;
                     }
 
+                    explosionTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    if (explosionTimer >= 0.02f) // Justera tiden för att styra hastigheten på explosionen
+                    {
+                        explosionTimer = 0f;
+                        explosionCounter++;
+                        if (explosionCounter >= 7)
+                        {
+                            explosionCounter = 0;
+                            currentExplosion++;
+                            if (currentExplosion >= explosion.Length)
+                            {
+                                currentExplosion = 0;
+                                // Återställ fienden när explosionen har loopat en gång
+                                if (enemiesOne.EnemyHealth <= 0)
+                                {
+                                    enemiesOne.ResetPosition(_graphics);
+                                    currentExplosion = 0;
+                                    
+                                }
+                                if (enemiesTwo.EnemyHealth <= 0)
+                                {
+                                    enemiesTwo.ResetPosition(_graphics);
+                                    currentExplosion = 0; // Återställ explosionens räknare när fienden återställs
+                                    
+                                }
+                                if (enemiesThree.EnemyHealth <= 0)
+                                {
+                                    enemiesThree.ResetPosition(_graphics);
+                                    currentExplosion = 0; // Återställ explosionens räknare när fienden återställs
+                                    
+                                }
+
+                                if (bossEnemy.EnemyHealth <= 0)
+                                {
+                                    currentExplosion = 0;
+                                }
+                            }
+                        }
+                    }
+
                     base.Update(gameTime);
                     Bullet.UpdatePlayerBullets(gameTime, player, shoot);
                     Bullet.UpdateEnemyBullets(gameTime, enemiesOne, enemiesThree, enemiesTwo, bossEnemy);
@@ -345,21 +409,21 @@ namespace TucSpaceShooter
                         foreach (EnemyTypOne enemy in enemyTypOnesList)
                         {
                             enemy.MoveToRandomPosition(_graphics);
-                            enemy.DamageToTheEnemy(_graphics, player);
+                            enemy.DamageToTheEnemy(_graphics, player, _spriteBatch);
                             enemy.MakeDamageToPlayer(gameTime, player);
                             enemy.EnemyBulletCollision(player);
                         }
                         foreach (EnemyTypeTwo enemy in enemyTypTwoList)
                         {
                             enemy.MoveToRandomPosition(_graphics);
-                            enemy.DamageToTheEnemy(_graphics, player);
+                            enemy.DamageToTheEnemy(_graphics, player, _spriteBatch);
                             enemy.MakeDamageToPlayer(gameTime, player);
                             enemy.EnemyBulletCollision(player);
                         }
                         foreach (EnemyTypeThree enemy in enemyTypThreeList)
                         {
                             enemy.MoveToRandomPosition(_graphics);
-                            enemy.DamageToTheEnemy(_graphics, player);
+                            enemy.DamageToTheEnemy(_graphics, player, _spriteBatch);
                             enemy.MakeDamageToPlayer(gameTime, player);
                             enemy.EnemyBulletCollision(player);
                         }
@@ -386,9 +450,7 @@ namespace TucSpaceShooter
                         bossEnemy.DamageToTheEnemy(_graphics, player);
                         bossEnemy.BossBulletCollision(player);  
                     }
-                    
-                    
-
+                  
                     break;
                 case GameStates.Highscore:
                     //kod för highscore
@@ -476,6 +538,37 @@ namespace TucSpaceShooter
                     {
                         _spriteBatch.Draw(BossShip, new Vector2(bossEnemy.Position.X-60, bossEnemy.Position.Y), Color.White);
                         Bullet.DrawBossBullets(_spriteBatch);   
+                    }
+
+                    if (drawExplosionOne)
+                    {
+                        if (enemiesOne.EnemyHealth <= 0)
+                        {
+                            _spriteBatch.Draw(explosion[currentExplosion], new Vector2(enemiesOne.Position.X - 16, enemiesOne.Position.Y - 10), Color.White);
+                        }
+                    }
+                    if (drawExplosionTwo)
+                    {
+                        if (enemiesTwo.EnemyHealth <= 0)
+                        {
+                            _spriteBatch.Draw(explosion[currentExplosion], new Vector2(enemiesTwo.Position.X - 8, enemiesTwo.Position.Y - 10), Color.White);
+                        }
+                    }
+                    if (drawExplosionThree)
+                    {
+                        if (enemiesThree.EnemyHealth <= 0)
+                        {
+                            _spriteBatch.Draw(explosion[currentExplosion], new Vector2(enemiesThree.Position.X - 8, enemiesThree.Position.Y - 10), Color.White);
+
+                        }
+                    }
+
+                    if (drawExplosionBoss)
+                    {
+                        if (bossEnemy.EnemyHealth <= 0)
+                        {
+                            _spriteBatch.Draw(bossExplosion[currentExplosion], new Vector2(bossEnemy.Position.X, bossEnemy.Position.Y), Color.White);
+                        }
                     }
                     
                     Bullet.DrawPlayerBullets(_spriteBatch);

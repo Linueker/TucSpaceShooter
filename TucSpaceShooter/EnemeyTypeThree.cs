@@ -89,8 +89,9 @@ namespace TucSpaceShooter
             Random random = new Random();
             position.X = random.Next(graphics.PreferredBackBufferWidth - 60);
             position.Y = random.Next(-graphics.PreferredBackBufferHeight, 0);
+            EnemyHealth = 8;
         }
-        public override void DamageToTheEnemy(GraphicsDeviceManager graphics, Player player)
+        public override void DamageToTheEnemy(GraphicsDeviceManager graphics, Player player, SpriteBatch spriteBatch)
         {
             if (isNotDead)
             {
@@ -104,6 +105,7 @@ namespace TucSpaceShooter
                         {
                             ResetPosition(graphics);
                             EnemyHealth = 8;
+                            
                             player.points.AddPoints(player, EnemyType.Three);
                             break;
                         }
