@@ -52,7 +52,7 @@ namespace TucSpaceShooter
                 }
             }
         }
-        public override void DamageToTheEnemy(GraphicsDeviceManager graphics, Player player)
+        public override void DamageToTheEnemy(GraphicsDeviceManager graphics, Player player, SpriteBatch spriteBatch)
         {
             if (!isDead)
             {
@@ -64,6 +64,7 @@ namespace TucSpaceShooter
                         EnemyHealth--;
                         if (EnemyHealth <= 0)
                         {
+
                             ResetPosition(graphics);
                             player.points.AddPoints(player, EnemyType.Boss);
                             isDead = true;

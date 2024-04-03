@@ -29,6 +29,7 @@ namespace TucSpaceShooter
             this.position.X = graphics.PreferredBackBufferWidth / 2 - 30;
             this.position.Y = graphics.PreferredBackBufferHeight;
             enemyTypeThreeList.Add(this);
+            EnemyHealth = 8;
         }
         public override void MoveToRandomPosition(GraphicsDeviceManager graphics)
         {
@@ -87,8 +88,9 @@ namespace TucSpaceShooter
             Random random = new Random();
             position.X = random.Next(graphics.PreferredBackBufferWidth - 60);
             position.Y = random.Next(-graphics.PreferredBackBufferHeight, 0);
+            EnemyHealth = 8;
         }
-        public override void DamageToTheEnemy(GraphicsDeviceManager graphics, Player player)
+        public override void DamageToTheEnemy(GraphicsDeviceManager graphics, Player player, SpriteBatch spriteBatch)
         {
             if (isNotDead)
             {
@@ -100,7 +102,7 @@ namespace TucSpaceShooter
                         EnemyHealth--;
                         if (EnemyHealth <= 0)
                         {
-                            ResetPosition(graphics);
+                            //ResetPosition(graphics);
                             player.points.AddPoints(player, EnemyType.Three);
                             break;
                         }

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TucSpaceShooter;
+
 public class EnemyTypeTwo : Enemies
 {
     private int movingSpeed = 2;
@@ -25,6 +26,8 @@ public class EnemyTypeTwo : Enemies
         this.position.X = graphics.PreferredBackBufferWidth / 2 - 30;
         this.position.Y = graphics.PreferredBackBufferHeight;
         enemyTypeTwoList.Add(this);
+        EnemyHealth = 10;
+
     }
 
     public override void MoveToRandomPosition(GraphicsDeviceManager graphics)
@@ -70,9 +73,10 @@ public class EnemyTypeTwo : Enemies
         Random random = new Random();
         position.X = random.Next(graphics.PreferredBackBufferWidth - 60);
         position.Y = random.Next(-graphics.PreferredBackBufferHeight, 0);
+        EnemyHealth = 10;
     }
 
-    public override void DamageToTheEnemy(GraphicsDeviceManager graphics, Player player)
+    public override void DamageToTheEnemy(GraphicsDeviceManager graphics, Player player, SpriteBatch spriteBatch)
     {
         if (isNotDead)
         {
@@ -84,7 +88,7 @@ public class EnemyTypeTwo : Enemies
                     EnemyHealth--;
                     if (EnemyHealth <= 0)
                     {
-                        ResetPosition(graphics);
+                        //ResetPosition(graphics);
                         player.points.AddPoints(player, EnemyType.Two);
                         break;
                     }

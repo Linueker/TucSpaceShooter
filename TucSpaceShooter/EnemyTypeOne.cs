@@ -25,12 +25,14 @@ namespace TucSpaceShooter
         private static List<EnemyTypOne> enemyTypeOneList = new List<EnemyTypOne>();
         public bool IsNotDead { get { return isDead; } }
 
+
         public EnemyTypOne(Vector2 position, GraphicsDeviceManager graphics, Texture2D enemyTextureOne, int enemyHealth) :
             base(position, graphics, enemyTextureOne, enemyHealth)
         {
             this.position.X = graphics.PreferredBackBufferWidth / 2 - 30;
             this.position.Y = graphics.PreferredBackBufferHeight;
             enemyTypeOneList.Add(this);
+            EnemyHealth = 5;
         }
         public override void MoveToRandomPosition(GraphicsDeviceManager graphics)
         {
@@ -67,6 +69,7 @@ namespace TucSpaceShooter
                     spriteBatch.Draw(enemy.GetEnemyTexture(), enemy.Position, Color.White);
                     break;
                 }
+
             }
         }
         public void ResetPosition(GraphicsDeviceManager graphics)
@@ -74,9 +77,10 @@ namespace TucSpaceShooter
             Random random = new Random();
             position.X = random.Next(graphics.PreferredBackBufferWidth - 60);
             position.Y = random.Next(-graphics.PreferredBackBufferHeight, 0);
+            EnemyHealth = 5;
         }
 
-        public override void DamageToTheEnemy(GraphicsDeviceManager graphics, Player player)
+        public override void DamageToTheEnemy(GraphicsDeviceManager graphics, Player player, SpriteBatch spriteBatch)
         {
             if (isNotDead)
             {
@@ -88,7 +92,7 @@ namespace TucSpaceShooter
                         EnemyHealth--;
                         if (EnemyHealth <= 0)
                         {
-                            ResetPosition(graphics);
+                            //ResetPosition(graphics);
                             player.points.AddPoints(player, EnemyType.One);
                             break;
                         }
@@ -98,6 +102,7 @@ namespace TucSpaceShooter
                 }
             }
         }
+
         public override void MakeDamageToPlayer(GameTime gameTime, Player player)
         {
             if (damageEnemy)
