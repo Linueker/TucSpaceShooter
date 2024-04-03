@@ -77,6 +77,20 @@ namespace TucSpaceShooter
                 }
             }
         }
+        public void BossBulletCollision(Player player)
+        {
+            foreach (var bullet in Bullet.BossBullets)
+            {
+                float makeDamageToPlayer = Vector2.Distance(bullet.Position, player.Position);
+                float damageRadius = 12;
+                if (makeDamageToPlayer <= damageRadius)
+                {
+                    player.Health--;
+                    Bullet.BossBullets.Remove(bullet);
+                    break;
+                }
+            }
+        }
 
         public void Die()
         {

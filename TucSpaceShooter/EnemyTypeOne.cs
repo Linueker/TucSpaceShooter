@@ -6,8 +6,10 @@ using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using System.Net.Mail;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using Vector2 = Microsoft.Xna.Framework.Vector2;
 
 namespace TucSpaceShooter
 {
@@ -116,9 +118,22 @@ namespace TucSpaceShooter
                     player.Health--;
                     damageEnemy = false;
                 }
-
-
             }
         }
+        public void EnemyBulletCollision(Player player)
+        {
+            foreach (var bullet in Bullet.EnemyBullets)
+            {
+                float makeDamageToPlayer = Vector2.Distance(bullet.Position, player.Position);
+                float damageRadius = 12;
+                if (makeDamageToPlayer <= damageRadius)
+                {
+                    player.Health--;
+                    Bullet.EnemyBullets.Remove(bullet);
+                    break;
+                }
+            }
+        }
+
     }
 }

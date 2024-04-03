@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +20,9 @@ public class EnemyTypeTwo : Enemies
     float timerForDamageThePlayer = 0f;
     float damageDuration = 9f;//9
     bool damageEnemy = true;
+    private Vector2 position;
+    
+    
 
     public EnemyTypeTwo(Vector2 position, GraphicsDeviceManager graphics, Texture2D enemyTextureTwo, int enemyHealth) :
         base(position, graphics, enemyTextureTwo, enemyHealth)
@@ -71,6 +76,7 @@ public class EnemyTypeTwo : Enemies
         position.X = random.Next(graphics.PreferredBackBufferWidth - 60);
         position.Y = random.Next(-graphics.PreferredBackBufferHeight, 0);
     }
+    
 
     public override void DamageToTheEnemy(GraphicsDeviceManager graphics, Player player)
     {
@@ -113,6 +119,20 @@ public class EnemyTypeTwo : Enemies
                 damageEnemy = false;
             }
 
+        }
+    }
+    public void EnemyBulletCollision(Player player)
+    {
+        foreach (var bullet in Bullet.EnemyBullets)
+        {
+            float makeDamageToPlayer = Vector2.Distance(bullet.Position, player.Position);
+            float damageRadius = 12;
+            if (makeDamageToPlayer <= damageRadius)
+            {
+                player.Health--;
+                Bullet.EnemyBullets.Remove(bullet);
+                break;
+            }
         }
     }
 }
