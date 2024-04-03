@@ -52,7 +52,7 @@ namespace TucSpaceShooter
         //enemy
         private EnemyTypOne enemiesOne;
         private List<EnemyTypOne> enemyTypOnesList= new List<EnemyTypOne>();
-        private List<EnemyTypeTwo> enemyTypTwoList= new List<EnemyTypeTwo>();
+        private List<EnemyTypeTwo> enemyTypTwoList = new List<EnemyTypeTwo>();
         private EnemyTypeTwo enemiesTwo;
         private List<EnemyTypeThree> enemyTypThreeList = new List<EnemyTypeThree>();
         private EnemyTypeThree enemiesThree;
@@ -71,6 +71,9 @@ namespace TucSpaceShooter
 
         //Bullet
         private Texture2D bulletTexture;
+        private Texture2D enemyBulletTexture;
+        private Texture2D LeftBulletTexture;
+        private Texture2D RightBulletTexture;
         private List<Bullet> bullets = new List<Bullet>();
         private TimeSpan lastBulletTime;
         private TimeSpan bulletCooldown;
@@ -203,19 +206,22 @@ namespace TucSpaceShooter
             
             //Bullets
             bulletTexture = Content.Load<Texture2D>("PlayerBullets");
+            enemyBulletTexture = Content.Load<Texture2D>("EnemyBullets");
+            LeftBulletTexture = Content.Load<Texture2D>("EnemyBulletLeft");
+            RightBulletTexture = Content.Load<Texture2D>("EnemyBulletRight");
             shoot = Content.Load<SoundEffect>("laser-gun-shot-sound-future-sci-fi-lazer-wobble-chakongaudio-174883");
-            Bullet.LoadContent(bulletTexture);
+            Bullet.LoadContent(bulletTexture, enemyBulletTexture, LeftBulletTexture, RightBulletTexture);
 
             //Enemies
             enemyShipOne = Content.Load<Texture2D>("EnemyY");
-            enemiesOne = new EnemyTypOne(enemyPosition, _graphics, enemyShipOne, 10);
+            enemiesOne = new EnemyTypOne(enemyPosition, _graphics, enemyShipOne, 5);
             enemyTypOnesList.Add(enemiesOne);
             enemyShipTwo = Content.Load<Texture2D>("EnemyYX");
             enemiesTwo = new EnemyTypeTwo(enemyPositiontwo, _graphics, enemyShipTwo, 10);
             enemyTypTwoList.Add(enemiesTwo);
             //enemiesTwo.ResetPosition(_graphics);
             enemyShipThree = Content.Load<Texture2D>("Enemy3X");
-            enemiesThree = new EnemyTypeThree(enemyPositionthree, _graphics, enemyShipThree, 10);
+            enemiesThree = new EnemyTypeThree(enemyPositionthree, _graphics, enemyShipThree, 8);
             enemyTypThreeList.Add(enemiesThree);
             /*Boss*/
             BossShip = Content.Load<Texture2D>("BossMonsterRnd");
@@ -274,7 +280,6 @@ namespace TucSpaceShooter
             endSong = Content.Load<Song>("lady-of-the-80x27s-128379");
             endSongIsPlaying = false;
             saveButton = new Button(backButtonTexture, saveButtonBounds);
-
         }
 
         protected override void Update(GameTime gameTime)
@@ -329,7 +334,7 @@ namespace TucSpaceShooter
 
                     base.Update(gameTime);
                     Bullet.UpdatePlayerBullets(gameTime, player, shoot);
-                    Bullet.UpdateEnemyBullets(gameTime, enemiesOne, enemiesThree, bossEnemy);
+                    Bullet.UpdateEnemyBullets(gameTime, enemiesOne, enemiesThree, enemiesTwo, bossEnemy);
                     player.PlayerMovement(player, _graphics);
                     player.HandlePowerupCollision(powerups, pickUp);
                     powerup.SpawnPowerup(random, _graphics, powerupWidth, jetpack, shield, repair, doublePoints, triplePoints, powerups);
@@ -337,21 +342,21 @@ namespace TucSpaceShooter
                     //enemiesOne.MoveToRandomPosition(_graphics);
                     if (drawEnemy)
                     {
-                        foreach (EnemyTypOne enemy in enemyTypOnesList.ToList())
+                        foreach (EnemyTypOne enemy in enemyTypOnesList)
                         {
                             enemy.MoveToRandomPosition(_graphics);
                             enemy.DamageToTheEnemy(_graphics, player);
                             enemy.MakeDamageToPlayer(gameTime, player);
                             enemy.EnemyBulletCollision(player);
                         }
-                        foreach (EnemyTypeTwo enemy in enemyTypTwoList.ToList())
+                        foreach (EnemyTypeTwo enemy in enemyTypTwoList)
                         {
                             enemy.MoveToRandomPosition(_graphics);
                             enemy.DamageToTheEnemy(_graphics, player);
                             enemy.MakeDamageToPlayer(gameTime, player);
                             enemy.EnemyBulletCollision(player);
                         }
-                        foreach (EnemyTypeThree enemy in enemyTypThreeList.ToList())
+                        foreach (EnemyTypeThree enemy in enemyTypThreeList)
                         {
                             enemy.MoveToRandomPosition(_graphics);
                             enemy.DamageToTheEnemy(_graphics, player);
@@ -457,8 +462,9 @@ namespace TucSpaceShooter
                     Background.DrawBackground(bgrCounter, _spriteBatch, stageOneBgr);
                     player.DrawPlayer(_spriteBatch, playerShip, playerShipAcc, player, bgrCounter, playerShield);
                     DrawPowerups(_spriteBatch, powerups);
+                    
 
-                    //_spriteBatch.Draw(enemyShipOne, enemiesOne.Position, Color.White);
+                    _spriteBatch.Draw(enemyShipOne, enemiesOne.Position, Color.White);
                     if (drawEnemy)
                     {
                         enemiesOne.DrawEnemy(_spriteBatch);

@@ -27,12 +27,15 @@ namespace TucSpaceShooter
         private static List<EnemyTypOne> enemyTypeOneList = new List<EnemyTypOne>();
         public bool IsNotDead { get { return isDead; } }
 
+        public static List<EnemyTypOne> EnemyTypeOneList { get => enemyTypeOneList; set => enemyTypeOneList = value; }
+
         public EnemyTypOne(Vector2 position, GraphicsDeviceManager graphics, Texture2D enemyTextureOne, int enemyHealth) :
             base(position, graphics, enemyTextureOne, enemyHealth)
         {
             this.position.X = graphics.PreferredBackBufferWidth / 2 - 30;
             this.position.Y = graphics.PreferredBackBufferHeight;
             enemyTypeOneList.Add(this);
+            enemyHealth = 5;
         }
         public override void MoveToRandomPosition(GraphicsDeviceManager graphics)
         {
@@ -91,6 +94,7 @@ namespace TucSpaceShooter
                         if (EnemyHealth <= 0)
                         {
                             ResetPosition(graphics);
+                            EnemyHealth = 5;
                             player.points.AddPoints(player, EnemyType.One);
                             break;
                         }

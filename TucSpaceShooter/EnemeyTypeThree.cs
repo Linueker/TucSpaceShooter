@@ -22,6 +22,7 @@ namespace TucSpaceShooter
         float damageDuration = 9f;//9
         bool damageEnemy = true;
 
+        public static List<EnemyTypeThree> EnemyTypeThreeList { get => enemyTypeThreeList; set => enemyTypeThreeList = value; }
 
         public EnemyTypeThree(Vector2 position, GraphicsDeviceManager graphics, Texture2D enemyTextureThree, int enemyHealth) :
             base(position, graphics, enemyTextureThree, enemyHealth)
@@ -29,6 +30,7 @@ namespace TucSpaceShooter
             this.position.X = graphics.PreferredBackBufferWidth / 2 - 30;
             this.position.Y = graphics.PreferredBackBufferHeight;
             enemyTypeThreeList.Add(this);
+            enemyHealth = 8;
         }
         public override void MoveToRandomPosition(GraphicsDeviceManager graphics)
         {
@@ -101,6 +103,7 @@ namespace TucSpaceShooter
                         if (EnemyHealth <= 0)
                         {
                             ResetPosition(graphics);
+                            EnemyHealth = 8;
                             player.points.AddPoints(player, EnemyType.Three);
                             break;
                         }
