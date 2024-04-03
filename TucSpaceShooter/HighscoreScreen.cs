@@ -16,6 +16,7 @@ namespace TucSpaceShooter
         private Button backButton;
         private static bool keyPressed = false;
         static string PATH = "scores.json";
+        
 
         public HighscoreScreen(Texture2D backButtonTexture, Rectangle backButtonBounds)
         {
@@ -29,9 +30,18 @@ namespace TucSpaceShooter
 
             if (backButton.IsClicked(mouseState))
             {
-                Game1.CurrentState = GameStates.Menu;
-                victory = false;
+                
+                ResetGame(victory);
+                
             }
+        }
+        private void ResetGame(bool victory)
+        {
+            // Återställ spelvariabler, positioner, poäng osv. till det ursprungliga tillståndet
+            // Exempel:
+            Game1.CurrentState = GameStates.Menu;
+            victory = false;
+            // Återställ andra variabler och objekt till deras ursprungliga tillstånd
         }
 
         public void DrawBackbutton(SpriteBatch spriteBatch)
@@ -97,10 +107,8 @@ namespace TucSpaceShooter
             {
                 AddStringToJson($"{player.points.GetCurrentPoints()} - {userInput} \n", highscores);
                 Game1.CurrentState = GameStates.Highscore;
-                
             }
 
         }
-       
     }
 }

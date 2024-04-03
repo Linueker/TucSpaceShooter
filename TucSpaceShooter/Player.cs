@@ -156,15 +156,15 @@ namespace TucSpaceShooter
                 // bakgrunds-countern utnyttjas för att får "blinkande" eld när spelarskeppet rör på sig.
                 if (counter % 3 == 0)
                 {
-                    spriteBatch.Draw(pShipFire, new Vector2(player.Position.X - 20, player.Position.Y - 19), Color.White);
+                    spriteBatch.Draw(pShipFire, new Vector2(player.Position.X - 30, player.Position.Y - 19), Color.White);
                 }
             }
-            spriteBatch.Draw(pShip, new Vector2(player.Position.X - 20, player.Position.Y - 19), Color.White);
+            spriteBatch.Draw(pShip, new Vector2(player.Position.X - 30, player.Position.Y - 19), Color.White);
 
 
             if (isShieldActive)
             {
-                spriteBatch.Draw(playerShield, new Vector2(player.position.X - 12, player.position.Y - 10), Color.White);
+                spriteBatch.Draw(playerShield, new Vector2(player.position.X - 22, player.position.Y - 10), Color.White);
             }
             //Sänker spelar-health snabbt för att komma till GameOver-state
             //if (counter % 2 == 0)

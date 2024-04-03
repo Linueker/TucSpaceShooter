@@ -6,8 +6,10 @@ using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using System.Net.Mail;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using Vector2 = Microsoft.Xna.Framework.Vector2;
 
 namespace TucSpaceShooter
 {
@@ -26,13 +28,15 @@ namespace TucSpaceShooter
         public bool IsNotDead { get { return isDead; } }
 
 
+        public static List<EnemyTypOne> EnemyTypeOneList { get => enemyTypeOneList; set => enemyTypeOneList = value; }
+
         public EnemyTypOne(Vector2 position, GraphicsDeviceManager graphics, Texture2D enemyTextureOne, int enemyHealth) :
             base(position, graphics, enemyTextureOne, enemyHealth)
         {
             this.position.X = graphics.PreferredBackBufferWidth / 2 - 30;
             this.position.Y = graphics.PreferredBackBufferHeight;
             enemyTypeOneList.Add(this);
-            EnemyHealth = 5;
+            enemyHealth = 5;
         }
         public override void MoveToRandomPosition(GraphicsDeviceManager graphics)
         {
@@ -92,7 +96,8 @@ namespace TucSpaceShooter
                         EnemyHealth--;
                         if (EnemyHealth <= 0)
                         {
-                            //ResetPosition(graphics);
+                            ResetPosition(graphics);
+                            EnemyHealth = 5;
                             player.points.AddPoints(player, EnemyType.One);
                             break;
                         }
@@ -121,9 +126,22 @@ namespace TucSpaceShooter
                     player.Health--;
                     damageEnemy = false;
                 }
-
-
             }
         }
+        public void EnemyBulletCollision(Player player)
+        {
+            foreach (var bullet in Bullet.EnemyBullets)
+            {
+                float makeDamageToPlayer = Vector2.Distance(bullet.Position, player.Position);
+                float damageRadius = 12;
+                if (makeDamageToPlayer <= damageRadius)
+                {
+                    player.Health--;
+                    Bullet.EnemyBullets.Remove(bullet);
+                    break;
+                }
+            }
+        }
+
     }
 }
