@@ -110,5 +110,10 @@ namespace TucSpaceShooter
             }
 
         }
+        public static int ExtractScore(string entry)
+        {
+            // Dela upp posten efter "-" och konvertera första delen till en int
+            return int.Parse(entry.Split('-')[0].Trim());
+        }
     }
 }
