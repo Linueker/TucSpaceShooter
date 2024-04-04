@@ -154,6 +154,7 @@ namespace TucSpaceShooter
         private bool drawExplosionThree = true;
         private bool drawExplosionBoss = true;
         private SoundEffect bossExplosionSound;
+        private SoundEffect EnemyExplosionSound;
 
 
         public static GameStates CurrentState { get => currentState; set => currentState = value; }
@@ -254,6 +255,7 @@ namespace TucSpaceShooter
             bossMusic = Content.Load<Song>("a-hero-of-the-80s_v2_60sec-178277");
             bossMusicIsPlaying = false;
             bossExplosionSound = Content.Load<SoundEffect>("retro-explosion-102364");
+            EnemyExplosionSound = Content.Load<SoundEffect>("supernatural-explosion-104295");
 
 
             //Menu
@@ -371,19 +373,16 @@ namespace TucSpaceShooter
                                 {
                                     enemiesOne.ResetPosition(_graphics);
                                     currentExplosion = 0;
-                                    
                                 }
                                 if (enemiesTwo.EnemyHealth <= 0)
                                 {
                                     enemiesTwo.ResetPosition(_graphics);
                                     currentExplosion = 0; // Återställ explosionens räknare när fienden återställs
-                                    
                                 }
                                 if (enemiesThree.EnemyHealth <= 0)
                                 {
                                     enemiesThree.ResetPosition(_graphics);
                                     currentExplosion = 0; // Återställ explosionens räknare när fienden återställs
-                                    
                                 }
 
                                 if (bossEnemy.EnemyHealth <= 0)
@@ -460,7 +459,11 @@ namespace TucSpaceShooter
                             bossEnemy.BossBulletCollision(player);
                         }
                     }
-                  
+                    if(enemiesOne.EnemyHealth == 0 ||  enemiesTwo.EnemyHealth == 0 || enemiesThree.EnemyHealth == 0)
+                    {
+                        EnemyExplosionSound.Play();
+                    }
+
                     break;
                 case GameStates.Highscore:
                     //kod för highscore
@@ -483,7 +486,7 @@ namespace TucSpaceShooter
 
                         foreach (var score in highscores.Take(15))
                         {
-                            topTen += ($"{placing}:  {score}");
+                            topTen += $"{placing}: {score}";
                             placing++;
                         }
                         victory = true;

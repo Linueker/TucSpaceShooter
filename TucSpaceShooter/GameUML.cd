@@ -49,13 +49,6 @@
       <FileName>Enemies.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="TucSpaceShooter.EnemyCast" Collapsed="true">
-    <Position X="22.75" Y="1.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>EnemyCast.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="TucSpaceShooter.EnemyTypOne">
     <Position X="16.25" Y="12" Width="1.5" />
     <TypeIdentifier>
@@ -78,7 +71,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="TucSpaceShooter.Fonts">
-    <Position X="25.25" Y="1.75" Width="1.5" />
+    <Position X="23" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>gAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAIQ=</HashCode>
       <FileName>Fonts.cs</FileName>
