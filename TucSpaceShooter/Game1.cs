@@ -153,6 +153,7 @@ namespace TucSpaceShooter
         private bool drawExplosionTwo = true;
         private bool drawExplosionThree = true;
         private bool drawExplosionBoss = true;
+        private SoundEffect bossExplosionSound;
 
 
         public static GameStates CurrentState { get => currentState; set => currentState = value; }
@@ -252,6 +253,7 @@ namespace TucSpaceShooter
             enemyPositionBoss = bossEnemy.Position;
             bossMusic = Content.Load<Song>("a-hero-of-the-80s_v2_60sec-178277");
             bossMusicIsPlaying = false;
+            bossExplosionSound = Content.Load<SoundEffect>("retro-explosion-102364");
 
 
             //Menu
@@ -443,7 +445,7 @@ namespace TucSpaceShooter
                             bossMusicIsPlaying = true;
                         }
                         bossEnemy.MoveToRandomPosition(_graphics);
-                        bossEnemy.DamageToTheEnemy(_graphics, player, _spriteBatch);
+                        bossEnemy.DamageToTheEnemy(_graphics, player, _spriteBatch, bossExplosionSound);
                         bossEnemy.BossBulletCollision(player);  
                     }
                   
@@ -558,7 +560,7 @@ namespace TucSpaceShooter
                         {
                             if (bossEnemy.EnemyHealth <= 0)
                             {
-                                _spriteBatch.Draw(bossExplosion[currentExplosion], new Vector2(bossEnemy.Position.X, bossEnemy.Position.Y), Color.White);
+                                _spriteBatch.Draw(bossExplosion[currentExplosion], new Vector2(bossEnemy.Position.X-56, bossEnemy.Position.Y), Color.White);
                             }
                         }
                     }
