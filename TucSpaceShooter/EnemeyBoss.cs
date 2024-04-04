@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace TucSpaceShooter
@@ -68,6 +69,7 @@ namespace TucSpaceShooter
                             ResetPosition(graphics);
                             player.points.AddPoints(player, EnemyType.Boss);
                             isDead = true;
+                            //lägg in väntetid så att man ser bossexplosioner
                             player.Health = 0;
                             
                             break;

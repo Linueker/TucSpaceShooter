@@ -11,6 +11,7 @@ using System.Diagnostics.Metrics;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using static TucSpaceShooter.Powerup;
 
 
@@ -139,7 +140,7 @@ namespace TucSpaceShooter
         //GameTimer
         float timer = 0f;
         //Sätter tiden för hur länge fiender ska spawnas innan bossen kommer (sekunder + f). Höj om banan ska va längre. 
-        float enemyDuration = 60f;
+        float enemyDuration = 1f;
         bool drawEnemy = true;
 
         //Explosion
@@ -520,8 +521,6 @@ namespace TucSpaceShooter
                     player.DrawPlayer(_spriteBatch, playerShip, playerShipAcc, player, bgrCounter, playerShield);
                     DrawPowerups(_spriteBatch, powerups);
                     
-
-                    _spriteBatch.Draw(enemyShipOne, enemiesOne.Position, Color.White);
                     if (drawEnemy)
                     {
                         enemiesOne.DrawEnemy(_spriteBatch);

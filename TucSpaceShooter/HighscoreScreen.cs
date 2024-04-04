@@ -30,19 +30,11 @@ namespace TucSpaceShooter
 
             if (backButton.IsClicked(mouseState))
             {
-                
-                ResetGame(victory);
-                
+                Game1.CurrentState = GameStates.Menu;
+                victory = false;
             }
         }
-        private void ResetGame(bool victory)
-        {
-            // Återställ spelvariabler, positioner, poäng osv. till det ursprungliga tillståndet
-            // Exempel:
-            Game1.CurrentState = GameStates.Menu;
-            victory = false;
-            // Återställ andra variabler och objekt till deras ursprungliga tillstånd
-        }
+        
 
         public void DrawBackbutton(SpriteBatch spriteBatch)
         {
@@ -112,7 +104,6 @@ namespace TucSpaceShooter
         }
         public static int ExtractScore(string entry)
         {
-            // Dela upp posten efter "-" och konvertera första delen till en int
             return int.Parse(entry.Split('-')[0].Trim());
         }
     }
