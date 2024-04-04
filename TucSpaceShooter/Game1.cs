@@ -22,6 +22,7 @@ namespace TucSpaceShooter
         Play,
         GameOver,
         Highscore,
+        Pause,
         Quit
     }
     public class Game1 : Game
@@ -158,9 +159,15 @@ namespace TucSpaceShooter
         private bool drawExplosionThree = true;
         private bool drawExplosionBoss = true;
 
+        //Pause
+        private PauseScreen pauseScreen;
+        private Texture2D resumeButtonTexture;
+        private Rectangle resumeButtonBounds;
+        private Rectangle pauseQuitButtonBounds;
+        private Texture2D pauseTitle;
 
         public static GameStates CurrentState { get => currentState; set => currentState = value; }
-
+        
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -304,12 +311,19 @@ namespace TucSpaceShooter
             endSong = Content.Load<Song>("lady-of-the-80x27s-128379");
             endSongIsPlaying = false;
             saveButton = new Button(backButtonTexture, saveButtonBounds);
+
+            //Pause
+            pauseTitle = Content.Load<Texture2D>("PauseTitle");
+            resumeButtonTexture = Content.Load<Texture2D>("ResumeButton");
+
+            resumeButtonBounds = new Rectangle((_graphics.PreferredBackBufferWidth - resumeButtonTexture.Width) / 2, 285, resumeButtonTexture.Width, resumeButtonTexture.Height);
+            pauseQuitButtonBounds = new Rectangle((_graphics.PreferredBackBufferWidth - quitButtonTexture.Width) / 2, 335, quitButtonTexture.Width, quitButtonTexture.Height);
+
+            pauseScreen = new PauseScreen(resumeButtonTexture, resumeButtonBounds, quitButtonTexture, pauseQuitButtonBounds);
         }
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
             // TODO: Add your update logic here
             switch (currentState)
             {
@@ -340,7 +354,11 @@ namespace TucSpaceShooter
                     break;
                 case GameStates.Play:
                     //kod för Play
-                    if(player.Health == 0)
+                    if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+                    {
+                        currentState = GameStates.Pause;
+                    }
+                    if (player.Health == 0)
                     {
                         CurrentState = GameStates.GameOver;
                     }
@@ -493,7 +511,12 @@ namespace TucSpaceShooter
                     playerHighscore.Save(player, userInput, highscores, saveButton);
 
                     break;
-
+                case GameStates.Quit:
+                    Exit();
+                    break;
+                case GameStates.Pause:
+                    pauseScreen.ClickButton();
+                    break;
             }
             base.Update(gameTime);
         }
@@ -603,8 +626,14 @@ namespace TucSpaceShooter
 
                     _spriteBatch.End();
                     break;
-                case GameStates.Quit:
-                    Exit();
+                case GameStates.Pause:
+                    _spriteBatch.Begin();
+
+                    _spriteBatch.Draw(pauseTitle, new Vector2((_graphics.PreferredBackBufferWidth - pauseTitle.Width) / 2, 70), Color.White);
+
+                    pauseScreen.Draw(_spriteBatch);
+
+                    _spriteBatch.End();
                     break;
             }
             if (bgrCounter == 2160)
