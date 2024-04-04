@@ -27,6 +27,7 @@ namespace TucSpaceShooter
         public int Health { get => health; set => health = value; }
         public bool IsDoublePointsActive { get => isDoublePointsActive; set => isDoublePointsActive = value; }
         public bool IsTriplePointsActive { get => isTriplePointsActive; set => isTriplePointsActive = value; }
+        public bool IsShieldActive { get => isShieldActive; set => isShieldActive = value; }
 
         public Player(Vector2 position, GraphicsDeviceManager graphics, int health) : base(position)
         {

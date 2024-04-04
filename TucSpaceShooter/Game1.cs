@@ -140,7 +140,7 @@ namespace TucSpaceShooter
         //GameTimer
         float timer = 0f;
         //Sätter tiden för hur länge fiender ska spawnas innan bossen kommer (sekunder + f). Höj om banan ska va längre. 
-        float enemyDuration = 1f;
+        float enemyDuration = 30f;
         bool drawEnemy = true;
 
         //Explosion
@@ -408,22 +408,31 @@ namespace TucSpaceShooter
                         {
                             enemy.MoveToRandomPosition(_graphics);
                             enemy.DamageToTheEnemy(_graphics, player, _spriteBatch);
-                            enemy.MakeDamageToPlayer(gameTime, player);
-                            enemy.EnemyBulletCollision(player);
+                            if (!player.IsShieldActive)
+                            {
+                                enemy.MakeDamageToPlayer(gameTime, player);
+                                enemy.EnemyBulletCollision(player);
+                            }
                         }
                         foreach (EnemyTypeTwo enemy in enemyTypTwoList)
                         {
                             enemy.MoveToRandomPosition(_graphics);
                             enemy.DamageToTheEnemy(_graphics, player, _spriteBatch);
-                            enemy.MakeDamageToPlayer(gameTime, player);
-                            enemy.EnemyBulletCollision(player);
+                            if (!player.IsShieldActive)
+                            {
+                                enemy.MakeDamageToPlayer(gameTime, player);
+                                enemy.EnemyBulletCollision(player);
+                            }
                         }
                         foreach (EnemyTypeThree enemy in enemyTypThreeList)
                         {
                             enemy.MoveToRandomPosition(_graphics);
                             enemy.DamageToTheEnemy(_graphics, player, _spriteBatch);
-                            enemy.MakeDamageToPlayer(gameTime, player);
-                            enemy.EnemyBulletCollision(player);
+                            if (!player.IsShieldActive)
+                            {
+                                enemy.MakeDamageToPlayer(gameTime, player);
+                                enemy.EnemyBulletCollision(player);
+                            }
                         }
                         enemiesTwo.MoveToRandomPosition(_graphics);
                         enemiesThree.MoveToRandomPosition(_graphics);
@@ -446,7 +455,10 @@ namespace TucSpaceShooter
                         }
                         bossEnemy.MoveToRandomPosition(_graphics);
                         bossEnemy.DamageToTheEnemy(_graphics, player, _spriteBatch, bossExplosionSound);
-                        bossEnemy.BossBulletCollision(player);  
+                        if (!player.IsShieldActive)
+                        {
+                            bossEnemy.BossBulletCollision(player);
+                        }
                     }
                   
                     break;
