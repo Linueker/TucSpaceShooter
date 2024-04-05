@@ -8,25 +8,14 @@ using TucSpaceShooter;
 public class EnemyTypeTwo : Enemies
 {
     /// <summary>
-    ///en abstrakt klass som används för att strukturerar arbetsflödet i de andra klasserna som vi ska, för fiende
-    /// den klassen innehåller 5 abstrkta metoder med en för rörelse vid namnet (MoveToRandomPosition).
-    /// den andra är DamageToTheEnemy och den metoden är skapat för att spelaren ska göra en skada för Enemy typerna.
-
-    /// den tredje metoden är ResetPosition() vad den metoden ska göra är att den ska skapa en random plats för fienden för att den ska 
-    /// dycka upp i efter att fienden är död.
-    /// 
-    ///  MakeDamageToPlayer() är den metoden som ansvarar för att fienderna ska kunna göra en skada för spelaren. den metoden är gjort så här
-    ///  när spelaren och fienden är jätte nära varandra då ska spelaren få en Damage.
-    ///  
-    ///  DrawEnemy() i den metoden så målas enemy. 
-    ///  
-    /// Klassen kommer och ärva från Creature klassen, samt den kommer ha egna egenskaper GraphicsDeviceManager graphics,
-    /// Texture2D enemyTexture, 
-    /// int enemyHealth
-    /// <param name="graphics"> kommer och använda för att skicka _graphics i Game klassen</param>
+    /// den klassen är för den andra typen av fienderna 
+    /// <param name="movingSpeed"> den använder jag för att minska hastigheten och bestämmer åt vilket håll ska fienderna röra sig </param>
     /// <param name="enemyTexture">den kommer och användas i Draw metoden för att skicka enemy bilden till </param>
     /// <param name="enemyHealth">hälsan får fienden som gruppen har gått överens om att den ska ligga på 10, man kan deklarerar 
     /// värdet när man skapar objekt av Enemy typerna så man kan ändra det värdet från 10 till något annat så den är inte const</param>
+    /// <param name="isNotDead">kontrolerar om fienderna är döda</param>
+    /// <param name="center"> Kontrrollerar centrum av bilden på fienderna så vi kan bestämma om den har blivit träffad eller inte när spelaren sjukter</param>
+    /// <param name="damageDuration"> använder den för att bestämma under hur länge ska damage som orsakas av att träffa player ska vara  </param>
     /// </summary>
     private int movingSpeed = 2;
     private static List<EnemyTypeTwo> enemyTypeTwoList = new List<EnemyTypeTwo>();

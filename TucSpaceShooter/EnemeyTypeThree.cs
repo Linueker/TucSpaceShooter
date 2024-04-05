@@ -8,6 +8,17 @@ namespace TucSpaceShooter
 {
     public class EnemyTypeThree : Enemies
     {
+        /// <summary>
+        /// den klassen är för den första typen av fienderna 
+        /// <param name="movingSpeed"> den använder jag för att minska hastigheten och bestämmer åt vilket håll ska fienderna röra sig </param>
+        /// <param name="enemyTexture">den kommer och användas i Draw metoden för att skicka enemy bilden till </param>
+        /// <param name="enemyHealth">hälsan får fienden som gruppen har gått överens om att den ska ligga på 10, man kan deklarerar 
+        /// värdet när man skapar objekt av Enemy typerna så man kan ändra det värdet från 10 till något annat så den är inte const</param>
+        /// <param name="isNotDead">kontrolerar om fienderna är döda</param>
+        /// <param name="center"> Kontrrollerar centrum av bilden på fienderna så vi kan bestämma om den har blivit träffad eller inte när spelaren sjukter</param>
+        /// <param name="damageDuration"> använder den för att bestämma under hur länge ska damage som orsakas av att träffa player ska vara  </param>
+        /// <param name="moveRight">använder jag för att bestäma om fienden ska röra sig åt sidan </param>
+        /// </summary>
         bool moveBack = true;
         
         private static List<EnemyTypeThree> enemyTypeThreeList = new List<EnemyTypeThree>();
@@ -84,10 +95,16 @@ namespace TucSpaceShooter
         public void ResetPosition(GraphicsDeviceManager graphics)
         {
             Random random = new Random();
-            position.X = random.Next(graphics.PreferredBackBufferWidth - 60);
-            position.Y = random.Next(-graphics.PreferredBackBufferHeight, 0);
+            int maxX = graphics.PreferredBackBufferWidth - 60;
+            int maxY = graphics.PreferredBackBufferHeight;
+            if (maxX > graphics.PreferredBackBufferWidth) maxX = graphics.PreferredBackBufferWidth;
+            if (maxY > graphics.PreferredBackBufferHeight) maxY = graphics.PreferredBackBufferHeight;
+            position.X = random.Next(20, maxX);
+            if (position.X < 200) position.X = 200;
+            position.Y = random.Next(-maxY, 0);
             EnemyHealth = 8;
         }
+
         public override void DamageToTheEnemy(GraphicsDeviceManager graphics, Player player, SpriteBatch spriteBatch)
         {
             if (isNotDead)
