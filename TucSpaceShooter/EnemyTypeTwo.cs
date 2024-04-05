@@ -1,13 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-//using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
+
 using TucSpaceShooter;
 
 public class EnemyTypeTwo : Enemies
@@ -34,7 +29,6 @@ public class EnemyTypeTwo : Enemies
     /// värdet när man skapar objekt av Enemy typerna så man kan ändra det värdet från 10 till något annat så den är inte const</param>
     /// </summary>
     private int movingSpeed = 2;
-    private bool moveRight = true;
     private static List<EnemyTypeTwo> enemyTypeTwoList = new List<EnemyTypeTwo>();
     public bool isNotDead = true;
     private const int center = 27;
@@ -115,7 +109,6 @@ public class EnemyTypeTwo : Enemies
                     EnemyHealth--;
                     if (EnemyHealth <= 0)
                     {
-                        //ResetPosition(graphics);
                         player.points.AddPoints(player, EnemyType.Two);
                         break;
                     }

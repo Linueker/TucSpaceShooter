@@ -1,13 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
+
 
 namespace TucSpaceShooter
 {
@@ -21,7 +18,7 @@ namespace TucSpaceShooter
         public HighscoreScreen(Texture2D backButtonTexture, Rectangle backButtonBounds)
         {
             backButton = new Button(backButtonTexture, backButtonBounds);
-            //saveButton = new Button(backButtonTexture, backButtonBounds);
+            
         }
         
         public void ClickButton(bool victory) 
@@ -42,7 +39,6 @@ namespace TucSpaceShooter
         }
         public static string EnterPlayerName(string userInput, Keys[] keys, KeyboardState keyboardstate)
         {
-            // Kolla om någon knapp är nedtryckt
             if (keyboardstate.GetPressedKeys().Length > 0)
             {
                 if (!keyPressed)
@@ -71,6 +67,7 @@ namespace TucSpaceShooter
 
             return userInput;
         }
+        //Läser in json-filen till listan med highscore, lägger till aktuellt score och sen skriver tillbaka listan till json.
         static void AddStringToJson(string score, List<string> highscores)
         {
             highscores = ReadJson();
@@ -91,6 +88,7 @@ namespace TucSpaceShooter
             }
         }
 
+        //Gör en sträng av aktuellt poäng + användarinput (initialer) och sparar i highscores.
         public void Save(Player player, string userInput, List<string> highscores, Button saveButton)
         {
             MouseState mouseState = Mouse.GetState();
@@ -102,6 +100,7 @@ namespace TucSpaceShooter
             }
 
         }
+        // Tar ut poängen ur ovanstående sträng och konverterar till int för att kunna sortera korrekt
         public static int ExtractScore(string entry)
         {
             return int.Parse(entry.Split('-')[0].Trim());

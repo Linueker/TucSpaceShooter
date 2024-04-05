@@ -2,17 +2,14 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-//using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace TucSpaceShooter
 {
     public class EnemyTypeThree : Enemies
     {
         bool moveBack = true;
-        int pxelToRight = 1;
+        
         private static List<EnemyTypeThree> enemyTypeThreeList = new List<EnemyTypeThree>();
         private const int center = 24;
         private int movingSpeed = 1;
@@ -103,7 +100,6 @@ namespace TucSpaceShooter
                         EnemyHealth--;
                         if (EnemyHealth <= 0)
                         {
-                            //ResetPosition(graphics);
                             player.points.AddPoints(player, EnemyType.Three);
                             break;
                         }

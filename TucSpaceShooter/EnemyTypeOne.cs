@@ -2,13 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Linq;
-using System.Net.Mail;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
+
 using Vector2 = Microsoft.Xna.Framework.Vector2;
 
 namespace TucSpaceShooter
@@ -20,7 +14,6 @@ namespace TucSpaceShooter
         private const int center = 16;
         private bool isDead = false;
         private bool isNotDead = true;
-        bool moveBack = true;
         float timerForDamageThePlayer = 0f;
         float damageDuration = 9f;
         bool damageEnemy = true;
@@ -95,7 +88,7 @@ namespace TucSpaceShooter
                         EnemyHealth--;
                         if (EnemyHealth <= 0)
                         {
-                            //ResetPosition(graphics);
+                            
                             player.points.AddPoints(player, EnemyType.One);
                             break;
                         }

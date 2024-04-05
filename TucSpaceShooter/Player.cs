@@ -1,9 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System;
 using System.Collections.Generic;
 using System.Threading;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
@@ -20,7 +18,6 @@ namespace TucSpaceShooter
 
         private bool isJetpackActive = false;
         private bool isShieldActive = false;
-        private bool isRepairActive = false;
         private bool isDoublePointsActive = false;
         private bool isTriplePointsActive = false;
 
@@ -72,9 +69,6 @@ namespace TucSpaceShooter
 
         public void ActivateRepair()
         {
-            // Aktivera repair-effekten
-            isRepairActive = true;
-
             // Om hälsan inte är full, öka den med 1
             if (health < 5)
                 health++;
@@ -162,19 +156,13 @@ namespace TucSpaceShooter
             }
             spriteBatch.Draw(pShip, new Vector2(player.Position.X - 30, player.Position.Y - 19), Color.White);
 
-
             if (isShieldActive)
             {
                 spriteBatch.Draw(playerShield, new Vector2(player.position.X - 22, player.position.Y - 10), Color.White);
             }
-            //Sänker spelar-health snabbt för att komma till GameOver-state
-            //if (counter % 2 == 0)
-            //{
-            //    player.health--;
-            //}
         }
 
-        // Ritar ut spelarens hälsa i fönstret. 
+        // Ritar ut spelarens hälsa i fönstret baserat på player.Health 
         public void DrawPlayerHealth(Player player, Texture2D healthBar, Texture2D healthPoint, Texture2D healthEmpty, SpriteBatch spriteBatch, Texture2D powerUpBar, Texture2D jetpack, Texture2D shield, Texture2D doublePoints, Texture2D triplePoints)
         {
             
