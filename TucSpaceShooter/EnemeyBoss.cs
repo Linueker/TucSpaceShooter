@@ -14,12 +14,12 @@ namespace TucSpaceShooter
     {
         bool moveRight = true;
         bool moveLeft = false;
-        bool moveBack = true;
+        
         private const int center = 70;
         int movingSpeed = 1;
-        int pxelToRight = 1;
+        
         bool isDead = false;
-        bool moveForward=true;
+        
         public EnemeyBoss(Vector2 position, GraphicsDeviceManager graphics, Texture2D enemyTextureTwo, int enemyHealth) :
             base(position, graphics, enemyTextureTwo, enemyHealth)
         {
@@ -71,7 +71,7 @@ namespace TucSpaceShooter
                             player.points.AddPoints(player, EnemyType.Boss);
                             isDead = true;
                             bossExplosionSound.Play();
-                            //lägg in väntetid så att man ser bossexplosioner
+                            //väntetid så att man ser bossexplosioner innan man kommer till Game Over-screen
                             await Task.Delay(2500);
                             player.Health = 0;
                             

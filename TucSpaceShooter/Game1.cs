@@ -1,17 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Diagnostics.Metrics;
-using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Threading;
 using static TucSpaceShooter.Powerup;
 
 
@@ -124,6 +118,7 @@ namespace TucSpaceShooter
         private int highscoreTitleCounter;
         private Texture2D highscoreBoard;
         private Texture2D backButtonTexture;
+        private Texture2D saveButtonTexture;
         private Rectangle backButtonBounds;
         private Rectangle saveButtonBounds;
         private Button saveButton;
@@ -131,7 +126,7 @@ namespace TucSpaceShooter
         private string topTen;
         private bool victory;
         private int placing;
-        int rowCounter;
+        
 
         //GameOver
         private Texture2D gameOverImg;
@@ -141,7 +136,7 @@ namespace TucSpaceShooter
         //GameTimer
         float timer = 0f;
         //Sätter tiden för hur länge fiender ska spawnas innan bossen kommer (sekunder + f). Höj om banan ska va längre. 
-        float enemyDuration = 30f;
+        float enemyDuration = 120f;
         bool drawEnemy = true;
 
         //Explosion
@@ -297,20 +292,21 @@ namespace TucSpaceShooter
                 highscoreTitle[i - 1] = Content.Load<Texture2D>("HiScoreTitle" + i.ToString());
             }
             backButtonTexture = Content.Load<Texture2D>("BackButton");
+            saveButtonTexture = Content.Load<Texture2D>("SubmitButton");
             backButtonBounds = new Rectangle(0,0/*(_graphics.PreferredBackBufferHeight-backButtonTexture.Height)*/,backButtonTexture.Width,backButtonTexture.Height);
-            saveButtonBounds = new Rectangle(240,500/*(_graphics.PreferredBackBufferHeight-backButtonTexture.Height)*/, backButtonTexture.Width, backButtonTexture.Height);
+            saveButtonBounds = new Rectangle(216,520/*(_graphics.PreferredBackBufferHeight-backButtonTexture.Height)*/, saveButtonTexture.Width, saveButtonTexture.Height);
             highscoreMenu = new HighscoreScreen(backButtonTexture, backButtonBounds);
             highscores = new List<string>();
             topTen = "";
             victory = false;
             placing = 1;
-            rowCounter = 180;
+            
 
             //GameOver
             gameOverImg = Content.Load<Texture2D>("GameOverTitle");
             endSong = Content.Load<Song>("lady-of-the-80x27s-128379");
             endSongIsPlaying = false;
-            saveButton = new Button(backButtonTexture, saveButtonBounds);
+            saveButton = new Button(saveButtonTexture, saveButtonBounds);
 
             //Pause
             pauseTitle = Content.Load<Texture2D>("PauseTitle");
@@ -602,7 +598,6 @@ namespace TucSpaceShooter
                             }
                         }
                     }
-                    
                     Bullet.DrawPlayerBullets(_spriteBatch);
                     
                     Fonts.DrawText(_spriteBatch, "SCORE: " + player.points.GetCurrentPoints(), new Vector2(10, 10), Color.White);
@@ -614,7 +609,6 @@ namespace TucSpaceShooter
                     //kod för highscore
                     _spriteBatch.Begin();
                     Background.DrawBackground(bgrCounter, _spriteBatch, stageOneBgr);
-                    //_spriteBatch.Draw(highscoreBackground, Vector2.Zero, Color.White);
                     _spriteBatch.Draw(highscoreBoard, new Vector2((_graphics.PreferredBackBufferWidth - highscoreBoard.Width)/2,140), Color.White);
                     _spriteBatch.Draw(highscoreTitle[currentHighscoreTitle], new Vector2((_graphics.PreferredBackBufferWidth - highscoreTitle[currentHighscoreTitle].Width)/2,0), Color.White);
                     Fonts.DrawText(_spriteBatch, topTen, new Vector2(160, 180), Color.Purple);
@@ -631,7 +625,7 @@ namespace TucSpaceShooter
                     Fonts.DrawText(_spriteBatch, "FINAL SCORE: \n" + player.points.GetCurrentPoints(), new Vector2(175, 300), Color.White);
                     Fonts.DrawText(_spriteBatch, "ENTER NAME: \n", new Vector2(175, 430), Color.White);
                     Fonts.DrawText(_spriteBatch, userInput, new Vector2(175, 460), Color.White);
-                    _spriteBatch.Draw(backButtonTexture, saveButtonBounds, Color.White);    
+                    _spriteBatch.Draw(saveButtonTexture, saveButtonBounds, Color.White);    
                     bgrCounter++;
 
                     _spriteBatch.End();
