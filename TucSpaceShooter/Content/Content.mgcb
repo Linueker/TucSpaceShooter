@@ -1124,6 +1124,7 @@
 /processorParam:TextureFormat=Color
 /build:RepairShip.png
 
+
 #begin RestartButton.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1147,6 +1148,13 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:ResumeButton.png
+
+#begin retro-explosion-102364.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:retro-explosion-102364.mp3
+
 
 #begin RightHealthContainer.png
 /importer:TextureImporter
@@ -1195,6 +1203,12 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:StartButton.png
+
+#begin supernatural-explosion-104295.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:supernatural-explosion-104295.mp3
 
 #begin TUCShip.png
 /importer:TextureImporter

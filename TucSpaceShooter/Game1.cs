@@ -11,6 +11,7 @@ using System.Diagnostics.Metrics;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using static TucSpaceShooter.Powerup;
 
 
@@ -90,11 +91,8 @@ namespace TucSpaceShooter
         private Texture2D doublePoints;
         private Texture2D triplePoints;
         private Texture2D powerUpBar;
-
         private Texture2D playerShield;
-
         private SoundEffect pickUp;
-
         private List<Powerup> powerups;
 
         private int powerupWidth;
@@ -118,7 +116,6 @@ namespace TucSpaceShooter
         private Texture2D[] menuTitle;
         private int currentMenuTitle;
 
-
         //Highscore
         private HighscoreScreen highscoreMenu;
         private Texture2D highscoreBackground;
@@ -136,7 +133,6 @@ namespace TucSpaceShooter
         private int placing;
         int rowCounter;
 
-
         //GameOver
         private Texture2D gameOverImg;
         private Song endSong;
@@ -145,7 +141,7 @@ namespace TucSpaceShooter
         //GameTimer
         float timer = 0f;
         //Sätter tiden för hur länge fiender ska spawnas innan bossen kommer (sekunder + f). Höj om banan ska va längre. 
-        float enemyDuration = 60f;
+        float enemyDuration = 30f;
         bool drawEnemy = true;
 
         //Explosion
@@ -158,6 +154,8 @@ namespace TucSpaceShooter
         private bool drawExplosionTwo = true;
         private bool drawExplosionThree = true;
         private bool drawExplosionBoss = true;
+        private SoundEffect bossExplosionSound;
+        private SoundEffect EnemyExplosionSound;
 
         //Pause
         private PauseScreen pauseScreen;
@@ -263,6 +261,8 @@ namespace TucSpaceShooter
             enemyPositionBoss = bossEnemy.Position;
             bossMusic = Content.Load<Song>("a-hero-of-the-80s_v2_60sec-178277");
             bossMusicIsPlaying = false;
+            bossExplosionSound = Content.Load<SoundEffect>("retro-explosion-102364");
+            EnemyExplosionSound = Content.Load<SoundEffect>("supernatural-explosion-104295");
 
 
             //Menu
@@ -391,19 +391,16 @@ namespace TucSpaceShooter
                                 {
                                     enemiesOne.ResetPosition(_graphics);
                                     currentExplosion = 0;
-                                    
                                 }
                                 if (enemiesTwo.EnemyHealth <= 0)
                                 {
                                     enemiesTwo.ResetPosition(_graphics);
                                     currentExplosion = 0; // Återställ explosionens räknare när fienden återställs
-                                    
                                 }
                                 if (enemiesThree.EnemyHealth <= 0)
                                 {
                                     enemiesThree.ResetPosition(_graphics);
                                     currentExplosion = 0; // Återställ explosionens räknare när fienden återställs
-                                    
                                 }
 
                                 if (bossEnemy.EnemyHealth <= 0)
@@ -428,22 +425,31 @@ namespace TucSpaceShooter
                         {
                             enemy.MoveToRandomPosition(_graphics);
                             enemy.DamageToTheEnemy(_graphics, player, _spriteBatch);
-                            enemy.MakeDamageToPlayer(gameTime, player);
-                            enemy.EnemyBulletCollision(player);
+                            if (!player.IsShieldActive)
+                            {
+                                enemy.MakeDamageToPlayer(gameTime, player);
+                                enemy.EnemyBulletCollision(player);
+                            }
                         }
                         foreach (EnemyTypeTwo enemy in enemyTypTwoList)
                         {
                             enemy.MoveToRandomPosition(_graphics);
                             enemy.DamageToTheEnemy(_graphics, player, _spriteBatch);
-                            enemy.MakeDamageToPlayer(gameTime, player);
-                            enemy.EnemyBulletCollision(player);
+                            if (!player.IsShieldActive)
+                            {
+                                enemy.MakeDamageToPlayer(gameTime, player);
+                                enemy.EnemyBulletCollision(player);
+                            }
                         }
                         foreach (EnemyTypeThree enemy in enemyTypThreeList)
                         {
                             enemy.MoveToRandomPosition(_graphics);
                             enemy.DamageToTheEnemy(_graphics, player, _spriteBatch);
-                            enemy.MakeDamageToPlayer(gameTime, player);
-                            enemy.EnemyBulletCollision(player);
+                            if (!player.IsShieldActive)
+                            {
+                                enemy.MakeDamageToPlayer(gameTime, player);
+                                enemy.EnemyBulletCollision(player);
+                            }
                         }
                         enemiesTwo.MoveToRandomPosition(_graphics);
                         enemiesThree.MoveToRandomPosition(_graphics);
@@ -465,10 +471,17 @@ namespace TucSpaceShooter
                             bossMusicIsPlaying = true;
                         }
                         bossEnemy.MoveToRandomPosition(_graphics);
-                        bossEnemy.DamageToTheEnemy(_graphics, player, _spriteBatch);
-                        bossEnemy.BossBulletCollision(player);  
+                        bossEnemy.DamageToTheEnemy(_graphics, player, _spriteBatch, bossExplosionSound);
+                        if (!player.IsShieldActive)
+                        {
+                            bossEnemy.BossBulletCollision(player);
+                        }
                     }
-                  
+                    if(enemiesOne.EnemyHealth == 0 ||  enemiesTwo.EnemyHealth == 0 || enemiesThree.EnemyHealth == 0)
+                    {
+                        EnemyExplosionSound.Play();
+                    }
+
                     break;
                 case GameStates.Highscore:
                     //kod för highscore
@@ -487,12 +500,11 @@ namespace TucSpaceShooter
                     if (!victory)
                     {
                         highscores = HighscoreScreen.ReadJson();
-                        highscores.Sort();
-                        highscores.Reverse();
+                        highscores.Sort((x, y) => HighscoreScreen.ExtractScore(y).CompareTo(HighscoreScreen.ExtractScore(x)));
 
                         foreach (var score in highscores.Take(15))
                         {
-                            topTen += ($"{placing}:  {score}");
+                            topTen += $"{placing}: {score}";
                             placing++;
                         }
                         victory = true;
@@ -531,12 +543,13 @@ namespace TucSpaceShooter
                     //kod för meny
                     _spriteBatch.Begin();
 
-                    _spriteBatch.Draw(menuBackground, Vector2.Zero, Color.White);
+                    Background.DrawBackground(bgrCounter,_spriteBatch, stageOneBgr);
                     _spriteBatch.Draw(bossEye[currentBossEye], new Vector2(0,130), Color.White);
                     _spriteBatch.Draw(menuForeground, Vector2.Zero, Color.White);
                     _spriteBatch.Draw(menuTitle[currentMenuTitle], new Vector2((_graphics.PreferredBackBufferWidth - menuTitle[currentMenuTitle].Width)/2,70), Color.White);
 
                     menu.Draw(_spriteBatch);
+                    bgrCounter++;
 
                     _spriteBatch.End();
                     break;
@@ -548,49 +561,45 @@ namespace TucSpaceShooter
                     player.DrawPlayer(_spriteBatch, playerShip, playerShipAcc, player, bgrCounter, playerShield);
                     DrawPowerups(_spriteBatch, powerups);
                     
-
-                    _spriteBatch.Draw(enemyShipOne, enemiesOne.Position, Color.White);
                     if (drawEnemy)
                     {
                         enemiesOne.DrawEnemy(_spriteBatch);
                         enemiesTwo.DrawEnemy(_spriteBatch);
                         enemiesThree.DrawEnemy(_spriteBatch);
                         Bullet.DrawEnemyBullets(_spriteBatch);
+                        if (drawExplosionOne)
+                        {
+                            if (enemiesOne.EnemyHealth <= 0)
+                            {
+                                _spriteBatch.Draw(explosion[currentExplosion], new Vector2(enemiesOne.Position.X - 16, enemiesOne.Position.Y - 10), Color.White);
+                            }
+                        }
+                        if (drawExplosionTwo)
+                        {
+                            if (enemiesTwo.EnemyHealth <= 0)
+                            {
+                                _spriteBatch.Draw(explosion[currentExplosion], new Vector2(enemiesTwo.Position.X - 8, enemiesTwo.Position.Y - 10), Color.White);
+                            }
+                        }
+                        if (drawExplosionThree)
+                        {
+                            if (enemiesThree.EnemyHealth <= 0)
+                            {
+                                _spriteBatch.Draw(explosion[currentExplosion], new Vector2(enemiesThree.Position.X - 8, enemiesThree.Position.Y - 10), Color.White);
+
+                            }
+                        }
                     }
                     else
                     {
                         _spriteBatch.Draw(BossShip, new Vector2(bossEnemy.Position.X-60, bossEnemy.Position.Y), Color.White);
-                        Bullet.DrawBossBullets(_spriteBatch);   
-                    }
-
-                    if (drawExplosionOne)
-                    {
-                        if (enemiesOne.EnemyHealth <= 0)
+                        Bullet.DrawBossBullets(_spriteBatch);
+                        if (drawExplosionBoss)
                         {
-                            _spriteBatch.Draw(explosion[currentExplosion], new Vector2(enemiesOne.Position.X - 16, enemiesOne.Position.Y - 10), Color.White);
-                        }
-                    }
-                    if (drawExplosionTwo)
-                    {
-                        if (enemiesTwo.EnemyHealth <= 0)
-                        {
-                            _spriteBatch.Draw(explosion[currentExplosion], new Vector2(enemiesTwo.Position.X - 8, enemiesTwo.Position.Y - 10), Color.White);
-                        }
-                    }
-                    if (drawExplosionThree)
-                    {
-                        if (enemiesThree.EnemyHealth <= 0)
-                        {
-                            _spriteBatch.Draw(explosion[currentExplosion], new Vector2(enemiesThree.Position.X - 8, enemiesThree.Position.Y - 10), Color.White);
-
-                        }
-                    }
-
-                    if (drawExplosionBoss)
-                    {
-                        if (bossEnemy.EnemyHealth <= 0)
-                        {
-                            _spriteBatch.Draw(bossExplosion[currentExplosion], new Vector2(bossEnemy.Position.X, bossEnemy.Position.Y), Color.White);
+                            if (bossEnemy.EnemyHealth <= 0)
+                            {
+                                _spriteBatch.Draw(bossExplosion[currentExplosion], new Vector2(bossEnemy.Position.X-56, bossEnemy.Position.Y), Color.White);
+                            }
                         }
                     }
                     
@@ -604,14 +613,15 @@ namespace TucSpaceShooter
                 case GameStates.Highscore:
                     //kod för highscore
                     _spriteBatch.Begin();
-
-                    _spriteBatch.Draw(highscoreBackground, Vector2.Zero, Color.White);
+                    Background.DrawBackground(bgrCounter, _spriteBatch, stageOneBgr);
+                    //_spriteBatch.Draw(highscoreBackground, Vector2.Zero, Color.White);
                     _spriteBatch.Draw(highscoreBoard, new Vector2((_graphics.PreferredBackBufferWidth - highscoreBoard.Width)/2,140), Color.White);
                     _spriteBatch.Draw(highscoreTitle[currentHighscoreTitle], new Vector2((_graphics.PreferredBackBufferWidth - highscoreTitle[currentHighscoreTitle].Width)/2,0), Color.White);
                     Fonts.DrawText(_spriteBatch, topTen, new Vector2(160, 180), Color.Purple);
                     highscoreMenu.DrawBackbutton(_spriteBatch);
 
                     _spriteBatch.End();
+                    bgrCounter++;
                     break;
                 case GameStates.GameOver:
                     _spriteBatch.Begin();

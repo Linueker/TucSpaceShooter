@@ -19,7 +19,7 @@ namespace TucSpaceShooter
         private bool moveRight = true;
         public bool isNotDead = true;
         float timerForDamageThePlayer = 0f;
-        float damageDuration = 9f;//9
+        float damageDuration = 9f;
         bool damageEnemy = true;
 
         public static List<EnemyTypeThree> EnemyTypeThreeList { get => enemyTypeThreeList; set => enemyTypeThreeList = value; }

@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="TucSpaceShooter.Background">
+    <Position X="20.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAA=</HashCode>
+      <FileName>Background.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TucSpaceShooter.Bullet">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QgYCgAAAAQAABKAgRABIIBqBAAAAAAAiAAAQAACCUAY=</HashCode>
+      <FileName>Bullet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TucSpaceShooter.Button">
+    <Position X="2.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAAgAAAAAAAAAAAAAAAgAAAAACAAAAAAA=</HashCode>
+      <FileName>Button.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TucSpaceShooter.Creature">
+    <Position X="18.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Creature.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TucSpaceShooter.EnemeyBoss">
+    <Position X="23" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAgAAoAAAAIAAAAgAAAAAQAAABBAAAAAAAAACEAAACA=</HashCode>
+      <FileName>EnemeyBoss.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TucSpaceShooter.EnemyTypeThree">
+    <Position X="20.75" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAgAAgAADAJAACAAAAAAAAABQAFAABAIAAAAAEABACA=</HashCode>
+      <FileName>EnemeyTypeThree.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TucSpaceShooter.Enemies">
+    <Position X="19.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAABgAADAAAACAgAAAAIAAAAAFIBAAAAAAAAEAIIAA=</HashCode>
+      <FileName>Enemies.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TucSpaceShooter.EnemyTypOne">
+    <Position X="16.25" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>kAgAAgAADABAACAAEAAgAAAAQBFAABAIAAAAAEAAACA=</HashCode>
+      <FileName>EnemyTypeOne.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EnemyTypeTwo">
+    <Position X="18.5" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAgAEgAADBBAACAAAAAAAAAAQAFAABAIAAAAAEAAACA=</HashCode>
+      <FileName>EnemyTypeTwo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TucSpaceShooter.Entity">
+    <Position X="17.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAgAAAAIAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TucSpaceShooter.Fonts">
+    <Position X="23" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAIQ=</HashCode>
+      <FileName>Fonts.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TucSpaceShooter.Game1" Collapsed="true">
+    <Position X="20.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>rtYKPKIUAoIJQ09JZYoR9CooAanYR4A3MMVIAwR0oIQ=</HashCode>
+      <FileName>Game1.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TucSpaceShooter.HighscoreScreen">
+    <Position X="9.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAICAAQQAAAAACAAAAAAAAQAAAAAAAEAAAAEAAAA=</HashCode>
+      <FileName>HighscoreScreen.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TucSpaceShooter.MenuScreen">
+    <Position X="5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEAggAAgAAAAAAQAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MenuScreen.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TucSpaceShooter.Player">
+    <Position X="14" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AMEACADAAAgAAAAAAAggAAAAADAAQwAKUUACUAAgEsg=</HashCode>
+      <FileName>Player.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Points">
+    <Position X="7.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAQAAAAAEAAAAAAAAAAAAAAAAAAAAgAAAA=</HashCode>
+      <FileName>Points.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TucSpaceShooter.Powerup">
+    <Position X="11.75" Y="4.5" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="TucSpaceShooter.Powerup.PowerupType" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Powerups.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AgQBAAAAAABCAgBIEAAAAgAAAAAAQAAAAQIAAAAAAAA=</HashCode>
+      <FileName>Powerups.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System.Object" Collapsed="true">
+    <Position X="17.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Microsoft.Xna.Framework.Game" Collapsed="true">
+    <Position X="22.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

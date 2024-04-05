@@ -1,9 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace TucSpaceShooter
@@ -52,7 +54,7 @@ namespace TucSpaceShooter
                 }
             }
         }
-        public override void DamageToTheEnemy(GraphicsDeviceManager graphics, Player player, SpriteBatch spriteBatch)
+        public async void DamageToTheEnemy(GraphicsDeviceManager graphics, Player player, SpriteBatch spriteBatch, SoundEffect bossExplosionSound)
         {
             if (!isDead)
             {
@@ -68,6 +70,9 @@ namespace TucSpaceShooter
                             ResetPosition(graphics);
                             player.points.AddPoints(player, EnemyType.Boss);
                             isDead = true;
+                            bossExplosionSound.Play();
+                            //lägg in väntetid så att man ser bossexplosioner
+                            await Task.Delay(2500);
                             player.Health = 0;
                             
                             break;

@@ -27,7 +27,6 @@ namespace TucSpaceShooter
         private static List<EnemyTypOne> enemyTypeOneList = new List<EnemyTypOne>();
         public bool IsNotDead { get { return isDead; } }
 
-
         public static List<EnemyTypOne> EnemyTypeOneList { get => enemyTypeOneList; set => enemyTypeOneList = value; }
 
         public EnemyTypOne(Vector2 position, GraphicsDeviceManager graphics, Texture2D enemyTextureOne, int enemyHealth) :
