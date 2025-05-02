@@ -2,6 +2,9 @@
 
 Ett rymdskjutarspel utvecklat med MonoGame/XNA-ramverket.
 
+![image](https://github.com/user-attachments/assets/9850909a-9927-41d4-ac72-1c44a9d092c0)
+
+
 ## Om projektet
 
 TucSpaceShooter är ett klassiskt shoot 'em up-spel inspirerat av arkadspel där spelaren kontrollerar ett rymdskepp och bekämpar vågor av fiender. Spelet är utvecklat med MonoGame-ramverket, en öppen källkod-implementation av Microsoft XNA.
